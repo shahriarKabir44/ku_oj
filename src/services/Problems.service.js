@@ -16,34 +16,55 @@ export default class ProblemService {
             contestId,
             authorId
         })
-        UploadManager.uploadFile(
+        await Promise.all([
+            UploadManager.uploadFile(
+                testcaseFileURL,
+                {
+                    filetype: 'testcaseinput',
+                    problemid: problemId,
+                    ext: 'txt',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                testcaseFileURL = fileURL
+            }),
+            UploadManager.uploadFile(
+                outputFileURL,
+                {
+                    filetype: 'testcaseoutput',
+                    problemid: problemId,
+                    ext: 'txt',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                outputFileURL = fileURL
+            }),
+            UploadManager.uploadFile(
+                statementFileURL,
+                {
+                    filetype: 'statementfile',
+                    problemid: problemId,
+                    ext: 'pdf',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                statementFileURL = fileURL
+            })
+        ])
+        this.setFileURLs(problemId, statementFileURL,
             testcaseFileURL,
-            {
-                filetype: 'testcaseinput',
-                problemid: problemId,
-                ext: 'txt',
-            },
-            '/uploadFile/upload'
-        );
-        UploadManager.uploadFile(
-            outputFileURL,
-            {
-                filetype: 'testcaseoutput',
-                problemid: problemId,
-                ext: 'txt',
-            },
-            '/uploadFile/upload'
-        );
-        UploadManager.uploadFile(
-            statementFileURL,
-            {
-                filetype: 'statementfile',
-                problemid: problemId,
-                ext: 'pdf',
-            },
-            '/uploadFile/upload'
-        )
+            outputFileURL)
         return problemId
 
+    }
+    static async setFileURLs(problemId, statementFileURL,
+        testcaseFileURL,
+        outputFileURL) {
+        Global._fetch('/contests/setProblemFilesURL', {
+            problemId,
+            statementFileURL,
+            testcaseFileURL,
+            outputFileURL
+        })
     }
 }

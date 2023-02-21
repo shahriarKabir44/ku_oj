@@ -7,18 +7,43 @@ export default class ProblemService {
         title,
         point,
         contestId,
-        authorId }) {
+        authorId
+    }) {
 
-        let promises = []
-        let { problemId } = await Global._fetch('/')
-        promises.push(UploadManager.uploadFile(
+        let { problemId } = await Global._fetch('/contests/createProblem', {
+            title,
+            point,
+            contestId,
+            authorId
+        })
+        UploadManager.uploadFile(
             testcaseFileURL,
             {
                 filetype: 'testcaseinput',
-                problemid: '11',
+                problemid: problemId,
                 ext: 'txt',
-            }
-        ))
+            },
+            '/uploadFile/upload'
+        );
+        UploadManager.uploadFile(
+            outputFileURL,
+            {
+                filetype: 'testcaseoutput',
+                problemid: problemId,
+                ext: 'txt',
+            },
+            '/uploadFile/upload'
+        );
+        UploadManager.uploadFile(
+            statementFileURL,
+            {
+                filetype: 'statementfile',
+                problemid: problemId,
+                ext: 'pdf',
+            },
+            '/uploadFile/upload'
+        )
+        return problemId
 
     }
 }

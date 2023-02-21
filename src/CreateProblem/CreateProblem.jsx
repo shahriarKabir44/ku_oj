@@ -32,7 +32,7 @@ function CreateProblem(props) {
                 }
                 ProblemService.createProblem(problemInfo)
                     .then(data => {
-
+                        console.log(data)
                     })
             }}>
                 <div>
@@ -44,19 +44,19 @@ function CreateProblem(props) {
                 <div>
                     <label htmlFor="statementFileURL">Problem statement</label>
                     <input onChange={e => {
-                        onfileChange(e.target.files[0], setStatementFile)
+                        onfileChange(e, setStatementFile)
                     }} type="file" name="statementFileURL" />
                 </div>
                 <div>
                     <label htmlFor="testcaseFileURL">testcase</label>
                     <input onChange={e => {
-                        onfileChange(e.target.files[0], setSelectedTestcaseFile)
+                        onfileChange(e, setSelectedTestcaseFile)
                     }} type="file" name="testcaseFileURL" />
                 </div>
                 <div>
                     <label htmlFor="outputFileURL">output</label>
                     <input onChange={e => {
-                        onfileChange(e.target.files[0], setSelectedOutputFile)
+                        onfileChange(e, setSelectedOutputFile)
                     }} type="file" name="outputFileURL" />
                 </div>
 

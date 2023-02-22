@@ -17,7 +17,9 @@ function CreateProblem(props) {
         handler(URL.createObjectURL(fileObj))
     }
     return (
-        <div>
+        <div style={{
+            margin: "10px"
+        }}>
             <form onSubmit={e => {
                 e.preventDefault()
                 const problemInfo = {

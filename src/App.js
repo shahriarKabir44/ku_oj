@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react'
 import UploadManager from './services/UploadManager';
 import { Route, Routes } from 'react-router-dom';
-import CreateProblem from './CreateProblem/CreateProblem';
+import CreateContest from './CreateContest/CreateContest';
 function App() {
 	const [selectedFile, setSelectedFile] = React.useState("")
 	const [testcaseFile, setSelectedTestcaseFile] = React.useState('')
@@ -85,7 +85,7 @@ function App() {
 						<button type='submit'>post</button>
 					</form>
 				</div>} />
-				<Route path='/createProblem' element={<CreateProblem />} />
+				<Route path='/createContest' element={<CreateContest />} />
 			</Routes>
 		</div>
 	);

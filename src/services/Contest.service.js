@@ -1,6 +1,6 @@
 import Global from './Global'
 import UploadManager from './UploadManager'
-export default class ProblemService {
+export default class ContestService {
     static async createProblem({
         statementFileURL,
         testcaseFileURL,
@@ -71,5 +71,8 @@ export default class ProblemService {
     static async createContest(contestInfo) {
         let { contestId } = await Global._fetch('/contests/createContest', contestInfo)
         return contestId
+    }
+    static async getContests() {
+        return Global._fetch('/contests/getContests')
     }
 }

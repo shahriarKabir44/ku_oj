@@ -1,6 +1,6 @@
 import React from 'react';
 import EventSubscriptionManager from '../services/EventSubscriptionManager';
-import ProblemService from '../services/Problems.service';
+import ContestService from '../services/Contest.service';
 import './CreateProblem.css'
 function CreateProblem({ problemNum }) {
     const [problemInfo, setProblemInfo] = React.useState({
@@ -18,7 +18,7 @@ function CreateProblem({ problemNum }) {
             onMessage: ({ contestId }) => {
 
 
-                ProblemService.createProblem({ ...problemInfo, contestId: contestId })
+                ContestService.createProblem({ ...problemInfo, contestId: contestId })
                     .then(data => {
                     })
             }

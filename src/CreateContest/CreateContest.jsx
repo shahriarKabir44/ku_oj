@@ -1,6 +1,6 @@
 import React from 'react';
 import CreateProblem from '../CreateProblem/CreateProblem';
-import ProblemService from '../services/Problems.service';
+import ContestService from '../services/Contest.service';
 import EventSubscriptionManager from '../services/EventSubscriptionManager'
 import './CreateContest.css'
 function CreateContest(props) {
@@ -44,7 +44,7 @@ function CreateContest(props) {
                         }}>+</button>
                         <button onClick={e => {
 
-                            ProblemService.createContest({
+                            ContestService.createContest({
                                 ...contestInfo,
                                 startTime: new Date(contestInfo.startTime) * 1,
                                 endTime: new Date(contestInfo.endTime) * 1

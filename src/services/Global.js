@@ -5,12 +5,14 @@ export default class Global {
     static SERVER_URL = Global.SERVER_IP + ":8080"
     // static SERVER_IP = 
     static async _fetch(url, body = null) {
-        return await fetch(this.SERVER_URL + url, {
-            body: JSON.stringify(body),
+        let payload = {
+
             headers: {
                 'Content-Type': 'application/json'
             },
             method: body ? 'POST' : 'GET'
-        }).then(res => res.json())
+        }
+        if (body) payload.body = JSON.stringify(body)
+        return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
     }
 }

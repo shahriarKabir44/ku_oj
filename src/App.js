@@ -11,7 +11,6 @@ function App() {
 		if (!fileObj) {
 			return;
 		}
-		console.log(fileObj)
 		setSelectedFile(URL.createObjectURL(fileObj))
 	}
 	function onTestcaseFileChange(event) {
@@ -31,12 +30,11 @@ function App() {
 						e.preventDefault()
 						UploadManager.uploadFile(selectedFile, {
 							postedby: 'pp',
-							filetype: 'submission',
+							filetype: 'statementfile',
 							problemid: '11',
-							ext: 'py',
+							ext: 'pdf',
 							submissionid: 'abcd'
 						}, '/uploadFile/upload').then(data => {
-							console.log(data)
 						})
 					}}>
 						<input

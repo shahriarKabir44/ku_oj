@@ -1,5 +1,7 @@
 import React from 'react';
 import CreateProblem from '../CreateProblem/CreateProblem';
+import ProblemService from '../services/Problems.service';
+import EventSubscriptionManager from '../services/EventSubscriptionManager'
 import './CreateContest.css'
 function CreateContest(props) {
     const [contestInfo, setContestInfo] = React.useState({
@@ -15,9 +17,7 @@ function CreateContest(props) {
             <div className="container">
                 <h3>Create contest</h3>
                 <div className="contestInfoContainer">
-                    <form onSubmit={e => {
-
-                    }}>
+                    <div>
                         <div>
                             <label htmlFor="title">Contest title</label>
                             <input onChange={e => {
@@ -36,17 +36,29 @@ function CreateContest(props) {
                                 setContestInfo({ ...contestInfo, endTime: e.target.value })
                             }} type="datetime-local" name="end-time" />
                         </div>
+                        {problemCount.map((num, index) => {
+                            return <CreateProblem key={index} problemNum={num} />
+                        })}
+                        <button onClick={() => {
+                            setProblemCount([...problemCount, problemCount.length])
+                        }}>+</button>
+                        <button onClick={e => {
 
-                    </form>{problemCount.map((num, index) => {
-                        return <CreateProblem key={index} />
-                    })}
-                    <button onClick={() => {
-                        setProblemCount([...problemCount, problemCount.length])
-                    }}>+</button>
+                            ProblemService.createContest({
+                                ...contestInfo,
+                                startTime: new Date(contestInfo.startTime) * 1,
+                                endTime: new Date(contestInfo.endTime) * 1
+                            })
+                                .then(contestId => {
+                                    EventSubscriptionManager.sendMessage({ contestId })
+                                })
+                        }}>Create</button>
+                    </div>
+
                 </div>
             </div>
 
-        </div>
+        </div >
     );
 }
 

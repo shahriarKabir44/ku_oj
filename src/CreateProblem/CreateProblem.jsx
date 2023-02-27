@@ -1,76 +1,82 @@
 import React from 'react';
+import EventSubscriptionManager from '../services/EventSubscriptionManager';
 import ProblemService from '../services/Problems.service';
 import './CreateProblem.css'
-function CreateProblem(props) {
-    const [statementFileURL, setStatementFile] = React.useState("")
-    const [testcaseFileURL, setSelectedTestcaseFile] = React.useState('')
-    const [outputFileURL, setSelectedOutputFile] = React.useState()
-    const [title, setTitle] = React.useState('')
-    const [point, setPoints] = React.useState(0)
+function CreateProblem({ problemNum }) {
+    const [problemInfo, setProblemInfo] = React.useState({
+        statementFileURL: "",
+        testcaseFileURL: "",
+        outputFileURL: "",
+        title: "",
+        point: 0,
+        contestId: 0,
+        authorId: 1,
+    })
+    React.useEffect(() => {
+        EventSubscriptionManager.subscribe({
+            id: problemNum,
+            onMessage: ({ contestId }) => {
 
-    function onfileChange(event, handler) {
+
+                ProblemService.createProblem({ ...problemInfo, contestId: contestId })
+                    .then(data => {
+                    })
+            }
+        })
+        return () => {
+            EventSubscriptionManager.unsubscribe(problemNum)
+        }
+    }, [problemNum, problemInfo])
+    function onfileChange(event) {
         const fileObj = event.target.files && event.target.files[0];
         if (!fileObj) {
             return;
         }
 
-        handler(URL.createObjectURL(fileObj))
+        return (URL.createObjectURL(fileObj))
     }
     return (
         <div style={{
             margin: "10px"
         }}>
-            <form onSubmit={e => {
-                e.preventDefault()
-                const problemInfo = {
-                    statementFileURL,
-                    testcaseFileURL,
-                    outputFileURL,
-                    title,
-                    point,
-                    contestId: 1,
-                    authorId: 1,
-
-                }
-                ProblemService.createProblem(problemInfo)
-                    .then(data => {
-                        console.log(data)
-                    })
-            }}>
+            <form  >
                 <div>
                     <label htmlFor="contestTitle">Title</label>
-                    <input value={title} onChange={e => {
-                        setTitle(e.target.value)
+                    <input value={problemInfo.title} onChange={e => {
+                        setProblemInfo({ ...problemInfo, title: e.target.value })
+
                     }} type="text" name="contestTitle" />
                 </div>
                 <div>
                     <label htmlFor="statementFileURL">Problem statement</label>
                     <input onChange={e => {
-                        onfileChange(e, setStatementFile)
+                        setProblemInfo({ ...problemInfo, statementFileURL: onfileChange(e) })
+
                     }} type="file" name="statementFileURL" />
                 </div>
                 <div>
                     <label htmlFor="testcaseFileURL">testcase</label>
                     <input onChange={e => {
-                        onfileChange(e, setSelectedTestcaseFile)
+                        setProblemInfo({ ...problemInfo, testcaseFileURL: onfileChange(e) })
+
                     }} type="file" name="testcaseFileURL" />
                 </div>
                 <div>
                     <label htmlFor="outputFileURL">output</label>
                     <input onChange={e => {
-                        onfileChange(e, setSelectedOutputFile)
+                        setProblemInfo({ ...problemInfo, outputFileURL: onfileChange(e) })
                     }} type="file" name="outputFileURL" />
                 </div>
 
 
                 <div>
                     <label htmlFor="point">point</label>
-                    <input value={point} onChange={e => {
-                        setPoints(e.target.value)
+                    <input value={problemInfo.point} onChange={e => {
+                        setProblemInfo({ ...problemInfo, point: e.target.value })
                     }} type="text" name="point" />
                 </div>
 
-                <button type="submit">Create</button>
+
             </form>
         </div>
     );

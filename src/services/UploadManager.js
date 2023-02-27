@@ -7,7 +7,6 @@ export default class UploadManager {
 
     static async uploadFile(URI, additionalData, apiURL) {
         let blob = await UploadManager.getBlobFromURI(URI)
-
         let formData = new FormData()
 
         formData.append("file", blob)

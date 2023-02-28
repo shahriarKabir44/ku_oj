@@ -5,6 +5,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import CreateContest from './CreateContest/CreateContest';
 import ContestService from './services/Contest.service';
 import ContestInfo from './ContestInfo/ContestInfo';
+import ProblemInfo from './ProblemInfo/ProblemInfo';
 function App() {
 	const [contestList, setContestList] = React.useState([])
 	React.useEffect(() => {
@@ -49,6 +50,7 @@ function App() {
 				} />
 				<Route path='/contest/:id' element={< ContestInfo />} />
 				<Route path='/createContest' element={<CreateContest />} />
+				<Route path='/viewProblem/:id' element={<ProblemInfo />} />
 			</Routes>
 		</div>
 	);

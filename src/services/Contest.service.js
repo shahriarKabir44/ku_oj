@@ -85,4 +85,20 @@ export default class ContestService {
         return Global._fetch('/contests/getProblemInfo/' + id)
 
     }
+    static async submit(submissionInfo, submissionFileURL) {
+        const { problemId, submittedBy, contestId, language } = submissionInfo
+        let { submissionId } = await Global._fetch('/contests/submit', submissionInfo)
+        let { fileURL } = await UploadManager.uploadFile(submissionFileURL, {
+            filetype: 'submission',
+            problemid: problemId,
+            postedby: submittedBy,
+            contestid: contestId,
+            ext: language,
+            submissionid: submissionId
+        })
+        return Global._fetch('/contests/setSubmissionFileURL', {
+            submissionFileURL: fileURL,
+            id: submissionId
+        })
+    }
 }

@@ -32,6 +32,13 @@ function ProblemInfo(props) {
             contestId: problemInfo.contestId
         }
         ContestService.submit(data, submissionFileURI)
+            .then(({ fileURL, submissionId }) => {
+                ContestService.judgeSubmission({
+                    fileURL,
+                    submissionId,
+                    problemInfo
+                })
+            })
 
     }
     return (

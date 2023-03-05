@@ -96,9 +96,13 @@ export default class ContestService {
             ext: language,
             submissionid: submissionId
         })
-        return Global._fetch('/contests/setSubmissionFileURL', {
+        Global._fetch('/contests/setSubmissionFileURL', {
             submissionFileURL: fileURL,
             id: submissionId
         })
+        return { fileURL, submissionId }
+    }
+    static async judgeSubmission(submissionInfo) {
+        return Global._fetch('/judge/judgeSubmission', submissionInfo)
     }
 }

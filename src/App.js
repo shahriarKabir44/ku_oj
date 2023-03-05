@@ -6,13 +6,28 @@ import CreateContest from './CreateContest/CreateContest';
 import ContestService from './services/Contest.service';
 import ContestInfo from './ContestInfo/ContestInfo';
 import ProblemInfo from './ProblemInfo/ProblemInfo';
+import Global from './services/Global';
 function App() {
 	const [contestList, setContestList] = React.useState([])
+	//const sseSourceRef = React.useRef()
+
+
+
 	React.useEffect(() => {
+		// sseSourceRef.current = new EventSource(Global.SERVER_URL + '/judge')
+		// sseSourceRef.current.onmessage = e => {
+		// 	console.log(e)
+		// }
+		// sseSourceRef.current.onerror = e => {
+		// 	sseSourceRef.current.close()
+		// }
 		ContestService.getContests()
 			.then(({ contests }) => {
 				setContestList(contests)
 			})
+		return () => {
+			//sseSourceRef.current.close()
+		}
 	}, [])
 	return (
 		<div className="App">

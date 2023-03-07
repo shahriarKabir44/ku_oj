@@ -6,6 +6,7 @@ import CreateContest from './CreateContest/CreateContest';
 import ContestService from './services/Contest.service';
 import ContestInfo from './ContestInfo/ContestInfo';
 import ProblemInfo from './ProblemInfo/ProblemInfo';
+import SubmissionInfo from './SubmissionInfo/SubmissionInfo';
 function App() {
 	const [contestList, setContestList] = React.useState([])
 
@@ -55,6 +56,7 @@ function App() {
 				<Route path='/contest/:id' element={< ContestInfo />} />
 				<Route path='/createContest' element={<CreateContest />} />
 				<Route path='/viewProblem/:id' element={<ProblemInfo />} />
+				<Route path='/viewSubmission/:id' element={<SubmissionInfo />} />
 			</Routes>
 		</div>
 	);

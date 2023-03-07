@@ -59,7 +59,7 @@ export default class ContestService {
 
     }
     static async getPreviousSubmissions(problemId, userId) {
-        return Global._fetch('/contests/getPreviousSubmissions', { problemId, userId })
+        return Global._fetch('/submission/getPreviousSubmissions', { problemId, userId })
     }
     static async setFileURLs(problemId, statementFileURL,
         testcaseFileURL,
@@ -90,7 +90,7 @@ export default class ContestService {
     }
     static async submit(submissionInfo, submissionFileURL) {
         const { problemId, submittedBy, contestId, language } = submissionInfo
-        let { submissionId } = await Global._fetch('/contests/submit', submissionInfo)
+        let { submissionId } = await Global._fetch('/submission/submit', submissionInfo)
         let { fileURL } = await UploadManager.uploadFile(submissionFileURL, {
             filetype: 'submission',
             problemid: problemId,
@@ -99,7 +99,7 @@ export default class ContestService {
             ext: language,
             submissionid: submissionId
         })
-        Global._fetch('/contests/setSubmissionFileURL', {
+        Global._fetch('/submission/setSubmissionFileURL', {
             submissionFileURL: fileURL,
             id: submissionId
         })

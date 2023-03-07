@@ -1,14 +1,73 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import SubmissionService from '../services/Submission.service';
 
 function SubmissionInfo(props) {
     const { id } = useParams()
+    const [submissionInfo, setSubmissionInfo] = React.useState({
+        id: "",
+        time: "",
+        execTime: "",
+        verdict: "",
+        language: "",
+        submissionFileURL: "",
+        problemId: "",
+        submittedBy: "",
+        code: ""
+    })
     React.useEffect(() => {
+        SubmissionService.getSubmissionInfo(id)
+            .then(({ submissionInfo }) => {
+                console.log(submissionInfo)
+                setSubmissionInfo(submissionInfo)
+            })
 
     }, [id])
     return (
         <div>
-            yo
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Problem</p>
+                            <p> <Link to={`/viewProblem/${submissionInfo.problemId}`}>
+                                {submissionInfo.problemName}
+                            </Link> </p>
+                        </td>
+                        <td>
+                            <p>Submitted by</p>
+                            <p> <Link  >
+                                {submissionInfo.user}
+                            </Link> </p>
+                        </td>
+                        <td>
+                            <p>Verdict</p>
+                            <p>{submissionInfo.verdict}</p>
+                        </td>
+                        <td>
+                            <p>Submitted on</p>
+                            <p>{new Date(submissionInfo.time).toLocaleString()} </p>
+                        </td>
+                        <td>
+                            <p>Language</p>
+                            <p>{submissionInfo.language}</p>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <code>
+                <ol>
+                    {submissionInfo.code.split('\n').map((line, lineNum) => {
+                        return <li key={lineNum}>
+                            <pre>
+                                {line}
+                            </pre>
+                        </li>
+                    })}
+                </ol>
+
+            </code>
         </div>
     );
 }

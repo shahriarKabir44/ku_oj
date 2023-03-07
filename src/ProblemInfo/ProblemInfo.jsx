@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ContestService from '../services/Contest.service';
 import Global from '../services/Global';
+import SubmissionService from '../services/Submission.service';
 import UploadManager from '../services/UploadManager';
 
 function ProblemInfo(props) {
@@ -29,7 +30,7 @@ function ProblemInfo(props) {
         }
 
 
-        ContestService.getPreviousSubmissions(id, 1)
+        SubmissionService.getPreviousSubmissions(id, 1)
             .then(({ previousSubmissions }) => {
                 setPreviousSubmissionList(previousSubmissions)
             })
@@ -42,7 +43,7 @@ function ProblemInfo(props) {
             submittedBy: 1,
             contestId: problemInfo.contestId
         }
-        ContestService.submit(data, submissionFileURI)
+        SubmissionService.submit(data, submissionFileURI)
             .then(({ fileURL, submissionId }) => {
                 ContestService.judgeSubmission({
                     fileURL,

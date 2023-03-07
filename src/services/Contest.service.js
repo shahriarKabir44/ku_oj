@@ -58,9 +58,7 @@ export default class ContestService {
         return problemId
 
     }
-    static async getPreviousSubmissions(problemId, userId) {
-        return Global._fetch('/submission/getPreviousSubmissions', { problemId, userId })
-    }
+
     static async setFileURLs(problemId, statementFileURL,
         testcaseFileURL,
         outputFileURL) {
@@ -88,23 +86,7 @@ export default class ContestService {
         return Global._fetch('/contests/getProblemInfo/' + id)
 
     }
-    static async submit(submissionInfo, submissionFileURL) {
-        const { problemId, submittedBy, contestId, language } = submissionInfo
-        let { submissionId } = await Global._fetch('/submission/submit', submissionInfo)
-        let { fileURL } = await UploadManager.uploadFile(submissionFileURL, {
-            filetype: 'submission',
-            problemid: problemId,
-            postedby: submittedBy,
-            contestid: contestId,
-            ext: language,
-            submissionid: submissionId
-        })
-        Global._fetch('/submission/setSubmissionFileURL', {
-            submissionFileURL: fileURL,
-            id: submissionId
-        })
-        return { fileURL, submissionId }
-    }
+
     static async judgeSubmission(submissionInfo) {
         return Global._fetch('/judge/judgeSubmission', submissionInfo)
     }

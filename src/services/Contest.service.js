@@ -58,6 +58,9 @@ export default class ContestService {
         return problemId
 
     }
+    static async getPreviousSubmissions(problemId, userId) {
+        return Global._fetch('/contests/getPreviousSubmissions', { problemId, userId })
+    }
     static async setFileURLs(problemId, statementFileURL,
         testcaseFileURL,
         outputFileURL) {

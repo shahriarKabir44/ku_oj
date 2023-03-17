@@ -9,6 +9,7 @@ function ProblemInfo(props) {
     const { id } = useParams()
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
+    const [languageName, setLanguageName] = React.useState('')
     const [previousSubmissions, setPreviousSubmissionList] = React.useState([])
     const [problemInfo, setProblemInfo] = React.useState({
         contestId: 0,
@@ -19,6 +20,9 @@ function ProblemInfo(props) {
         testcaseFileURL: "",
         title: "",
     })
+    function getLanguageName(extName) {
+        if (extName === 'py') setLanguageName('python3')
+    }
     React.useEffect(() => {
         try {
             ContestService.getProblemInfo(id)
@@ -38,10 +42,11 @@ function ProblemInfo(props) {
     function submitSolution() {
         const data = {
             time: (new Date()) * 1,
-            language: fileExtension,
+            fileExtension,
             problemId: id,
             submittedBy: 1,
-            contestId: problemInfo.contestId
+            contestId: problemInfo.contestId,
+            languageName
         }
         SubmissionService.submit(data, submissionFileURI)
             .then(({ fileURL, submissionId }) => {
@@ -80,7 +85,9 @@ function ProblemInfo(props) {
                         <div>
                             <label htmlFor="language"></label>
                             <select value={fileExtension} onChange={e => {
+                                getLanguageName(e.target.value)
                                 setFileExtension(e.target.value)
+
                             }} name="language" id="">
                                 <option value={''}>Choose</option>
                                 <option value={'py'}>python 3</option>
@@ -91,6 +98,7 @@ function ProblemInfo(props) {
                     </form>
                 </div>
                 <div className="submissionsContai">
+                    <h3>Previous submissions</h3>
                     {previousSubmissions.map((submission, index) => {
                         return <div key={index}>
                             <div className="flex">

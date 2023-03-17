@@ -43,7 +43,11 @@ function CreateContest(props) {
                             setProblemCount([...problemCount, problemCount.length])
                         }}>+</button>
                         <button onClick={e => {
-
+                            console.log({
+                                ...contestInfo,
+                                startTime: new Date(contestInfo.startTime) * 1,
+                                endTime: new Date(contestInfo.endTime) * 1
+                            })
                             ContestService.createContest({
                                 ...contestInfo,
                                 startTime: new Date(contestInfo.startTime) * 1,

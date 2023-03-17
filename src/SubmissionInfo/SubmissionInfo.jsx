@@ -18,7 +18,6 @@ function SubmissionInfo(props) {
     React.useEffect(() => {
         SubmissionService.getSubmissionInfo(id)
             .then(({ submissionInfo }) => {
-                console.log(submissionInfo)
                 setSubmissionInfo(submissionInfo)
             })
 

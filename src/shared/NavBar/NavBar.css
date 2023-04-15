@@ -1,0 +1,11 @@
+.navBarContainer {
+    display: grid;
+    grid-template-columns: auto 80% auto;
+    background: #272643;
+    padding: 20px 10px;
+    margin: 0;
+    gap: 5px;
+    position: sticky;
+    justify-items: center;
+    align-items: center;
+}

@@ -7,6 +7,7 @@ import ContestService from './services/Contest.service';
 import ContestInfo from './ContestInfo/ContestInfo';
 import ProblemInfo from './ProblemInfo/ProblemInfo';
 import SubmissionInfo from './SubmissionInfo/SubmissionInfo';
+import NavBar from './shared/NavBar/NavBar';
 function App() {
 	const [contestList, setContestList] = React.useState([])
 
@@ -21,7 +22,7 @@ function App() {
 	}, [])
 	return (
 		<div className="App">
-
+			<NavBar />
 
 			<Routes>
 				<Route path='/' element={

@@ -27,7 +27,9 @@ function App() {
 				<Route path='/' element={
 					<div>
 						<h2>Contests</h2>
-
+						<h3>
+							<Link to="/createContest">Create Contest</Link>
+						</h3>
 						<table border={1}>
 							<thead>
 								<tr>

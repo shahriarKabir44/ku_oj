@@ -1,6 +1,27 @@
 .directoryIndicatorContainer {
     background: white;
-    padding: 13px px;
+    padding: 5px;
     width: 100%;
+    border-radius: 5px;
+    display: flex;
+    gap: 5px;
+
+}
+
+.directoryBtnElement {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.directoryElementContainer {
+    font-family: sans-serif;
+    font-weight: 100;
+    padding: 10px;
+}
+
+.directoryElementContainer:hover {
+    cursor: pointer;
+    background: #cfcfcf;
     border-radius: 5px;
 }

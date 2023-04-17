@@ -1,11 +1,10 @@
 .directoryIndicatorContainer {
     background: white;
-    padding: 5px;
     width: 100%;
     border-radius: 5px;
     display: flex;
     gap: 5px;
-
+    padding: 0px 5px;
 }
 
 .directoryBtnElement {
@@ -18,10 +17,12 @@
     font-family: sans-serif;
     font-weight: 100;
     padding: 10px;
+    color: rgb(86, 86, 86);
 }
 
 .directoryElementContainer:hover {
     cursor: pointer;
     background: #cfcfcf;
     border-radius: 5px;
+    color: black;
 }

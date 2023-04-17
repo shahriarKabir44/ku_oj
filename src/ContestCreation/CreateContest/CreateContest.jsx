@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateProblem from '../CreateProblem/CreateProblem';
-import ContestService from '../services/Contest.service';
-import EventSubscriptionManager from '../EventsManager/EventSubscriptionManager'
+import ContestService from '../../services/Contest.service';
+import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager'
 import './CreateContest.css'
 function CreateContest(props) {
     const [contestInfo, setContestInfo] = React.useState({

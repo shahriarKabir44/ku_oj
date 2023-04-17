@@ -1,21 +1,25 @@
 import React from 'react';
 import './DirectoryIndicator.css'
+import NavbarDirectorymanager from '../../../EventsManager/NavbarDirectoryManager'
+
 function DirectoryIndicator(props) {
-    const dirs = [
-        {
-            label: 'home',
-            path: '/'
-        }, {
-            label: 'create contest',
-            path: '/createContest'
-        }
-    ]
+    const [directory, setDitectory] = React.useState([])
+    React.useEffect(() => {
+        NavbarDirectorymanager.subscribe({
+            label: 'navbar',
+            handler: (message) => {
+                setDitectory(message)
+                console.log(message)
+            }
+        })
+    }, [directory])
+
     return (
         <div className='directoryIndicatorContainer'>
-            {dirs.map((dir, index) => {
+            {directory.map((dir, index) => {
                 return <div key={index} className="directoryBtnElement">
                     <DirectoryButton dir={dir} />
-                    {index !== dirs.length - 1 && <p>/</p>}
+                    {index !== directory.length - 1 && <p>/</p>}
                 </div>
             })}
         </div>

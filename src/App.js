@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react'
 
 import { Route, Routes } from 'react-router-dom';
-import CreateContest from './CreateContest/CreateContest';
+import CreateContest from './ContestCreation/CreateContest/CreateContest';
 import ContestInfo from './ContestInfo/ContestInfo';
 import ProblemInfo from './ProblemInfo/ProblemInfo';
 import SubmissionInfo from './SubmissionInfo/SubmissionInfo';

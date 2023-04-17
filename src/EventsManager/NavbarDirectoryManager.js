@@ -1,22 +1,39 @@
 export default class NavbarDirectoryManager {
 
     static clients = {}
-    static subscribe(client) {
-        NavbarDirectoryManager.clients[client.label] = client.handler
+    static subscribe({ label, handler }) {
+        NavbarDirectoryManager.clients[label] = { handler }
     }
     static unsubscribe(client) {
         NavbarDirectoryManager.clients[client.label] = null
     }
-    static async setDitectory() {
-        let dirs = [
-            {
-                label: 'home',
-                path: '/'
-            }, {
-                label: 'create contest',
-                path: '/createContest'
-            }
-        ]
-        this.clients['navbar'].handler(dirs)
+    static setDitectory(path) {
+        let dirs = []
+        switch (path) {
+            case 'home':
+                dirs = [
+                    {
+                        label: 'home',
+                        path: '/'
+                    }
+                ]
+                break;
+            case 'createContest':
+                dirs = [
+                    {
+                        label: 'Home',
+                        path: '/'
+                    },
+                    {
+                        label: 'Create a contest',
+                        path: '/createContest'
+                    },
+                ]
+                break;
+            default:
+                break;
+        }
+
+        this.clients['navbar']?.handler(dirs)
     }
 }

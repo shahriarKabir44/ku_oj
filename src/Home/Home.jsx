@@ -1,10 +1,12 @@
 import React from 'react'
 import ContestService from '../services/Contest.service';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
+import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager';
 export default function Home(props) {
     const [contestList, setContestList] = React.useState([])
 
     React.useEffect(() => {
+        setTimeout(() => { NavbarDirectoryManager.setDitectory('home') }, 100)
         ContestService.getContests()
             .then(({ contests }) => {
                 console.log(contests)

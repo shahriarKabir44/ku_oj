@@ -1,7 +1,7 @@
 import React from 'react';
 import './DirectoryIndicator.css'
 import NavbarDirectorymanager from '../../../EventsManager/NavbarDirectoryManager'
-
+import { useNavigate } from 'react-router-dom'
 function DirectoryIndicator(props) {
     const [directory, setDitectory] = React.useState([])
     React.useEffect(() => {
@@ -31,5 +31,8 @@ export default DirectoryIndicator;
 
 
 function DirectoryButton({ dir }) {
-    return <div className="directoryElementContainer">{dir.label} </div>
+    const navigate = useNavigate()
+    return <div onClick={() => {
+        navigate(dir.path)
+    }} className="directoryElementContainer">{dir.label} </div>
 }

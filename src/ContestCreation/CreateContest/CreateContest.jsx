@@ -3,7 +3,10 @@ import CreateProblem from '../CreateProblem/CreateProblem';
 import ContestService from '../../services/Contest.service';
 import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager'
 import './CreateContest.css'
+import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 function CreateContest(props) {
+    setTimeout(() => { NavbarDirectoryManager.setDitectory('createContest') }, 100)
+
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),

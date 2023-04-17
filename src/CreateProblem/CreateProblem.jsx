@@ -1,5 +1,5 @@
 import React from 'react';
-import EventSubscriptionManager from '../services/EventSubscriptionManager';
+import EventSubscriptionManager from '../EventsManager/EventSubscriptionManager';
 import ContestService from '../services/Contest.service';
 import './CreateProblem.css'
 function CreateProblem({ problemNum }) {

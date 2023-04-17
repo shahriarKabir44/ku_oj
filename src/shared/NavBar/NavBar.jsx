@@ -2,6 +2,9 @@ import React from 'react';
 import './NavBar.css'
 import DirectoryIndicator from './DirectoryIndicator/DirectoryIndicator';
 function NavBar(props) {
+    React.useEffect(() => {
+
+    }, [])
     return (
         <div className='navBarContainer'>
             <div className="logoContainer">

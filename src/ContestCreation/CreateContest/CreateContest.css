@@ -1,0 +1,43 @@
+.card {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px;
+    background: white;
+}
+
+.title {
+    margin-bottom: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input[type='datetime-local'],
+input[type='text'] {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.container_createContest {
+    grid-template-columns: 40% auto;
+    display: grid;
+    background: #E3F6F5;
+    height: inherit;
+}
+
+.formContainer {
+    display: grid;
+    justify-items: stretch;
+    justify-content: start;
+    grid-template-columns: 30% 70%;
+
+}

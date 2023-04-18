@@ -16,56 +16,37 @@ function CreateContest(props) {
     React.useEffect(() => { }, [])
     const [problemCount, setProblemCount] = React.useState([])
     return (
-        <div>
-            <div className="container">
-                <h3>Create contest</h3>
-                <div className="contestInfoContainer">
-                    <div>
-                        <div>
-                            <label htmlFor="title">Contest title</label>
-                            <input onChange={e => {
-                                setContestInfo({ ...contestInfo, title: e.target.value })
-                            }} type="text" name="title" />
+        <div className="container_createContest">
+            <div className="dashboardContainer">
+                <div className="leftPanel">
+                    <div className="contestDetailsPanel">
+
+                        <div className="card">
+                            <h2 className="title">Create a contest</h2>
+                            <div className='formContainer'>
+                                <label htmlFor="text">Text Input:</label>
+                                <input onChange={e => {
+                                    setContestInfo({ ...contestInfo, title: e.target.value })
+                                }} value={contestInfo.title} type="text" name="text-input" />
+                                <label htmlFor="start">Start Time:</label>
+                                <input onChange={e => {
+                                    setContestInfo({ ...contestInfo, startTime: e.target.value })
+                                }} value={contestInfo.startTime} type="datetime-local" name="trip-start" />
+
+
+                                <label htmlFor="end">End Time:</label>
+                                <input onChange={e => {
+                                    setContestInfo({ ...contestInfo, endTime: e.target.value })
+                                }} value={contestInfo.endTime} type="datetime-local" name="trip-end" />
+
+                            </div>
                         </div>
-                        <div>
-                            <label htmlFor="start-time">start time</label>
-                            <input onChange={e => {
-                                setContestInfo({ ...contestInfo, startTime: e.target.value })
-                            }} type="datetime-local" name="start-time" />
-                        </div>
-                        <div>
-                            <label htmlFor="end-time">end time</label>
-                            <input onChange={e => {
-                                setContestInfo({ ...contestInfo, endTime: e.target.value })
-                            }} type="datetime-local" name="end-time" />
-                        </div>
-                        {problemCount.map((num, index) => {
-                            return <CreateProblem key={index} problemNum={num} />
-                        })}
-                        <button onClick={() => {
-                            setProblemCount([...problemCount, problemCount.length])
-                        }}>+</button>
-                        <button onClick={e => {
-                            console.log({
-                                ...contestInfo,
-                                startTime: new Date(contestInfo.startTime) * 1,
-                                endTime: new Date(contestInfo.endTime) * 1
-                            })
-                            ContestService.createContest({
-                                ...contestInfo,
-                                startTime: new Date(contestInfo.startTime) * 1,
-                                endTime: new Date(contestInfo.endTime) * 1
-                            })
-                                .then(contestId => {
-                                    EventSubscriptionManager.sendMessage({ contestId })
-                                })
-                        }}>Create</button>
                     </div>
-
                 </div>
+                <div className="problemDetailsPanels"></div>
             </div>
+        </div>
 
-        </div >
     );
 }
 

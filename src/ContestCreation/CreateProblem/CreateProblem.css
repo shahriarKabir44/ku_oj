@@ -34,3 +34,8 @@ button.previewBtn {
     height: inherit;
     grid-template-rows: 40px 40px auto;
 }
+
+.previewing {
+    background: rgb(188, 188, 188) !important;
+    color: black !important;
+}

@@ -67,9 +67,9 @@ function CreateProblem({ problemNum }) {
                 </div>
                 <div className="uplodsContainer">
                     <div className="uploadBtnContainer">
-                        <button className="previewBtn" onClick={(e) => {
-                            e.preventDefault()
-                            setFileForPreview(problemInfo.statementFileURL)
+                        <button className={`previewBtn ${fileForPreview.label === 'statement' ? "previewing" : ""} `} onClick={(e) => {
+                            console.log(problemInfo.statementFileURL)
+                            setFileForPreview({ file: problemInfo.statementFileURL, label: "statement" })
                         }} >Problem statement</button>
                         <div onClick={() => {
                             problemStatementUploadRef.current.click()
@@ -78,7 +78,7 @@ function CreateProblem({ problemNum }) {
                             onChange={e => {
                                 let fileURL = onfileChange(e, "Statement.pdf")
                                 console.log(fileURL)
-                                setFileForPreview(fileURL)
+                                setFileForPreview({ file: fileURL, label: "statement" })
 
                                 setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
                             }}
@@ -86,17 +86,17 @@ function CreateProblem({ problemNum }) {
                     </div>
                     <div className="uploadBtnContainer">
                         <button onClick={() => {
-                            setFileForPreview(problemInfo.testcaseFileURL)
-                        }} className="previewBtn">Test Inputs</button>
+                            setFileForPreview({ file: problemInfo.testcaseFileURL, label: "Testcase" })
+                        }} className={`previewBtn ${fileForPreview.label === 'Testcase' ? "previewing" : ""} `}>Test Inputs</button>
                         <div onClick={() => {
                             testcaseUploadRef.current.click()
                         }} className="uploadbtn"><CloudUploadIcon /></div>
                         <input style={{ display: "none" }}
                             onChange={e => {
                                 let fileURL = onfileChange(e, "Testcase.txt")
-                                setFileForPreview(fileURL)
+                                setFileForPreview({ file: fileURL, label: "Testcase" })
 
-                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                                setProblemInfo({ ...problemInfo, testcaseFileURL: fileURL })
                             }}
                             type="file" name="" ref={testcaseUploadRef} />
 
@@ -104,17 +104,17 @@ function CreateProblem({ problemNum }) {
                     </div>
                     <div className="uploadBtnContainer">
                         <button onClick={() => {
-                            setFileForPreview(problemInfo.outputFileURL)
-                        }} className="previewBtn">Test Outputs</button>
+                            setFileForPreview({ file: problemInfo.outputFileURL, label: "Output" })
+                        }} className={`previewBtn ${fileForPreview.label === 'Output' ? "previewing" : ""} `}>Test Outputs</button>
                         <div onClick={() => {
                             outputUploadRef.current.click()
                         }} className="uploadbtn"><CloudUploadIcon /></div>
                         <input style={{ display: "none" }}
                             onChange={e => {
                                 let fileURL = onfileChange(e, "Testcase.txt")
-                                setFileForPreview(fileURL)
+                                setFileForPreview({ file: fileURL, label: "Output" })
 
-                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                                setProblemInfo({ ...problemInfo, outputFileURL: fileURL })
                             }}
                             type="file" name="" ref={outputUploadRef} />
                     </div>

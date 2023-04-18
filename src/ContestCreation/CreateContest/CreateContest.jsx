@@ -1,7 +1,7 @@
 import React from 'react';
-import CreateProblem from '../CreateProblem/CreateProblem';
-import ContestService from '../../services/Contest.service';
-import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager'
+import CreateProblem from './CreateProblem/CreateProblem';
+// import ContestService from '../../services/Contest.service';
+// import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
@@ -64,7 +64,11 @@ function CreateContest(props) {
                         </div>
                     </div>
                 </div>
-                <div className="problemDetailsPanels"></div>
+                <div className="problemDetailsPanels">
+                    <div className="card" style={{ height: "inherit" }}>
+                        <CreateProblem problemNum={1} />
+                    </div>
+                </div>
             </div>
         </div>
 

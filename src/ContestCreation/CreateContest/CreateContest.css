@@ -6,6 +6,15 @@
     background: white;
 }
 
+.container_createContest {
+    overflow-y: hidden;
+    height: inherit;
+}
+
+.problemDetailsPanels {
+    height: calc(100% - 40px);
+}
+
 .title {
     margin-bottom: 10px;
 }
@@ -27,7 +36,7 @@ input[type='text'] {
     margin-bottom: 10px;
 }
 
-.container_createContest {
+.dashboardContainer {
     grid-template-columns: 40% auto;
     display: grid;
     background: #E3F6F5;
@@ -61,4 +70,10 @@ input[type='text'] {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

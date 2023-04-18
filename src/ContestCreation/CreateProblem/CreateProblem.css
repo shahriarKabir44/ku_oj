@@ -1,0 +1,26 @@
+.uplodsContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.uploadBtnContainer {
+    display: flex;
+    gap: 5px;
+    align-items: stretch;
+}
+
+button.previewBtn {
+    background: #007bff;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.uploadbtn {
+    background: #d9d9d9;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

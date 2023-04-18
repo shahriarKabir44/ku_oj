@@ -1,8 +1,10 @@
 import React from 'react';
 import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager';
 import ContestService from '../../services/Contest.service';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
 function CreateProblem({ problemNum }) {
+    const problemStatementUploadRef = React.useRef(null)
     const [problemInfo, setProblemInfo] = React.useState({
         statementFileURL: "",
         testcaseFileURL: "",
@@ -40,41 +42,32 @@ function CreateProblem({ problemNum }) {
             margin: "10px"
         }}>
             <form  >
-                <div>
+                <div className="lableContainer">
                     <label htmlFor="contestTitle">Title</label>
                     <input value={problemInfo.title} onChange={e => {
                         setProblemInfo({ ...problemInfo, title: e.target.value })
 
                     }} type="text" name="contestTitle" />
-                </div>
-                <div>
-                    <label htmlFor="statementFileURL">Problem statement</label>
-                    <input onChange={e => {
-                        setProblemInfo({ ...problemInfo, statementFileURL: onfileChange(e) })
 
-                    }} type="file" name="statementFileURL" />
                 </div>
-                <div>
-                    <label htmlFor="testcaseFileURL">testcase</label>
-                    <input onChange={e => {
-                        setProblemInfo({ ...problemInfo, testcaseFileURL: onfileChange(e) })
-
-                    }} type="file" name="testcaseFileURL" />
+                <div className="uplodsContainer">
+                    <div className="uploadBtnContainer">
+                        <button className="previewBtn">Preview</button>
+                        <div onClick={() => {
+                            problemStatementUploadRef.current.click()
+                        }} className="uploadbtn"><CloudUploadIcon /></div>
+                        <input style={{ display: "none" }} type="file" name="" ref={problemStatementUploadRef} />
+                    </div>
+                    <div className="uploadBtnContainer">
+                        <button className="previewBtn">Preview</button>
+                        <div className="uploadbtn"><CloudUploadIcon /></div>
+                    </div>
+                    <div className="uploadBtnContainer">
+                        <button className="previewBtn">Preview</button>
+                        <div className="uploadbtn"><CloudUploadIcon /></div>
+                    </div>
                 </div>
-                <div>
-                    <label htmlFor="outputFileURL">output</label>
-                    <input onChange={e => {
-                        setProblemInfo({ ...problemInfo, outputFileURL: onfileChange(e) })
-                    }} type="file" name="outputFileURL" />
-                </div>
-
-
-                <div>
-                    <label htmlFor="point">point</label>
-                    <input value={problemInfo.point} onChange={e => {
-                        setProblemInfo({ ...problemInfo, point: e.target.value })
-                    }} type="text" name="point" />
-                </div>
+                <div className="previewContainer"></div>
 
 
             </form>

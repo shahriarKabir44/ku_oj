@@ -43,10 +43,9 @@ input[type='text'] {
 }
 
 .problemItem {
-    display: flex;
+    display: grid;
+    grid-template-columns: 91% auto;
     justify-content: space-between;
-    padding: 10px;
-    background: #D9D9D9;
     margin: 5px;
     border-radius: 5px;
     align-items: center;
@@ -55,4 +54,11 @@ input[type='text'] {
 .problemsContainer {
     max-height: 30vh;
     overflow-y: auto;
+}
+
+.problemLabel {
+    background: #D9D9D9;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 }

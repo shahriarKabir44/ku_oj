@@ -29,6 +29,11 @@ function CreateProblem({ problemNum }) {
             EventSubscriptionManager.unsubscribe(problemNum)
         }
     }, [problemNum, problemInfo])
+    /**
+     * 
+     * @param {React.ChangeEvent<HTMLInputElement>} event 
+     * @returns 
+     */
     function onfileChange(event) {
         const fileObj = event.target.files && event.target.files[0];
         if (!fileObj) {
@@ -39,9 +44,9 @@ function CreateProblem({ problemNum }) {
     }
     return (
         <div style={{
-            margin: "10px"
+
         }}>
-            <form  >
+            <form className='createProble' >
                 <div className="lableContainer">
                     <label htmlFor="contestTitle">Title</label>
                     <input value={problemInfo.title} onChange={e => {
@@ -56,7 +61,12 @@ function CreateProblem({ problemNum }) {
                         <div onClick={() => {
                             problemStatementUploadRef.current.click()
                         }} className="uploadbtn"><CloudUploadIcon /></div>
-                        <input style={{ display: "none" }} type="file" name="" ref={problemStatementUploadRef} />
+                        <input style={{ display: "none" }}
+                            onChange={e => {
+                                let fileURL = onfileChange(e)
+                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                            }}
+                            type="file" name="" ref={problemStatementUploadRef} />
                     </div>
                     <div className="uploadBtnContainer">
                         <button className="previewBtn">Preview</button>
@@ -67,7 +77,17 @@ function CreateProblem({ problemNum }) {
                         <div className="uploadbtn"><CloudUploadIcon /></div>
                     </div>
                 </div>
-                <div className="previewContainer"></div>
+                <div className="previewContainer">
+                    <h3>Preview</h3>
+                    <div className="preview">
+                        {problemInfo.statementFileURL !== '' &&
+                            <iframe style={{
+                                height: "50vh",
+                                width: "100%"
+                            }} src={problemInfo.statementFileURL} title='Problem statement' frameborder="0"></iframe>
+                        }
+                    </div>
+                </div>
 
 
             </form>

@@ -1,6 +1,6 @@
 import React from 'react';
-import EventSubscriptionManager from '../../../EventsManager/EventSubscriptionManager';
-import ContestService from '../../../services/Contest.service';
+import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager';
+import ContestService from '../../services/Contest.service';
 import './CreateProblem.css'
 function CreateProblem({ problemNum }) {
     const [problemInfo, setProblemInfo] = React.useState({

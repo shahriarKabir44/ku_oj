@@ -5,7 +5,7 @@ import CreateProblem from './CreateProblem/CreateProblem';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
-import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
+import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager'
 function CreateContest(props) {
     setTimeout(() => { NavbarDirectoryManager.setDitectory('createContest') }, 100)
 

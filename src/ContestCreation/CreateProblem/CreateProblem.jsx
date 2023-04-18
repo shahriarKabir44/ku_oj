@@ -5,6 +5,15 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
 function CreateProblem({ problemNum }) {
     const problemStatementUploadRef = React.useRef(null)
+    const testcaseUploadRef = React.useRef(null)
+    const outputUploadRef = React.useRef(null)
+
+
+
+    const [fileForPreview, setFileForPreview] = React.useState({
+        file: null,
+        label: ""
+    })
     const [problemInfo, setProblemInfo] = React.useState({
         statementFileURL: "",
         testcaseFileURL: "",
@@ -34,8 +43,9 @@ function CreateProblem({ problemNum }) {
      * @param {React.ChangeEvent<HTMLInputElement>} event 
      * @returns 
      */
-    function onfileChange(event) {
+    function onfileChange(event, fileName) {
         const fileObj = event.target.files && event.target.files[0];
+
         if (!fileObj) {
             return;
         }
@@ -46,7 +56,7 @@ function CreateProblem({ problemNum }) {
         <div style={{
 
         }}>
-            <form className='createProble' >
+            <div className='createProble' >
                 <div className="lableContainer">
                     <label htmlFor="contestTitle">Title</label>
                     <input value={problemInfo.title} onChange={e => {
@@ -57,40 +67,72 @@ function CreateProblem({ problemNum }) {
                 </div>
                 <div className="uplodsContainer">
                     <div className="uploadBtnContainer">
-                        <button className="previewBtn">Preview</button>
+                        <button className="previewBtn" onClick={(e) => {
+                            e.preventDefault()
+                            setFileForPreview(problemInfo.statementFileURL)
+                        }} >Problem statement</button>
                         <div onClick={() => {
                             problemStatementUploadRef.current.click()
                         }} className="uploadbtn"><CloudUploadIcon /></div>
                         <input style={{ display: "none" }}
                             onChange={e => {
-                                let fileURL = onfileChange(e)
+                                let fileURL = onfileChange(e, "Statement.pdf")
+                                console.log(fileURL)
+                                setFileForPreview(fileURL)
+
                                 setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
                             }}
                             type="file" name="" ref={problemStatementUploadRef} />
                     </div>
                     <div className="uploadBtnContainer">
-                        <button className="previewBtn">Preview</button>
-                        <div className="uploadbtn"><CloudUploadIcon /></div>
+                        <button onClick={() => {
+                            setFileForPreview(problemInfo.testcaseFileURL)
+                        }} className="previewBtn">Test Inputs</button>
+                        <div onClick={() => {
+                            testcaseUploadRef.current.click()
+                        }} className="uploadbtn"><CloudUploadIcon /></div>
+                        <input style={{ display: "none" }}
+                            onChange={e => {
+                                let fileURL = onfileChange(e, "Testcase.txt")
+                                setFileForPreview(fileURL)
+
+                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                            }}
+                            type="file" name="" ref={testcaseUploadRef} />
+
+
                     </div>
                     <div className="uploadBtnContainer">
-                        <button className="previewBtn">Preview</button>
-                        <div className="uploadbtn"><CloudUploadIcon /></div>
+                        <button onClick={() => {
+                            setFileForPreview(problemInfo.outputFileURL)
+                        }} className="previewBtn">Test Outputs</button>
+                        <div onClick={() => {
+                            outputUploadRef.current.click()
+                        }} className="uploadbtn"><CloudUploadIcon /></div>
+                        <input style={{ display: "none" }}
+                            onChange={e => {
+                                let fileURL = onfileChange(e, "Testcase.txt")
+                                setFileForPreview(fileURL)
+
+                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                            }}
+                            type="file" name="" ref={outputUploadRef} />
                     </div>
                 </div>
                 <div className="previewContainer">
                     <h3>Preview</h3>
                     <div className="preview">
-                        {problemInfo.statementFileURL !== '' &&
+                        {fileForPreview.file !== null &&
                             <iframe style={{
                                 height: "50vh",
                                 width: "100%"
-                            }} src={problemInfo.statementFileURL} title='Problem statement' frameborder="0"></iframe>
+                            }} src={fileForPreview.file} title='Problem statement' frameBorder="1"></iframe>
                         }
                     </div>
                 </div>
 
 
-            </form>
+            </div>
         </div>
     );
 }

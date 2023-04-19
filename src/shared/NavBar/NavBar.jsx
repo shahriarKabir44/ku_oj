@@ -7,11 +7,12 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import UserServiice from '../../services/User.service';
 function NavBar(props) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
-    const { currentUser } = React.useContext(RootContext)
+    const { currentUser, setCurrentUser } = React.useContext(RootContext)
     React.useEffect(() => {
-        console.log(currentUser)
+
     }, [])
     return (
         <div className='navBarContainer'>
@@ -27,17 +28,21 @@ function NavBar(props) {
 
             </div>}
             {currentUser !== null && <div className="menuContainer">
-                <button className="menuBtn btn">{currentUser.name}</button>
+                <button className="menuBtn btn">{currentUser.userName}</button>
+                <button className="danger btn   ">Log out</button>
 
             </div>}
-            <LoginModal open={loginModalVisibility} handleClose={() => {
+            <LoginModal open={loginModalVisibility} onAuthenticated={(user) => {
+                setCurrentUser(user)
+                console.log(user)
+            }} handleClose={() => {
                 setLoginModalVisibility(false)
             }} />
         </div>
     );
 }
 
-function LoginModal({ open, handleClose }) {
+function LoginModal({ open, handleClose, onAuthenticated }) {
     const formRef = React.useRef(null)
     const style = {
         position: 'absolute',
@@ -50,12 +55,31 @@ function LoginModal({ open, handleClose }) {
         boxShadow: 24,
         p: 4,
     };
+    function submitLoginForm(e) {
+        e.preventDefault()
+        let formData = new FormData(formRef.current)
+        let data = {}
+        for (const [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+
+        UserServiice.authenticate(data)
+            .then((user) => {
+                if (!user) {
+                    alert('invalid credentials')
+                    return
+                }
+                onAuthenticated(user)
+            })
+    }
     return <div>
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             open={open}
-            onClose={handleClose}
+            onClose={() => {
+                handleClose()
+            }}
             closeAfterTransition
             slotProps={{
                 backdrop: {
@@ -65,9 +89,13 @@ function LoginModal({ open, handleClose }) {
         >
             <Fade in={open}>
                 <Box sx={style}>
-                    <form ref={formRef} >
-                        <label htmlFor="username">Email</label>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" />
+                    <h1 style={{
+                        fontFamily: "serif",
+                        fontWeight: 100
+                    }}>Log in</h1>
+                    <form onSubmit={submitLoginForm} ref={formRef} >
+                        <label htmlFor="username">Username</label>
+                        <input autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
 
                         <label htmlFor="password">Password</label>
                         <input type="password" id="password" name="password" placeholder="Enter your password" />

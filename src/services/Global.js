@@ -16,4 +16,14 @@ export default class Global {
         if (body) payload.body = JSON.stringify(body)
         return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
     }
+    static async _postReq(url, data) {
+        console.log(data)
+        return fetch(this.SERVER_URL + url, {
+            method: 'POST',
+            headers: {
+                'token': localStorage.getItem('token'),
+            },
+            body: data
+        }).then(res => res.json())
+    }
 }

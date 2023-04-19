@@ -6,7 +6,6 @@ function GlobalContext({ children }) {
     const [currentUser, setCurrentUser] = React.useState(null)
     async function isAuthorized() {
         let { user } = await UserServiice.isAuthorized()
-        console.log(user)
         setCurrentUser(user)
     }
 
@@ -15,7 +14,8 @@ function GlobalContext({ children }) {
     }, [])
     return (
         <RootContext.Provider value={{
-            currentUser
+            currentUser,
+            setCurrentUser
         }}>
             {children}
         </RootContext.Provider>

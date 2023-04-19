@@ -9,3 +9,9 @@ body {
     overflow-y: auto;
     height: var(--containerHeight);
 }
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}

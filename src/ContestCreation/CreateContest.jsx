@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateProblem from './CreateProblem/CreateProblem';
-// import ContestService from '../../services/Contest.service';
-// import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager'
+import ContestService from '../services/Contest.service';
+import ContestCreationEventManager from '../EventsManager/ContestCreationEventManager'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
@@ -15,6 +15,17 @@ function CreateContest(props) {
         endTime: new Date((new Date()) * 1 + 3600 * 1000),
         hostId: 1
     })
+    function createContest() {
+        ContestService.createContest({
+            ...contestInfo,
+            startTime: contestInfo.startTime * 1,
+            endTime: contestInfo.endTime * 1
+        })
+            .then((resp) => {
+                console.log(resp)
+            })
+
+    }
     React.useEffect(() => { }, [])
     const [problemCount, setProblemCount] = React.useState([])
     return (
@@ -24,22 +35,25 @@ function CreateContest(props) {
                     <div className="contestDetailsPanel">
 
                         <div className="card" style={{ height: "30vh" }}>
-                            <h2 className="title">Create a contest</h2>
+                            <div className="titleContainer_createProblem">
+                                <h2 className="title">Create a contest</h2>
+                                <button className="btn confirmContestCreation" onClick={createContest}>Create</button>
+                            </div>
                             <div className='formContainer'>
                                 <label htmlFor="text">Contest title:</label>
                                 <input onChange={e => {
                                     setContestInfo({ ...contestInfo, title: e.target.value })
-                                }} value={contestInfo.title} type="text" name="text-input" />
+                                }} type="text" name="text-input" />
                                 <label htmlFor="start">Start Time:</label>
                                 <input onChange={e => {
-                                    setContestInfo({ ...contestInfo, startTime: e.target.value })
-                                }} value={contestInfo.startTime} type="datetime-local" name="trip-start" />
+                                    setContestInfo({ ...contestInfo, startTime: (new Date(e.target.value)) * 1 })
+                                }} type="datetime-local" name="trip-start" />
 
 
                                 <label htmlFor="end">End Time:</label>
                                 <input onChange={e => {
-                                    setContestInfo({ ...contestInfo, endTime: e.target.value })
-                                }} value={contestInfo.endTime} type="datetime-local" name="trip-end" />
+                                    setContestInfo({ ...contestInfo, endTime: (new Date(e.target.value)) * 1 })
+                                }} type="datetime-local" name="trip-end" />
 
                             </div>
                         </div>

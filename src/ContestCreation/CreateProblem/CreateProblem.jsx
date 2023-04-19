@@ -1,5 +1,5 @@
 import React from 'react';
-import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManager';
+import ContestCreationEventManager from '../../EventsManager/ContestCreationEventManager';
 import ContestService from '../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
@@ -24,7 +24,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
         authorId: 1,
     })
     React.useEffect(() => {
-        EventSubscriptionManager.subscribe({
+        ContestCreationEventManager.subscribe({
             id: problemNum,
             onMessage: ({ contestId }) => {
 
@@ -35,7 +35,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
             }
         })
         return () => {
-            EventSubscriptionManager.unsubscribe(problemNum)
+            ContestCreationEventManager.unsubscribe(problemNum)
         }
     }, [problemNum, problemInfo])
     /**
@@ -45,7 +45,6 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
      */
     function onfileChange(event, fileName) {
         const fileObj = event.target.files && event.target.files[0];
-
         if (!fileObj) {
             return;
         }

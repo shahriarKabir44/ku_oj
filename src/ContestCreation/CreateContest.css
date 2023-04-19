@@ -6,6 +6,13 @@
     background: white;
 }
 
+.titleContainer_createProblem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
 .problemLabel.selectedProblemForPreview {
     background: #007bff !important;
     color: white !important;

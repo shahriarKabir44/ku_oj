@@ -1,4 +1,4 @@
-export default class EventSubscriptionManager {
+export default class ContestCreationEventManager {
     static clients = []
     static subscribe(client) {
         this.unsubscribe(client.id)
@@ -12,4 +12,5 @@ export default class EventSubscriptionManager {
     static unsubscribe(clientId) {
         this.clients = this.clients.filter(client => client.id !== clientId)
     }
+
 }

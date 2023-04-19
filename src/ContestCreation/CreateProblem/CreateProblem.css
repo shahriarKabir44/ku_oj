@@ -39,3 +39,9 @@ button.previewBtn {
     background: rgb(188, 188, 188) !important;
     color: black !important;
 }
+
+.createProblemlableContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

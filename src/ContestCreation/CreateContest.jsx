@@ -21,8 +21,11 @@ function CreateContest(props) {
             startTime: contestInfo.startTime * 1,
             endTime: contestInfo.endTime * 1
         })
-            .then((resp) => {
-                console.log(resp)
+            .then((contestId) => {
+                ContestCreationEventManager.sendMessage(contestId)
+                    .then(() => {
+                        alert("Contest created!")
+                    })
             })
 
     }

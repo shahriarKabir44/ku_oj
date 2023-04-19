@@ -8,7 +8,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
     const testcaseUploadRef = React.useRef(null)
     const outputUploadRef = React.useRef(null)
 
-
+    const problemCreationFormRef = React.useRef(null)
 
     const [fileForPreview, setFileForPreview] = React.useState({
         file: null,
@@ -26,18 +26,21 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
     React.useEffect(() => {
         ContestCreationEventManager.subscribe({
             id: problemNum,
-            onMessage: ({ contestId }) => {
+            onMessage: (contestId) => {
+                return ContestService.createProblem({ ...problemInfo, contestId })
 
 
-                ContestService.createProblem({ ...problemInfo, contestId: contestId })
-                    .then(data => {
-                    })
             }
         })
         return () => {
             ContestCreationEventManager.unsubscribe(problemNum)
         }
     }, [problemNum, problemInfo])
+
+
+
+
+
     /**
      * 
      * @param {React.ChangeEvent<HTMLInputElement>} event 
@@ -55,13 +58,20 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
         <div style={{
             display: `${isFocused ? 'block' : 'none'}`
         }}>
-            <div className='createProble' >
-                <div className="lableContainer">
-                    <label htmlFor="contestTitle">Title </label>
-                    <input value={problemInfo.title} onChange={e => {
-                        setProblemInfo({ ...problemInfo, title: e.target.value })
-                        setProblemTitle(e.target.value)
-                    }} type="text" name="contestTitle" />
+            <div ref={problemCreationFormRef} className='createProblem' >
+                <div className="createProblemlableContainer">
+                    <div><label htmlFor="contestTitle">Title </label>
+                        <input autoComplete='off' value={problemInfo.title} onChange={e => {
+                            setProblemInfo({ ...problemInfo, title: e.target.value })
+                            setProblemTitle(e.target.value)
+                        }} type="text" name="contestTitle" /></div>
+                    <div>
+                        <label htmlFor="contestTitle">Points </label>
+                        <input autoComplete='off' value={problemInfo.point} onChange={e => {
+                            setProblemInfo({ ...problemInfo, point: e.target.value })
+
+                        }} type="text" name="contestTitle" />
+                    </div>
 
                 </div>
                 <div className="uplodsContainer">

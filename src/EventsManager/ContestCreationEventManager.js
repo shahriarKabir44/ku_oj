@@ -4,10 +4,12 @@ export default class ContestCreationEventManager {
         this.unsubscribe(client.id)
         this.clients.push(client)
     }
-    static sendMessage(data) {
+    static async sendMessage(contestId) {
+        let promises = []
         this.clients.forEach(client => {
-            client.onMessage(data)
+            promises.push(client.onMessage(contestId))
         })
+        await Promise.all(promises)
     }
     static unsubscribe(clientId) {
         this.clients = this.clients.filter(client => client.id !== clientId)

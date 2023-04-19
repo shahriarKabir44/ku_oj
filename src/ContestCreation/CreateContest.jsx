@@ -8,7 +8,7 @@ import './CreateContest.css'
 import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager'
 function CreateContest(props) {
     setTimeout(() => { NavbarDirectoryManager.setDitectory('createContest') }, 100)
-
+    const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),
@@ -16,7 +16,7 @@ function CreateContest(props) {
         hostId: 1
     })
     React.useEffect(() => { }, [])
-    const [problemCount, setProblemCount] = React.useState([1, 2, 3, 4, 5, 6, 7, 8])
+    const [problemCount, setProblemCount] = React.useState([1, 2, 3, 4])
     return (
         <div className="container_createContest">
             <div className="dashboardContainer">
@@ -55,7 +55,9 @@ function CreateContest(props) {
                             <div className="problemsContainer">
                                 {problemCount.map((problem, index) => {
                                     return <div key={index} className="problemItem">
-                                        <div className="problemLabel">Problem{problem}</div>
+                                        <div onClick={() => {
+                                            setSelectedProblemForPreview(problem)
+                                        }} className={`problemLabel ${problem === selectedProblemForPreview ? "selectedProblemForPreview" : ""}`}>Problem{problem}</div>
                                         <div className="deleteBtn"> <DeleteIcon /></div>
 
                                     </div>
@@ -66,7 +68,10 @@ function CreateContest(props) {
                 </div>
                 <div className="problemDetailsPanels">
                     <div className="card" style={{ height: "inherit" }}>
-                        <CreateProblem problemNum={1} />
+                        {problemCount.map((problem, index) => {
+                            return <CreateProblem key={index} problemNum={problem} isFocused={problem === selectedProblemForPreview} />
+
+                        })}
                     </div>
                 </div>
             </div>

@@ -6,6 +6,11 @@
     background: white;
 }
 
+.problemLabel.selectedProblemForPreview {
+    background: #007bff !important;
+    color: white !important;
+}
+
 .container_createContest {
     overflow-y: hidden;
     height: inherit;

@@ -3,7 +3,7 @@ import EventSubscriptionManager from '../../EventsManager/EventSubscriptionManag
 import ContestService from '../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
-function CreateProblem({ problemNum }) {
+function CreateProblem({ problemNum, isFocused }) {
     const problemStatementUploadRef = React.useRef(null)
     const testcaseUploadRef = React.useRef(null)
     const outputUploadRef = React.useRef(null)
@@ -54,11 +54,11 @@ function CreateProblem({ problemNum }) {
     }
     return (
         <div style={{
-
+            display: `${isFocused ? 'block' : 'none'}`
         }}>
             <div className='createProble' >
                 <div className="lableContainer">
-                    <label htmlFor="contestTitle">Title</label>
+                    <label htmlFor="contestTitle">Title {problemNum}</label>
                     <input value={problemInfo.title} onChange={e => {
                         setProblemInfo({ ...problemInfo, title: e.target.value })
 

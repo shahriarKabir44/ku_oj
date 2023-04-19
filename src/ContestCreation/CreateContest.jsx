@@ -16,7 +16,7 @@ function CreateContest(props) {
         hostId: 1
     })
     React.useEffect(() => { }, [])
-    const [problemCount, setProblemCount] = React.useState([1, 2, 3, 4])
+    const [problemCount, setProblemCount] = React.useState([])
     return (
         <div className="container_createContest">
             <div className="dashboardContainer">
@@ -26,7 +26,7 @@ function CreateContest(props) {
                         <div className="card" style={{ height: "30vh" }}>
                             <h2 className="title">Create a contest</h2>
                             <div className='formContainer'>
-                                <label htmlFor="text">Text Input:</label>
+                                <label htmlFor="text">Contest title:</label>
                                 <input onChange={e => {
                                     setContestInfo({ ...contestInfo, title: e.target.value })
                                 }} value={contestInfo.title} type="text" name="text-input" />
@@ -48,7 +48,13 @@ function CreateContest(props) {
                         <div className="card">
                             <div className="titleContainer">
                                 <h3 className="title">Problems</h3>
-                                <button className="addProblemBtn">
+                                <button onClick={() => {
+                                    setProblemCount([...problemCount, {
+                                        index: problemCount.length,
+                                        title: `Problem ${problemCount.length + 1}`
+                                    }])
+                                    setSelectedProblemForPreview(problemCount.length - 1)
+                                }} className="addProblemBtn">
                                     <AddIcon />
                                 </button>
                             </div>
@@ -56,9 +62,11 @@ function CreateContest(props) {
                                 {problemCount.map((problem, index) => {
                                     return <div key={index} className="problemItem">
                                         <div onClick={() => {
-                                            setSelectedProblemForPreview(problem)
-                                        }} className={`problemLabel ${problem === selectedProblemForPreview ? "selectedProblemForPreview" : ""}`}>Problem{problem}</div>
-                                        <div className="deleteBtn"> <DeleteIcon /></div>
+                                            setSelectedProblemForPreview(problem.index)
+                                        }} className={`problemLabel ${problem.index === selectedProblemForPreview ? "selectedProblemForPreview" : ""}`}>{problem.title}</div>
+                                        <div onClick={() => {
+                                            setProblemCount(problemCount.filter(p => p !== problem.index))
+                                        }} className="deleteBtn"> <DeleteIcon /></div>
 
                                     </div>
                                 })}
@@ -69,7 +77,11 @@ function CreateContest(props) {
                 <div className="problemDetailsPanels">
                     <div className="card" style={{ height: "inherit" }}>
                         {problemCount.map((problem, index) => {
-                            return <CreateProblem key={index} problemNum={problem} isFocused={problem === selectedProblemForPreview} />
+                            return <CreateProblem setProblemTitle={(title) => {
+                                let problems = [...problemCount]
+                                problems[index].title = title
+                                setProblemCount(problems)
+                            }} key={index} problemNum={index} isFocused={problem.index === selectedProblemForPreview} />
 
                         })}
                     </div>

@@ -68,6 +68,7 @@ input[type='text'] {
 .problemsContainer {
     max-height: 30vh;
     overflow-y: auto;
+    height: 30vh;
 }
 
 .problemLabel {

@@ -9,7 +9,6 @@ function DirectoryIndicator(props) {
             label: 'navbar',
             handler: (message) => {
                 setDitectory(message)
-                console.log(message)
             }
         })
     }, [directory])

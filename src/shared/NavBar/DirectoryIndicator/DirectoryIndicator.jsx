@@ -18,7 +18,11 @@ function DirectoryIndicator(props) {
             {directory.map((dir, index) => {
                 return <div key={index} className="directoryBtnElement">
                     <DirectoryButton dir={dir} />
-                    {index !== directory.length - 1 && <p>/</p>}
+
+                    {index !== directory.length - 1 && <p style={{
+                        margin: 0,
+                        padding: 0
+                    }}>/</p>}
                 </div>
             })}
         </div>

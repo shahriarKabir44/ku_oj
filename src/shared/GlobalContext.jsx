@@ -5,18 +5,17 @@ export const RootContext = React.createContext()
 function GlobalContext({ children }) {
     const [currentUser, setCurrentUser] = React.useState(null)
     async function isAuthorized() {
-        let user = await UserServiice.isAuthorized()
+        let { user } = await UserServiice.isAuthorized()
+        console.log(user)
         setCurrentUser(user)
     }
-    function getCurrentUser() {
-        return currentUser
-    }
+
     React.useEffect(() => {
         isAuthorized()
     }, [])
     return (
         <RootContext.Provider value={{
-            getCurrentUser
+            currentUser
         }}>
             {children}
         </RootContext.Provider>

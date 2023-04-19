@@ -9,7 +9,8 @@ export default class Global {
             method: body ? 'POST' : 'GET',
 
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': localStorage.getItem('token')
             }
         }
         if (body) payload.body = JSON.stringify(body)

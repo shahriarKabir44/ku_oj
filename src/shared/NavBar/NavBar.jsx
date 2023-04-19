@@ -12,7 +12,9 @@ function NavBar(props) {
             </div>
             <DirectoryIndicator />
             <div className="menuContainer">
-                <button className="menuBtn">menu</button>
+                <button className="menuBtn btn">Login</button>
+                <button className="menuBtn btn">Sign up</button>
+
             </div>
         </div>
     );

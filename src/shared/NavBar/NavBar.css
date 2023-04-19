@@ -9,3 +9,21 @@
     justify-items: center;
     align-items: center;
 }
+
+button.menuBtn {
+    background: rgb(0, 0, 0, 0) !important;
+    color: white !important;
+    border: 1px solid white;
+}
+
+.menuBtn:hover {
+    background: #04AA6D !important;
+    color: black !important;
+    border: none;
+    cursor: pointer;
+}
+
+.menuContainer {
+    display: flex;
+    gap: 5px
+}

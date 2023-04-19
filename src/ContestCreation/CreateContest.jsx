@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
 import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager'
+import { RootContext } from '../shared/GlobalContext';
+import { useNavigate } from 'react-router-dom';
 function CreateContest(props) {
     setTimeout(() => { NavbarDirectoryManager.setDitectory('createContest') }, 100)
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
@@ -29,7 +31,13 @@ function CreateContest(props) {
             })
 
     }
-    React.useEffect(() => { }, [])
+    const { currentUser } = React.useContext(RootContext)
+    const navigate = useNavigate()
+    React.useEffect(() => {
+        if (!currentUser) {
+            navigate('/')
+        }
+    }, [])
     const [problemCount, setProblemCount] = React.useState([])
     return (
         <div className="container_createContest">

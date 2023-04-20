@@ -6,6 +6,33 @@
     background: white;
 }
 
+.contentsPanelHeadingContainer {
+    display: grid;
+    border-bottom: 1px solid;
+    grid-template-columns: repeat(3, 33%);
+    justify-items: stretch;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentsPanelHeading {
+    font-size: 20px;
+    font-weight: 100;
+    display: flex;
+    cursor: pointer;
+    padding: 10px;
+    width: inherit;
+    justify-content: center;
+}
+
+.contentsPanelHeading:hover {
+    background: linear-gradient(0deg, var(--container-bg-color), transparent);
+}
+
+.selectedPanel {
+    background: linear-gradient(0deg, var(--container-bg-color), transparent);
+}
+
 .container_userProfile {
     display: grid;
     grid-template-columns: 40% auto;

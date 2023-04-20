@@ -7,11 +7,20 @@ import { RootContext } from '../shared/GlobalContext';
 
 function UserProfileRoot(props) {
     const navigate = useNavigate()
-    const { currentUser } = React.useContext(RootContext)
+    const { isAuthorized } = React.useContext(RootContext)
+    const [currentUser, setCurrentUser] = React.useState({})
     const { id } = useParams()
     const [user, setUser] = React.useState({})
+
+    const [selectedContentPanel, setSelectedContentPanel] = React.useState(1)
+
+
     React.useEffect(() => {
         console.log(id)
+        isAuthorized()
+            .then(user => {
+                setCurrentUser(user)
+            })
         UserService.findUser(id)
             .then(user => {
                 setTimeout(() => {
@@ -27,12 +36,7 @@ function UserProfileRoot(props) {
         <div className='container_userProfile'>
             <div className="leftPanel">
                 <div className="userInfoCard card">
-                    <table>
-
-                        <th>Name:</th>
-                        <td>{user.userName}</td>
-
-                    </table>
+                    Name:  {user.userName}
                 </div>
                 {currentUser.id === user.id && <div className="operationsContainer card">
                     <div onClick={() => {
@@ -42,7 +46,20 @@ function UserProfileRoot(props) {
                     </div>
                 </div>}
             </div>
-            <div className="contentsPanel"></div>
+            <div className="contentsPanel card">
+                <div className="contentsPanelHeadingContainer">
+                    <div onClick={() => {
+                        setSelectedContentPanel(1)
+                    }} className={`contentsPanelHeading ${selectedContentPanel === 1 ? 'selectedPanel' : ''}`}>Submissions</div>
+                    <div onClick={() => {
+                        setSelectedContentPanel(2)
+                    }} className={`contentsPanelHeading ${selectedContentPanel === 2 ? 'selectedPanel' : ''}`}>Contests Hosted</div>
+                    <div onClick={() => {
+                        setSelectedContentPanel(3)
+                    }} className={`contentsPanelHeading ${selectedContentPanel === 3 ? 'selectedPanel' : ''}`}>Contests Participated</div>
+
+                </div>
+            </div>
         </div>
     );
 }

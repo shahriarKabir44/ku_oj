@@ -39,6 +39,7 @@ export default function Home(props) {
                                     Duration: {calculateDuration(contest)}
 
                                 </div>
+                                <h4>Hosted by: {contest.hostName}</h4>
                             </div>
                         </Link>
                     })}

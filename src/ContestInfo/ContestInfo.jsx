@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ContestService from '../services/Contest.service'
+import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager';
 function ContestInfo(props) {
     const { id } = useParams()
-    const [contestInfo, setContestInfo] = React.useState({
+    const [contest, setContestInfo] = React.useState({
         title: "",
         startTime: (new Date()).toLocaleString(),
         endTime: (new Date()).toLocaleString(),
@@ -11,9 +12,17 @@ function ContestInfo(props) {
     })
     const [problems, setProblemList] = React.useState([])
     React.useEffect(() => {
+
         ContestService.getContestInfo(id)
             .then(({ contestInfo }) => {
-                console.log(contestInfo)
+                setTimeout(() => {
+                    NavbarDirectoryManager.setDitectory('contestInfo', {
+                        contest: {
+                            id,
+                            title: contestInfo.title
+                        }
+                    })
+                }, 100)
                 setContestInfo(contestInfo)
             })
         ContestService.getContestProblems(id)
@@ -23,8 +32,8 @@ function ContestInfo(props) {
     }, [])
     return (
         <div>
-            <h2> {contestInfo.title} </h2>
-            Hosted by {contestInfo.hostName}
+            <h2> {contest.title} </h2>
+            Hosted by {contest.hostName}
             <h4>problems</h4>
             <ol>
                 {problems.map((problem, index) => {

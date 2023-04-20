@@ -3,6 +3,10 @@ export default class Global {
     static SERVER_IP = "http://localhost"// "http://192.168.43.90"
 
     static SERVER_URL = Global.SERVER_IP + ":8080"
+
+    static CLIENT_IP = "http://localhost"
+
+    static CLIENT_URL = Global.CLIENT_IP + ':3000'
     // static SERVER_IP = 
     static async _fetch(url, body = null) {
         let payload = {

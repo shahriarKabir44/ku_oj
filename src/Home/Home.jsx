@@ -1,6 +1,7 @@
 import React from 'react'
 import ContestService from '../services/Contest.service';
 import { Link, } from 'react-router-dom';
+import './Home.css'
 import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager';
 export default function Home(props) {
     const [contestList, setContestList] = React.useState([])
@@ -9,37 +10,30 @@ export default function Home(props) {
         setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
         ContestService.getContests()
             .then(({ contests }) => {
+                console.log(contests)
                 setContestList(contests)
             })
 
     }, [])
     return (
-        <div>
-            <h2>Contests</h2>
+        <div className="homeContainer">
+            <div className="container">
+                <div>
+                    <div className="contestsContainer ">
+                        <h2 className="contestsCardHeading">Upcoming contest</h2>
+                        <div className="contestList">
+                            {contestList.map((contest, index) => {
+                                return <div key={index} className="card contestCard">
+                                    <h4 className="contestTitle">{contest.title}</h4>
+                                </div>
+                            })}
+                        </div>
 
-            <table border={1}>
-                <thead>
-                    <tr>
-                        <th>title</th>
-                        <th>author</th>
-                        <th>Begin</th>
-                        <th>end</th>
-                    </tr>
+                    </div>
+                </div>
 
-                </thead>
-                <tbody>
-                    {contestList.map((contest, index) => {
-                        return <tr key={index}>
+            </div>
 
-                            <td> <Link to={`/contest/${contest.id}`}>{contest.title}</Link>
-                            </td>
-                            <td> {contest.hostName} </td>
-                            <td> {new Date(contest.startTime).toLocaleString()} </td>
-                            <td> {new Date(contest.endTime).toLocaleString()} </td>
-                        </tr>
-                    })}
-                </tbody>
-            </table>
         </div>
     )
 }

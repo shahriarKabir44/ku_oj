@@ -1,0 +1,4 @@
+.homeContainer {
+    height: inherit;
+    background: var(--container-bg-color)
+}

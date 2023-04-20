@@ -15,3 +15,11 @@ body {
     border: none;
     border-radius: 5px;
 }
+
+.card {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px;
+    background: white;
+}

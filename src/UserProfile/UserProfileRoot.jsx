@@ -21,7 +21,7 @@ function UserProfileRoot(props) {
                 }, 100)
                 setUser(user)
             })
-    }, [])
+    }, [id])
 
     return (
         <div className='container_userProfile'>

@@ -10,7 +10,8 @@ import { RootContext } from '../shared/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 function CreateContest(props) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
-    const { currentUser } = React.useContext(RootContext)
+    const { isAuthorized } = React.useContext(RootContext)
+    const [currentUser, setCurrentUser] = React.useState({})
     const navigate = useNavigate()
 
     const [contestInfo, setContestInfo] = React.useState({
@@ -20,10 +21,6 @@ function CreateContest(props) {
         hostId: 1
     })
     function createContest() {
-
-
-
-
         ContestService.createContest({
             ...contestInfo,
             startTime: contestInfo.startTime * 1,
@@ -39,14 +36,21 @@ function CreateContest(props) {
     }
     React.useEffect(() => {
 
-        if (!currentUser) {
-            navigate('/')
-        }
-        setTimeout(() => {
-            NavbarDirectoryManager.setDitectory('createContest', {
-                userId: currentUser.id, userName: currentUser.userName
+        isAuthorized()
+            .then(user => {
+                if (!user) {
+                    navigate('/')
+                }
+                setCurrentUser(user)
+                setTimeout(() => {
+
+                    NavbarDirectoryManager.setDitectory('createContest', {
+                        userId: user.id, userName: user.userName
+                    })
+                }, 100)
             })
-        }, 100)
+
+
     }, [])
     const [problemCount, setProblemCount] = React.useState([])
     return (

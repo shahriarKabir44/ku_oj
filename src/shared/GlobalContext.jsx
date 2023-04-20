@@ -7,15 +7,15 @@ function GlobalContext({ children }) {
     async function isAuthorized() {
         let { user } = await UserService.isAuthorized()
         setCurrentUser(user)
+        return user
     }
 
-    React.useEffect(() => {
-        isAuthorized()
-    }, [])
+
     return (
         <RootContext.Provider value={{
             currentUser,
-            setCurrentUser
+            setCurrentUser,
+            isAuthorized
         }}>
             {children}
         </RootContext.Provider>

@@ -26,11 +26,12 @@ function App() {
 					<Routes>
 						<Route path='/' element={<Home />} />
 						<Route path='/contest/:id' element={< ContestInfo />} />
-						<Route path='/createContest' element={<CreateContest />} />
 						<Route path='/viewProblem/:id' element={<ProblemInfo />} />
 						<Route path='/viewSubmission/:id' element={<SubmissionInfo />} />
 						<Route path='/user/:id'>
 							<Route path='' element={<UserProfileRoot />} />
+							<Route path='createContest' element={<CreateContest />} />
+
 						</Route>
 					</Routes>
 				</div>

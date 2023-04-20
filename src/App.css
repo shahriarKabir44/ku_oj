@@ -1,7 +1,7 @@
 body {
     margin: 0;
-
-    --containerHeight: calc(100vh - 71px)
+    --container-bg-color: #E3F6F5;
+    --containerHeight: calc(100vh - 60px)
 }
 
 .mainContainer {

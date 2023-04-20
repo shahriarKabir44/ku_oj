@@ -8,6 +8,7 @@
     position: sticky;
     justify-items: center;
     align-items: center;
+    height: 40px;
 }
 
 .menuBtn {
@@ -30,6 +31,7 @@
 
 .btn.danger:hover {
     background: red !important;
+    border: 1px solid red !important;
 }
 
 .btn.danger {

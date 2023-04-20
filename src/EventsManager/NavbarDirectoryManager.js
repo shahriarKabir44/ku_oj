@@ -7,45 +7,32 @@ export default class NavbarDirectoryManager {
     static unsubscribe(client) {
         NavbarDirectoryManager.clients[client.label] = null
     }
-    static setDitectory(label, url) {
-        let dirs = []
-        if (url) {
+    static setDitectory(label, { userId, userName }) {
+        let dirs = [{
+            label: 'Home',
+            path: '/'
+        }]
+        if (label === 'createContest') {
             dirs = [
+                ...dirs,
                 {
-                    label: 'Home',
-                    path: '/'
+                    label: userName,
+                    path: '/user/' + userId
                 },
                 {
-                    label: label,
-                    path: url
-                },
+                    label: 'Create Contest',
+                    path: '/user/' + userId + '/createContest'
+                }
             ]
         }
-        else {
-            switch (label) {
-                case 'home':
-                    dirs = [
-                        {
-                            label: 'home',
-                            path: '/'
-                        }
-                    ]
-                    break;
-                case 'createContest':
-                    dirs = [
-                        {
-                            label: 'Home',
-                            path: '/'
-                        },
-                        {
-                            label: 'Create a contest',
-                            path: '/createContest'
-                        },
-                    ]
-                    break;
-                default:
-                    break;
-            }
+        else if (label === 'profile') {
+            dirs = [
+                ...dirs,
+                {
+                    label: userName,
+                    path: '/user/' + userId
+                }
+            ]
         }
 
 

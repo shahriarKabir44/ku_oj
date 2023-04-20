@@ -1,0 +1,19 @@
+.card {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px;
+    background: white;
+}
+
+.container_userProfile {
+    display: grid;
+    grid-template-columns: 40% auto;
+    background: var(--container-bg-color);
+    height: inherit;
+}
+
+.operationTab {
+    color: blue;
+    cursor: pointer;
+}

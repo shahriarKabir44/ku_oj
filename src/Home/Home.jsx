@@ -6,7 +6,7 @@ export default function Home(props) {
     const [contestList, setContestList] = React.useState([])
 
     React.useEffect(() => {
-        setTimeout(() => { NavbarDirectoryManager.setDitectory('home') }, 100)
+        setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
         ContestService.getContests()
             .then(({ contests }) => {
                 setContestList(contests)

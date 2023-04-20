@@ -15,24 +15,38 @@ export default function Home(props) {
             })
 
     }, [])
+
+    function calculateDuration({ startTime, endTime }) {
+        let duration = endTime * 1 - startTime * 1
+        duration = Math.floor(duration / 60000)
+        return `${Math.floor(duration / 60)} Hours, ${duration % 60} minutes`
+    }
+
     return (
         <div className="homeContainer">
-            <div className="container">
-                <div>
-                    <div className="contestsContainer ">
-                        <h2 className="contestsCardHeading">Upcoming contest</h2>
-                        <div className="contestList">
-                            {contestList.map((contest, index) => {
-                                return <div key={index} className="card contestCard">
-                                    <h4 className="contestTitle">{contest.title}</h4>
-                                </div>
-                            })}
-                        </div>
+            <div className="contestsContainer ">
+                <p className="contestsCardHeading">Upcoming contests</p>
+                <div className="contestList">
+                    {contestList.map((contest, index) => {
+                        return <Link to={'http://localhost:3000/contest/' + contest.id} key={index} className="card contestCard">
+                            <div  >
+                                <h3>{contest.title}</h3>
+                                <div>
+                                    Starts at:{(new Date(contest.startTime)).toLocaleString()}
 
-                    </div>
+                                </div>
+                                <div>
+                                    Duration: {calculateDuration(contest)}
+
+                                </div>
+                            </div>
+                        </Link>
+                    })}
+
                 </div>
 
             </div>
+
 
         </div>
     )

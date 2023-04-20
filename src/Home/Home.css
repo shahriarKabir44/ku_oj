@@ -1,4 +1,27 @@
 .homeContainer {
     height: inherit;
-    background: var(--container-bg-color)
+    background: var(--container-bg-color);
+    max-height: inherit;
+    overflow-y: auto;
+    height: inherit;
+}
+
+p.contestsCardHeading {
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contestList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card.contestCard {
+    width: 50vw;
+    text-decoration: none;
 }

@@ -13,4 +13,7 @@ export default class UserService {
         localStorage.setItem('token', token)
         return user
     }
+    static async findUser(id) {
+        return Global._fetch('/user/findUser/' + id)
+    }
 }

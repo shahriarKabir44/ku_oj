@@ -7,32 +7,47 @@ export default class NavbarDirectoryManager {
     static unsubscribe(client) {
         NavbarDirectoryManager.clients[client.label] = null
     }
-    static setDitectory(path) {
+    static setDitectory(label, url) {
         let dirs = []
-        switch (path) {
-            case 'home':
-                dirs = [
-                    {
-                        label: 'home',
-                        path: '/'
-                    }
-                ]
-                break;
-            case 'createContest':
-                dirs = [
-                    {
-                        label: 'Home',
-                        path: '/'
-                    },
-                    {
-                        label: 'Create a contest',
-                        path: '/createContest'
-                    },
-                ]
-                break;
-            default:
-                break;
+        if (url) {
+            dirs = [
+                {
+                    label: 'Home',
+                    path: '/'
+                },
+                {
+                    label: label,
+                    path: url
+                },
+            ]
         }
+        else {
+            switch (label) {
+                case 'home':
+                    dirs = [
+                        {
+                            label: 'home',
+                            path: '/'
+                        }
+                    ]
+                    break;
+                case 'createContest':
+                    dirs = [
+                        {
+                            label: 'Home',
+                            path: '/'
+                        },
+                        {
+                            label: 'Create a contest',
+                            path: '/createContest'
+                        },
+                    ]
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         this.clients['navbar']?.handler(dirs)
     }

@@ -6,10 +6,13 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import UserService from '../../services/User.service';
+import { useNavigate } from 'react-router-dom';
 function NavBar(props) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
     const { currentUser, setCurrentUser } = React.useContext(RootContext)
+
+    const navigate = useNavigate()
     React.useEffect(() => {
 
     }, [])
@@ -29,7 +32,9 @@ function NavBar(props) {
 
             </div>}
             {currentUser !== null && <div className="menuContainer">
-                <button className="menuBtn btn">{currentUser.userName}</button>
+                <button className="menuBtn btn" onClick={() => {
+                    navigate('/user/' + currentUser.id)
+                }}>{currentUser.userName}</button>
                 <button className="danger btn  " onClick={() => {
                     localStorage.clear()
                     setCurrentUser(null)

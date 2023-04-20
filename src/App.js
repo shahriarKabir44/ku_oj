@@ -9,6 +9,7 @@ import GlobalContext from './shared/GlobalContext';
 import SubmissionInfo from './SubmissionInfo/SubmissionInfo';
 import NavBar from './shared/NavBar/NavBar';
 import Home from './Home/Home';
+import UserProfileRoot from './UserProfile/UserProfileRoot';
 function App() {
 
 	React.useEffect(() => {
@@ -28,6 +29,9 @@ function App() {
 						<Route path='/createContest' element={<CreateContest />} />
 						<Route path='/viewProblem/:id' element={<ProblemInfo />} />
 						<Route path='/viewSubmission/:id' element={<SubmissionInfo />} />
+						<Route path='/user/:id'>
+							<Route path='' element={<UserProfileRoot />} />
+						</Route>
 					</Routes>
 				</div>
 

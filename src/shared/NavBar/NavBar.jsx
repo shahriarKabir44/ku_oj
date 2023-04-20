@@ -20,7 +20,11 @@ function NavBar(props) {
         <div className='navBarContainer'>
             <div className="logoContainer">
                 <button className="logobtn">KU_OJ</button>
+                <button className="btn menuBtn">Contests</button>
+                <button className="btn menuBtn">Problems</button>
+
             </div>
+
             <DirectoryIndicator />
             {currentUser === null && <div className="menuContainer">
                 <button onClick={() => {

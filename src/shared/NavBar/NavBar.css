@@ -1,6 +1,6 @@
 .navBarContainer {
     display: grid;
-    grid-template-columns: auto 80% auto;
+    grid-template-columns: auto 70% auto;
     background: #272643;
     padding: 10px;
     margin: 0;
@@ -9,6 +9,12 @@
     justify-items: center;
     align-items: center;
     height: 40px;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .menuBtn {

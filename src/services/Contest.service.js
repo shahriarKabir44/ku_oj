@@ -76,6 +76,10 @@ export default class ContestService {
     static async getContests() {
         return Global._fetch('/contests/getContests')
     }
+    static async getUpcomingContests() {
+        return Global._fetch('/contests/getUpcomingContests')
+
+    }
     static async getContestInfo(id) {
         return Global._fetch('/contests/getContestInfo/' + id)
     }

@@ -24,4 +24,5 @@ p.contestsCardHeading {
 .card.contestCard {
     width: 50vw;
     text-decoration: none;
+    color: black;
 }

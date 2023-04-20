@@ -9,7 +9,7 @@ export default function Home(props) {
     React.useEffect(() => {
         setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
         ContestService.getContests()
-            .then(({ contests }) => {
+            .then((contests) => {
                 console.log(contests)
                 setContestList(contests)
             })

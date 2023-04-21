@@ -10,11 +10,14 @@ import { useNavigate } from 'react-router-dom';
 function NavBar(props) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
-    const { currentUser, setCurrentUser } = React.useContext(RootContext)
+    const [currentUser, setCurrentUser] = React.useState(null)
 
     const navigate = useNavigate()
     React.useEffect(() => {
-
+        UserService.isAuthorized()
+            .then(({ user }) => {
+                setCurrentUser(user)
+            })
     }, [])
     return (
         <div className='navBarContainer'>

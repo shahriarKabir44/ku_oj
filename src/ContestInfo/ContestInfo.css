@@ -1,0 +1,22 @@
+.contestinfo_container {
+    height: inherit;
+    overflow-y: auto;
+    background: var(--container-bg-color);
+}
+
+.gridContainer {
+    height: inherit;
+    display: grid;
+    grid-template-columns: 40% auto;
+}
+
+.leftPanel_contest {
+    display: grid;
+    grid-template-rows: 40vh 50vh;
+}
+
+.card.mySubmissionsContainer {
+    height: inherit;
+    max-height: inherit;
+    overflow-y: auto;
+}

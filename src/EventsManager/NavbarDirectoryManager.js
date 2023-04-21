@@ -37,7 +37,6 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'contestInfo') {
-            console.log(contest)
             let { title, id } = contest
             dirs = [
                 ...dirs,

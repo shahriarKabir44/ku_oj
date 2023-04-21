@@ -1,9 +1,9 @@
 import React from 'react';
 import './UserProfileRoot.css'
-import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager'
-import UserService from '../services/User.service'
+import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
+import UserService from '../../services/User.service'
 import { useNavigate, useParams } from 'react-router-dom';
-import { RootContext } from '../shared/GlobalContext';
+import { RootContext } from '../../shared/GlobalContext';
 
 function UserProfileRoot(props) {
     const navigate = useNavigate()

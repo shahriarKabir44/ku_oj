@@ -1,8 +1,8 @@
 import React from 'react'
-import ContestService from '../services/Contest.service';
+import ContestService from '../../services/Contest.service';
 import { Link, } from 'react-router-dom';
 import './Home.css'
-import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager';
+import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 export default function Home(props) {
     const [contestList, setContestList] = React.useState([])
 

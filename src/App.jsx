@@ -2,14 +2,14 @@ import './App.css';
 import React from 'react'
 
 import { Route, Routes } from 'react-router-dom';
-import CreateContest from './ContestCreation/CreateContest';
-import ContestInfo from './ContestInfo/ContestInfo';
-import ProblemInfo from './ProblemInfo/ProblemInfo';
+import CreateContest from './routed/UserProfile/ContestCreation/CreateContest';
+import ContestInfo from './routed/ContestInfo/ContestInfo';
+import ProblemInfo from './routed/ProblemInfo/ProblemInfo';
 import GlobalContext from './shared/GlobalContext';
-import SubmissionInfo from './SubmissionInfo/SubmissionInfo';
+import SubmissionInfo from './routed/SubmissionInfo/SubmissionInfo';
 import NavBar from './shared/NavBar/NavBar';
-import Home from './Home/Home';
-import UserProfileRoot from './UserProfile/UserProfileRoot';
+import Home from './routed/Home/Home';
+import UserProfileRoot from './routed/UserProfile/UserProfileRoot';
 function App() {
 
 	React.useEffect(() => {

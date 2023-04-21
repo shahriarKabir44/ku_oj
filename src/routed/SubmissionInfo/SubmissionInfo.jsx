@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import SubmissionService from '../services/Submission.service';
+import SubmissionService from '../../services/Submission.service';
 
 function SubmissionInfo(props) {
     const { id } = useParams()

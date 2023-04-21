@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ContestService from '../services/Contest.service';
-import Global from '../services/Global';
-import SubmissionService from '../services/Submission.service';
-import UploadManager from '../services/UploadManager';
+import ContestService from '../../services/Contest.service';
+import Global from '../../services/Global';
+import SubmissionService from '../../services/Submission.service';
+import UploadManager from '../../services/UploadManager';
 
 function ProblemInfo(props) {
     const { id } = useParams()

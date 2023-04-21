@@ -1,6 +1,6 @@
 import React from 'react';
-import ContestCreationEventManager from '../../EventsManager/ContestCreationEventManager';
-import ContestService from '../../services/Contest.service';
+import ContestCreationEventManager from '../../../../EventsManager/ContestCreationEventManager';
+import ContestService from '../../../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
 function CreateProblem({ problemNum, isFocused, setProblemTitle }) {

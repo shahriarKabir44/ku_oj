@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import ContestService from '../services/Contest.service'
-import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager';
+import ContestService from '../../services/Contest.service'
+import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
-import UserService from '../services/User.service';
+import UserService from '../../services/User.service';
 function ContestInfo(props) {
     const { id } = useParams()
     const [contest, setContestInfo] = React.useState({
@@ -52,7 +52,13 @@ function ContestInfo(props) {
                     </div>
                 </div>
                 <div className="problemSetContainer">
-                    <div className="card"></div>
+                    <div className="card">
+                        <div className="tabSelectionContainer">
+                            <div className="tabSelectorBtn">Problems</div>
+                            <div className="tabSelectorBtn">Global Submissions</div>
+                            <div className="tabSelectorBtn">Rankings</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -62,7 +68,9 @@ function ContestInfo(props) {
 
 function MySubmissionsContainer({ contestId, user }) {
     const [mySubmissions, setMySubmissions] = React.useState([])
-    React.useEffect(() => { }, [])
+    React.useEffect(() => {
+        setMySubmissions([])
+    }, [])
     return <div className="submissionsListContainer">
         {!user && <h4>You need to log in to see your submissions</h4>}
         {user && <>

@@ -1,12 +1,12 @@
 import React from 'react';
 import CreateProblem from './CreateProblem/CreateProblem';
-import ContestService from '../services/Contest.service';
-import ContestCreationEventManager from '../EventsManager/ContestCreationEventManager'
+import ContestService from '../../../services/Contest.service';
+import ContestCreationEventManager from '../../../EventsManager/ContestCreationEventManager'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
-import NavbarDirectoryManager from '../EventsManager/NavbarDirectoryManager'
-import { RootContext } from '../shared/GlobalContext';
+import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
+import { RootContext } from '../../../shared/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 function CreateContest(props) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)

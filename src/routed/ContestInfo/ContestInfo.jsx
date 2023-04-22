@@ -54,9 +54,9 @@ function ContestInfo(props) {
                 <div className="problemSetContainer">
                     <div className="card">
                         <div className="tabSelectionContainer">
-                            <div className="tabSelectorBtn">Problems</div>
-                            <div className="tabSelectorBtn">Global Submissions</div>
-                            <div className="tabSelectorBtn">Rankings</div>
+                            <div className="tabSelectorBtn btn">Problems</div>
+                            <div className="tabSelectorBtn btn">Global Submissions</div>
+                            <div className="tabSelectorBtn btn">Rankings</div>
                         </div>
                     </div>
                 </div>

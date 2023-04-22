@@ -20,3 +20,12 @@
     max-height: inherit;
     overflow-y: auto;
 }
+
+.tabSelectionContainer {
+    display: flex;
+    gap: 5px;
+}
+
+.tabSelectorBtn.btn {
+    border: 1px solid;
+}

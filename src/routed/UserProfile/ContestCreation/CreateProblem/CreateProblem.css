@@ -32,7 +32,13 @@ button.previewBtn {
 .createProblem {
     display: grid;
     height: inherit;
-    grid-template-rows: 40px 40px auto;
+    grid-template-rows: 50px 40px auto;
+}
+
+.textInputContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .previewing {

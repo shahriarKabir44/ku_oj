@@ -24,8 +24,20 @@
 .tabSelectionContainer {
     display: flex;
     gap: 5px;
+    border-bottom: 1px solid;
+    padding: 5px;
 }
 
 .tabSelectorBtn.btn {
     border: 1px solid;
+}
+
+.problemSetContainer {
+    height: calc(100% - 40px);
+}
+
+.tabSelectorBtn.btn.selectedTab {
+    background: #337ab7;
+    color: white;
+    border: 1px solid #337ab7 !important;
 }

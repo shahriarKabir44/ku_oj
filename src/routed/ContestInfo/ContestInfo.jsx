@@ -4,7 +4,9 @@ import ContestService from '../../services/Contest.service'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
 import UserService from '../../services/User.service';
+import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
 function ContestInfo(props) {
+    const [selectedTab, setSelectedTab] = React.useState(1)
     const { id } = useParams()
     const [contest, setContestInfo] = React.useState({
         title: "",
@@ -51,13 +53,21 @@ function ContestInfo(props) {
                         <MySubmissionsContainer contestId={id} user={currentUser} />
                     </div>
                 </div>
-                <div className="problemSetContainer">
-                    <div className="card">
+                <div className="problemSetContainer card">
+                    <div style={{ height: 'inherit' }}>
                         <div className="tabSelectionContainer">
-                            <div className="tabSelectorBtn btn">Problems</div>
-                            <div className="tabSelectorBtn btn">Global Submissions</div>
-                            <div className="tabSelectorBtn btn">Rankings</div>
+                            <div onClick={() => {
+                                setSelectedTab(1)
+                            }} className={`tabSelectorBtn btn ${selectedTab === 1 ? 'selectedTab' : ''}`}>Problems</div>
+                            <div onClick={() => {
+                                setSelectedTab(2)
+                            }} className={`tabSelectorBtn btn ${selectedTab === 2 ? 'selectedTab' : ''}`}>Global Submissions</div>
+                            <div onClick={() => {
+                                setSelectedTab(3)
+                            }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
                         </div>
+                        {selectedTab === 1 && <ContestProblemSet problems={problems} />}
+
                     </div>
                 </div>
             </div>
@@ -78,5 +88,6 @@ function MySubmissionsContainer({ contestId, user }) {
         </>}
     </div>
 }
+
 
 export default ContestInfo;

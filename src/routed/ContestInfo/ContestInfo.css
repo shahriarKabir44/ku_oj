@@ -39,3 +39,15 @@
     color: white;
     border: 1px solid #337ab7 !important;
 }
+
+.content_subcontainer {
+    height: inherit;
+    max-height: inherit;
+    overflow-y: auto;
+    display: grid;
+    grid-template-rows: 50px auto;
+}
+
+.problemSetContainer.card {
+    height: calc(100vh - 140px);
+}

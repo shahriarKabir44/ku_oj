@@ -54,7 +54,7 @@ function ContestInfo(props) {
                     </div>
                 </div>
                 <div className="problemSetContainer card">
-                    <div style={{ height: 'inherit' }}>
+                    <div className='content_subcontainer' style={{ height: 'inherit' }}>
                         <div className="tabSelectionContainer">
                             <div onClick={() => {
                                 setSelectedTab(1)

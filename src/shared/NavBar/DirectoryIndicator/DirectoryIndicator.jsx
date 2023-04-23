@@ -1,7 +1,7 @@
 import React from 'react';
 import './DirectoryIndicator.css'
 import NavbarDirectorymanager from '../../../EventsManager/NavbarDirectoryManager'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 function DirectoryIndicator(props) {
     const [directory, setDitectory] = React.useState([])
     React.useEffect(() => {

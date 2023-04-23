@@ -46,6 +46,19 @@ export default class NavbarDirectoryManager {
                 }
             ]
         }
+        else if (label === 'problemDescription') {
+            dirs = [
+                ...dirs,
+                {
+                    label: contest.title,
+                    path: Global.CLIENT_URL + '/contest/' + contest.id
+                },
+                {
+                    label: problem.title,
+                    path: Global.CLIENT_URL + '/problem/' + problem.id
+                }
+            ]
+        }
 
         this.clients['navbar']?.handler(dirs)
     }

@@ -10,10 +10,15 @@ import SubmissionInfo from './routed/SubmissionInfo/SubmissionInfo';
 import NavBar from './shared/NavBar/NavBar';
 import Home from './routed/Home/Home';
 import UserProfileRoot from './routed/UserProfile/UserProfileRoot';
+import UserService from './services/User.service';
+import ProblemDetails from './routed/ProblemDetails/ProblemDetails';
 function App() {
-
+	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
-
+		UserService.isAuthorized()
+			.then(({ user }) => {
+				setCurrentUser(user)
+			})
 
 	}, [])
 	return (
@@ -33,6 +38,7 @@ function App() {
 							<Route path='createContest' element={<CreateContest />} />
 
 						</Route>
+						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
 					</Routes>
 				</div>
 

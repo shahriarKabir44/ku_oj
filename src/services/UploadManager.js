@@ -15,6 +15,10 @@ export default class UploadManager {
 
     static async uploadFile(URI, additionalData, apiURL = '/uploadFile/upload') {
         let blob = await UploadManager.getBlobFromURI(URI)
+        return this.uploadBlobData(blob, additionalData, apiURL)
+
+    }
+    static async uploadBlobData(blob, additionalData, apiURL = '/uploadFile/upload') {
         let formData = new FormData()
 
         formData.append("file", blob)
@@ -28,6 +32,5 @@ export default class UploadManager {
             }
         }).then(res => res.json())
         return url
-
     }
 }

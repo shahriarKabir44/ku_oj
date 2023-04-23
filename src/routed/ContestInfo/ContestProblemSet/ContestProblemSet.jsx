@@ -11,7 +11,7 @@ export default function ContestProblemSet({ problems }) {
                 return <Link style={{
                     textDecoration: 'none',
                     color: 'black'
-                }} to={`/problem/${problem.id}`} key={index}>
+                }} to={`${Global.CLIENT_URL}/problem/${problem.id}`} key={index}>
                     <div className="problemListItem">
                         <h2 className="problemLabelContainer">{problem.title}</h2>
 

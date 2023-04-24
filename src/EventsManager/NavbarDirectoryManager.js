@@ -54,7 +54,7 @@ export default class NavbarDirectoryManager {
                     path: Global.CLIENT_URL + '/contest/' + contest.id
                 },
                 {
-                    label: problem.title,
+                    label: problem.code,
                     path: Global.CLIENT_URL + '/problem/' + problem.id
                 }
             ]

@@ -5,29 +5,26 @@ import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
 import UserService from '../../services/User.service';
 import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
-function ContestInfo(props) {
+function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const { id } = useParams()
     const [contest, setContestInfo] = React.useState({
         title: "",
         startTime: (new Date()).toLocaleString(),
         endTime: (new Date()).toLocaleString(),
-        hostName: ""
+        hostName: "",
+        code: ""
     })
     const [problems, setProblemList] = React.useState([])
-    const [currentUser, setCurrentUser] = React.useState(null)
     React.useEffect(() => {
-        UserService.isAuthorized()
-            .then(({ user }) => {
-                setCurrentUser(user)
-            })
+
         ContestService.getContestInfo(id)
             .then(({ contestInfo }) => {
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
                         contest: {
                             id,
-                            title: contestInfo.title
+                            title: contestInfo.code
                         }
                     })
                 }, 100)

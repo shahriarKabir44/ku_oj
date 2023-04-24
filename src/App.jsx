@@ -4,7 +4,6 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom';
 import CreateContest from './routed/UserProfile/ContestCreation/CreateContest';
 import ContestInfo from './routed/ContestInfo/ContestInfo';
-import ProblemInfo from './routed/ProblemInfo/ProblemInfo';
 import GlobalContext from './shared/GlobalContext';
 import SubmissionInfo from './routed/SubmissionInfo/SubmissionInfo';
 import NavBar from './shared/NavBar/NavBar';
@@ -30,8 +29,7 @@ function App() {
 
 					<Routes>
 						<Route path='/' element={<Home />} />
-						<Route path='/contest/:id' element={< ContestInfo />} />
-						<Route path='/viewProblem/:id' element={<ProblemInfo />} />
+						<Route path='/contest/:id' element={< ContestInfo currentUser={currentUser} />} />
 						<Route path='/viewSubmission/:id' element={<SubmissionInfo />} />
 						<Route path='/user/:id'>
 							<Route path='' element={<UserProfileRoot />} />

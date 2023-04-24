@@ -8,14 +8,16 @@ export default class ContestService {
         title,
         point,
         contestId,
-        authorId
+        authorId,
+        code
     }) {
 
         let { problemId } = await Global._fetch('/contests/createProblem', {
             title,
             point,
             contestId,
-            authorId
+            authorId,
+            code
         })
         await Promise.all([
             UploadManager.uploadFile(

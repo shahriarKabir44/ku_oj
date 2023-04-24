@@ -26,9 +26,10 @@ export default function ProblemDetails({ currentUser }) {
         try {
             ContestService.getProblemInfo(problemId)
                 .then(({ problemInfo }) => {
+                    console.log(problemInfo)
                     NavbarDirectoryManager.setDitectory('problemDescription', {
                         contest: {
-                            title: problemInfo.contestName,
+                            title: problemInfo.contestCode,
                             id: problemInfo.contestId
                         }, problem: {
                             ...problemInfo

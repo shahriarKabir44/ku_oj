@@ -28,16 +28,11 @@ form {
     flex-direction: column;
 }
 
-label {
-    margin-top: 10px;
-}
 
-input[type='datetime-local'],
-input[type='text'] {
+.createContestInput {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    margin-bottom: 10px;
 }
 
 .dashboardContainer {
@@ -52,7 +47,8 @@ input[type='text'] {
     justify-items: stretch;
     justify-content: start;
     grid-template-columns: 30% 70%;
-
+    align-items: center;
+    gap: 5px;
 }
 
 .problemItem {
@@ -65,9 +61,9 @@ input[type='text'] {
 }
 
 .problemsContainer {
-    max-height: 30vh;
+    max-height: 25vh;
     overflow-y: auto;
-    height: 30vh;
+    height: 25vh;
 }
 
 .problemLabel {

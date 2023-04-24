@@ -117,10 +117,10 @@ function LoginModal({ open, handleClose, onAuthenticated }) {
                     }}>Log in</h1>
                     <form onSubmit={submitLoginForm} ref={formRef} >
                         <label htmlFor="username">Username</label>
-                        <input autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
+                        <input className='auth_input' autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
 
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" />
+                        <input className='auth_input' type="password" id="password" name="password" placeholder="Enter your password" />
 
                         <button type="submit">Login</button>
                     </form>
@@ -184,10 +184,10 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
                     }}>Sign up</h1>
                     <form onSubmit={submitRegistrationForm} ref={formRef} >
                         <label htmlFor="username">Username</label>
-                        <input autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
+                        <input className='auth_input' autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
 
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" />
+                        <input className='auth_input' type="password" id="password" name="password" placeholder="Enter your password" />
 
                         <button type="submit">Login</button>
                     </form>

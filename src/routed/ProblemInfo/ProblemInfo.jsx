@@ -4,6 +4,7 @@ import ContestService from '../../services/Contest.service';
 import Global from '../../services/Global';
 import SubmissionService from '../../services/Submission.service';
 import UploadManager from '../../services/UploadManager';
+import './ProblemInfo.css'
 
 function ProblemInfo(props) {
     const { id } = useParams()

@@ -6,19 +6,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
-import { RootContext } from '../../../shared/GlobalContext';
 import { useNavigate } from 'react-router-dom';
-function CreateContest(props) {
+function CreateContest({ currentUser }) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
-    const { isAuthorized } = React.useContext(RootContext)
-    const [currentUser, setCurrentUser] = React.useState({})
     const navigate = useNavigate()
 
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),
         endTime: new Date((new Date()) * 1 + 3600 * 1000),
-        hostId: 1
+        hostId: currentUser.id,
+        code: ""
     })
     function createContest() {
         ContestService.createContest({
@@ -36,19 +34,18 @@ function CreateContest(props) {
     }
     React.useEffect(() => {
 
-        isAuthorized()
-            .then(user => {
-                if (!user) {
-                    navigate('/')
-                }
-                setCurrentUser(user)
-                setTimeout(() => {
 
-                    NavbarDirectoryManager.setDitectory('createContest', {
-                        userId: user.id, userName: user.userName
-                    })
-                }, 100)
+        if (!currentUser) {
+            navigate('/')
+        }
+
+        setTimeout(() => {
+
+            NavbarDirectoryManager.setDitectory('createContest', {
+                userId: currentUser.id, userName: currentUser.userName
             })
+        }, 100)
+
 
 
     }, [])
@@ -59,24 +56,30 @@ function CreateContest(props) {
                 <div className="leftPanel">
                     <div className="contestDetailsPanel">
 
-                        <div className="card" style={{ height: "30vh" }}>
+                        <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_createProblem">
                                 <h2 className="title">Create a contest</h2>
                                 <button className="btn confirmContestCreation" onClick={createContest}>Create</button>
                             </div>
                             <div className='formContainer'>
-                                <label htmlFor="text">Contest title:</label>
-                                <input onChange={e => {
+                                <label htmlFor="title">Contest title:</label>
+                                <input className='createContestInput' onChange={e => {
                                     setContestInfo({ ...contestInfo, title: e.target.value })
-                                }} type="text" name="text-input" />
+                                }} type="text" name="title" />
+
+                                <label htmlFor="code">Contest code:</label>
+                                <input className='createContestInput' onChange={e => {
+                                    setContestInfo({ ...contestInfo, code: (e.target.value) })
+                                }} type="text" name="trip-start" />
+
                                 <label htmlFor="start">Start Time:</label>
-                                <input onChange={e => {
+                                <input className='createContestInput' onChange={e => {
                                     setContestInfo({ ...contestInfo, startTime: (new Date(e.target.value)) * 1 })
-                                }} type="datetime-local" name="trip-start" />
+                                }} type="datetime-local" name="start" />
 
 
                                 <label htmlFor="end">End Time:</label>
-                                <input onChange={e => {
+                                <input className='createContestInput' onChange={e => {
                                     setContestInfo({ ...contestInfo, endTime: (new Date(e.target.value)) * 1 })
                                 }} type="datetime-local" name="trip-end" />
 

@@ -25,7 +25,7 @@ function App() {
 		<GlobalContext>
 
 			<div className="App">
-				<NavBar />
+				<NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 				<div className='mainContainer'>
 
 					<Routes>

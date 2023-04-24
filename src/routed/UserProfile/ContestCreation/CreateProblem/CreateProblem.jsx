@@ -61,14 +61,21 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
             <div ref={problemCreationFormRef} className='createProblem' >
                 <div className="createProblemlableContainer">
                     <div className='textInputContainer'><label htmlFor="contestTitle">Title </label>
-                        <input autoComplete='off' value={problemInfo.title} onChange={e => {
+                        <input className='createContestInput' autoComplete='off' value={problemInfo.title} onChange={e => {
                             setProblemInfo({ ...problemInfo, title: e.target.value })
                             setProblemTitle(e.target.value)
                         }} type="text" name="contestTitle" /></div>
                     <div className='textInputContainer'>
                         <label htmlFor="contestTitle">Points </label>
-                        <input autoComplete='off' value={problemInfo.point} onChange={e => {
+                        <input className='createContestInput' autoComplete='off' value={problemInfo.point} onChange={e => {
                             setProblemInfo({ ...problemInfo, point: e.target.value })
+
+                        }} type="text" name="contestTitle" />
+                    </div>
+                    <div className='textInputContainer'>
+                        <label htmlFor="contestTitle">Code </label>
+                        <input className='createContestInput' autoComplete='off' value={problemInfo.code} onChange={e => {
+                            setProblemInfo({ ...problemInfo, code: e.target.value })
 
                         }} type="text" name="contestTitle" />
                     </div>

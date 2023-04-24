@@ -1,23 +1,18 @@
 import React from 'react';
 import './NavBar.css'
 import DirectoryIndicator from './DirectoryIndicator/DirectoryIndicator';
-import { RootContext } from '../GlobalContext';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import UserService from '../../services/User.service';
 import { useNavigate } from 'react-router-dom';
-function NavBar(props) {
+function NavBar({ currentUser, setCurrentUser }) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
-    const [currentUser, setCurrentUser] = React.useState(null)
 
     const navigate = useNavigate()
     React.useEffect(() => {
-        UserService.isAuthorized()
-            .then(({ user }) => {
-                setCurrentUser(user)
-            })
+
     }, [])
     return (
         <div className='navBarContainer'>

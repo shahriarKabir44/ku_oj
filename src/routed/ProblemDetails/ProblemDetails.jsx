@@ -9,10 +9,14 @@ import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 export default function ProblemDetails({ currentUser }) {
+
+    const [contest, setContestInfo] = React.useState({})
+
     const { problemId } = useParams()
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
     const [languageName, setLanguageName] = React.useState('')
+
     const [previousSubmissions, setPreviousSubmissionList] = React.useState([])
     const [problemInfo, setProblemInfo] = React.useState({
         contestId: 0,
@@ -27,6 +31,14 @@ export default function ProblemDetails({ currentUser }) {
 
 
     React.useEffect(() => {
+        ContestService.searchContestByProblem(problemId)
+            .then(contest => {
+                if (contest.endTime >= (new Date()) * 1) {
+                    contest.isRunning = true
+
+                }
+                setContestInfo(contest)
+            })
         try {
             ContestService.getProblemInfo(problemId)
                 .then(({ problemInfo }) => {
@@ -74,7 +86,7 @@ export default function ProblemDetails({ currentUser }) {
     return (
         <div className="container_problemDetails">
             <div className="leftPanelsContainer">
-                <ContestInfoContainer problemId={problemId} />
+                <ContestInfoContainer contest={contest} />
                 <div className="submissionsContainer card"></div>
             </div>
             <div className="problemBodyContainer card">
@@ -86,20 +98,20 @@ export default function ProblemDetails({ currentUser }) {
                     </div>
 
                 </div>
+                <div className="problemStatementContainer">
+                    <iframe src={Global.SERVER_URL + problemInfo.statementFileURL}
+                        title="Problem"
+                        height={"10%%"}
+                        width={"100%"}></iframe>
+                </div>
             </div>
         </div>
     );
 
 }
 
-function ContestInfoContainer({ problemId }) {
-    const [contest, setContestInfo] = React.useState({})
-    React.useEffect(() => {
-        ContestService.searchContestByProblem(problemId)
-            .then(contest => {
-                setContestInfo(contest)
-            })
-    }, [])
+function ContestInfoContainer({ contest }) {
+
     return <div className="contestInfoContainer card">
         <h3 style={{
             margin: 0
@@ -119,13 +131,7 @@ function ContestInfoContainer({ problemId }) {
 <div>
            
             <div className="mainContainer">
-                <iframe style={{
-                    width: "70vw",
-                    height: "70vh"
-                }} src={Global.SERVER_URL + problemInfo.statementFileURL}
-                    title="Problem"
-                    height={"10%%"}
-                    width={"100%"}></iframe>
+               
 
 
                 <div className="submissionsContai">

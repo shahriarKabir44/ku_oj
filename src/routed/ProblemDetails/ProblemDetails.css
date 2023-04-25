@@ -13,11 +13,28 @@
 
 .problemExtraInfoContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 .problemBodyContainer.card {
     display: grid;
     grid-template-rows: 60px auto;
     align-items: center;
+    height: calc(100% - 80px);
+    width: inherit;
+}
+
+.problemStatementContainer {
+    height: 100%;
+    width: 100%;
+}
+
+iframe {
+    height: 100%;
+    width: 100%;
+}
+
+h2.problemTitle {
+    font-weight: 100;
 }

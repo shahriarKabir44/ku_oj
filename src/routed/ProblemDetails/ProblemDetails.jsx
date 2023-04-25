@@ -2,6 +2,9 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import ContestService from '../../services/Contest.service'
 import SubmissionService from '../../services/Submission.service'
+import './ProblemDetails.css'
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+
 import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
@@ -22,6 +25,7 @@ export default function ProblemDetails({ currentUser }) {
         contestName: ""
     })
 
+
     React.useEffect(() => {
         try {
             ContestService.getProblemInfo(problemId)
@@ -37,6 +41,7 @@ export default function ProblemDetails({ currentUser }) {
                     })
                     setProblemInfo(problemInfo)
                 })
+
         } catch (error) {
             console.error('oh no')
         }
@@ -67,8 +72,52 @@ export default function ProblemDetails({ currentUser }) {
 
     }
     return (
-        <div>
-            <h2>{problemInfo.title}</h2>
+        <div className="container_problemDetails">
+            <div className="leftPanelsContainer">
+                <ContestInfoContainer problemId={problemId} />
+                <div className="submissionsContainer card"></div>
+            </div>
+            <div className="problemBodyContainer card">
+                <div className="problemExtraInfoContainer">
+                    <h2 className='problemTitle'>{problemInfo.title}</h2>
+                    <div className="pointsContainer">
+                        <WorkspacePremiumIcon />
+                        <h4>{problemInfo.point} pts</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    );
+
+}
+
+function ContestInfoContainer({ problemId }) {
+    const [contest, setContestInfo] = React.useState({})
+    React.useEffect(() => {
+        ContestService.searchContestByProblem(problemId)
+            .then(contest => {
+                setContestInfo(contest)
+            })
+    }, [])
+    return <div className="contestInfoContainer card">
+        <h3 style={{
+            margin: 0
+        }}>{contest.title}</h3>
+        <div style={{
+            display: 'flex',
+            gap: "10px"
+        }}><h5>Time left:</h5>  <h3>1 hr 3 mins</h3> </div>
+
+    </div>
+
+}
+
+
+
+/*
+<div>
+           
             <div className="mainContainer">
                 <iframe style={{
                     width: "70vw",
@@ -97,6 +146,6 @@ export default function ProblemDetails({ currentUser }) {
             </div>
 
         </div>
-    );
 
-}
+
+*/

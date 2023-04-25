@@ -1,0 +1,23 @@
+.container_problemDetails {
+    height: inherit;
+    max-height: inherit;
+    background: var(--container-bg-color);
+    display: grid;
+    grid-template-columns: 40vw auto;
+}
+
+.pointsContainer {
+    display: flex;
+    align-items: center;
+}
+
+.problemExtraInfoContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.problemBodyContainer.card {
+    display: grid;
+    grid-template-rows: 60px auto;
+    align-items: center;
+}

@@ -2,13 +2,11 @@ import React from 'react';
 import './UserProfileRoot.css'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import UserService from '../../services/User.service'
-import { useNavigate, useParams } from 'react-router-dom';
-import { RootContext } from '../../shared/GlobalContext';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import Global from '../../services/Global';
 
-function UserProfileRoot(props) {
+export default function UserProfileRoot({ currentUser }) {
     const navigate = useNavigate()
-    const { isAuthorized } = React.useContext(RootContext)
-    const [currentUser, setCurrentUser] = React.useState({})
     const { id } = useParams()
     const [user, setUser] = React.useState({})
 
@@ -16,11 +14,7 @@ function UserProfileRoot(props) {
 
 
     React.useEffect(() => {
-        console.log(id)
-        isAuthorized()
-            .then(user => {
-                setCurrentUser(user)
-            })
+
         UserService.findUser(id)
             .then(user => {
                 setTimeout(() => {
@@ -38,7 +32,7 @@ function UserProfileRoot(props) {
                 <div className="userInfoCard card">
                     Name:  {user.userName}
                 </div>
-                {currentUser.id === user.id && <div className="operationsContainer card">
+                {currentUser?.id === user?.id && <div className="operationsContainer card">
                     <div onClick={() => {
                         navigate('createContest')
                     }} className="operationTab">
@@ -47,21 +41,43 @@ function UserProfileRoot(props) {
                 </div>}
             </div>
             <div className="contentsPanel card">
-                <div className="contentsPanelHeadingContainer">
+                <div className="tabSelectionContainer_profile">
                     <div onClick={() => {
                         setSelectedContentPanel(1)
-                    }} className={`contentsPanelHeading ${selectedContentPanel === 1 ? 'selectedPanel' : ''}`}>Submissions</div>
+                    }} className={`tabSelectorBtn btn ${selectedContentPanel === 1 ? 'selectedTab' : ''}`}>Submissions</div>
                     <div onClick={() => {
                         setSelectedContentPanel(2)
-                    }} className={`contentsPanelHeading ${selectedContentPanel === 2 ? 'selectedPanel' : ''}`}>Contests Hosted</div>
+                    }} className={`tabSelectorBtn btn ${selectedContentPanel === 2 ? 'selectedTab' : ''}`}>Contests Participated</div>
                     <div onClick={() => {
                         setSelectedContentPanel(3)
-                    }} className={`contentsPanelHeading ${selectedContentPanel === 3 ? 'selectedPanel' : ''}`}>Contests Participated</div>
-
+                    }} className={`tabSelectorBtn btn ${selectedContentPanel === 3 ? 'selectedTab' : ''}`}>Contests Hosted</div>
                 </div>
+                <HostedContestsContainer user={user} currentUser={currentUser} isShowing={selectedContentPanel === 3} />
             </div>
         </div>
     );
 }
 
-export default UserProfileRoot;
+
+function HostedContestsContainer({ user, currentUser, isShowing }) {
+    const [hostedContests, setHostedContestsList] = React.useState([])
+    React.useEffect(() => {
+        UserService.getHostedContests(user.id)
+            .then(contests => {
+                console.log(contests)
+                setHostedContestsList(contests)
+            })
+    }, [user])
+    return <div style={{
+        display: `${isShowing ? 'block' : 'none'}`
+    }} className="hostedContestsListContainer">
+        {hostedContests.map((contest, index) => {
+            return <div className="hostedContest" key={index}>
+                <Link to={`${Global.CLIENT_URL}/contest/${contest.id}`}>
+                    <h3>{contest.title}</h3>
+
+                </Link>
+            </div>
+        })}
+    </div>
+}

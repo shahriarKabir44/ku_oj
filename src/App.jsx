@@ -28,11 +28,11 @@ function App() {
 				<div className='mainContainer'>
 
 					<Routes>
-						<Route path='/' element={<Home />} />
+						<Route path='/' element={<Home currentUser={currentUser} />} />
 						<Route path='/contest/:id' element={< ContestInfo currentUser={currentUser} />} />
 						<Route path='/viewSubmission/:id' element={<SubmissionInfo />} />
 						<Route path='/user/:id'>
-							<Route path='' element={<UserProfileRoot />} />
+							<Route path='' element={<UserProfileRoot currentUser={currentUser} />} />
 							{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />
 							}
 						</Route>

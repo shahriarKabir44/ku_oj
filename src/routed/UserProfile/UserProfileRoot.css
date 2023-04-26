@@ -36,3 +36,14 @@
     color: blue;
     cursor: pointer;
 }
+
+.tabSelectionContainer_profile {
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    border-bottom: 1px solid;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    justify-items: center;
+}

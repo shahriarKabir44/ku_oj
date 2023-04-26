@@ -16,4 +16,7 @@ export default class UserService {
     static async findUser(id) {
         return Global._fetch('/user/findUser/' + id)
     }
+    static async getHostedContests(id) {
+        return Global._fetch('/user/getHostedContests/' + id)
+    }
 }

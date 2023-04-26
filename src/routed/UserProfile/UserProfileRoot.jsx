@@ -60,7 +60,11 @@ export default function UserProfileRoot({ currentUser }) {
 
 
 function HostedContestsContainer({ user, currentUser, isShowing }) {
+    const isCurrentUser = (user.id === currentUser.id)
     const [hostedContests, setHostedContestsList] = React.useState([])
+    function hasEnded(endTime) {
+        return endTime < (new Date()) * 1
+    }
     React.useEffect(() => {
         UserService.getHostedContests(user.id)
             .then(contests => {
@@ -69,15 +73,45 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
             })
     }, [user])
     return <div style={{
-        display: `${isShowing ? 'block' : 'none'}`
+        display: `${isShowing ? 'block' : 'none'}`,
+        overflowY: 'auto'
     }} className="hostedContestsListContainer">
-        {hostedContests.map((contest, index) => {
-            return <div className="hostedContest" key={index}>
-                <Link to={`${Global.CLIENT_URL}/contest/${contest.id}`}>
-                    <h3>{contest.title}</h3>
+        <table style={{
+            width: '100%'
+        }} className="hostedContestTable">
+            <thead style={{
+                position: 'sticky',
+                top: 0
+            }}>
+                <tr className="hostedContestTable">
+                    <th>Title</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    {isCurrentUser && <th>
+                        Action
+                    </th>}
+                </tr>
+            </thead>
+            <tbody>
+                {hostedContests.map((contest, index) => {
+                    return <tr key={index} className="hostedContestTable">
+                        <td>
+                            <Link to={`${Global.CLIENT_URL}/contest/${contest.id}`} > {contest.title} </Link>
+                        </td>
+                        <td>
+                            {(new Date(contest.startTime)).toLocaleString()}
+                        </td>
+                        <td>
+                            {(new Date(contest.endTime)).toLocaleString()}
+                        </td>
+                        {isCurrentUser && <td>
+                            {!hasEnded(contest.endTime) && <button className="btn success">edit</button>
+                            }
+                        </td>}
+                    </tr>
+                })}
 
-                </Link>
-            </div>
-        })}
+            </tbody>
+        </table>
     </div>
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import ContestService from '../../services/Contest.service'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
@@ -7,6 +7,7 @@ import UserService from '../../services/User.service';
 import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
+    const navigate = useNavigate()
     const { id } = useParams()
     const [contest, setContestInfo] = React.useState({
         title: "",
@@ -20,6 +21,9 @@ function ContestInfo({ currentUser }) {
 
         ContestService.getContestInfo(id)
             .then(({ contestInfo }) => {
+                if (!contestInfo) {
+                    navigate('/')
+                }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
                         contest: {

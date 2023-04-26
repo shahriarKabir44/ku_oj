@@ -51,7 +51,6 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
         if (!fileObj) {
             return;
         }
-
         return (URL.createObjectURL(fileObj))
     }
     return (

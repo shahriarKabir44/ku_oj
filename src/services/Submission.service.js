@@ -3,7 +3,7 @@ import UploadManager from "./UploadManager"
 export default class SubmissionService {
     static async submit(submissionInfo, submissionFileURL) {
         const { fileExtension, problemId, submittedBy, contestId } = submissionInfo
-        console.log(submissionInfo)
+
         let { submissionId } = await Global._fetch('/submission/submit', submissionInfo)
         let { fileURL } = await UploadManager.uploadFile(submissionFileURL, {
             filetype: 'submission',

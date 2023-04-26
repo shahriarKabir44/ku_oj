@@ -13,21 +13,9 @@ export default function ProblemDetails({ currentUser }) {
     const [contest, setContestInfo] = React.useState({})
 
     const { problemId } = useParams()
-    const [submissionFileURI, setSubmissionFileURI] = React.useState("")
-    const [fileExtension, setFileExtension] = React.useState('')
-    const [languageName, setLanguageName] = React.useState('')
 
-    const [previousSubmissions, setPreviousSubmissionList] = React.useState([])
-    const [problemInfo, setProblemInfo] = React.useState({
-        contestId: 0,
-        id: 0,
-        outputFileURL: "",
-        point: 0,
-        statementFileURL: "",
-        testcaseFileURL: "",
-        title: "",
-        contestName: ""
-    })
+
+    const [problemInfo, setProblemInfo] = React.useState({})
 
 
     React.useEffect(() => {
@@ -42,7 +30,6 @@ export default function ProblemDetails({ currentUser }) {
         try {
             ContestService.getProblemInfo(problemId)
                 .then(({ problemInfo }) => {
-                    console.log(problemInfo)
                     NavbarDirectoryManager.setDitectory('problemDescription', {
                         contest: {
                             title: problemInfo.contestCode,
@@ -59,35 +46,14 @@ export default function ProblemDetails({ currentUser }) {
         }
 
 
-        SubmissionService.getPreviousSubmissions(problemId, currentUser?.id)
-            .then(({ previousSubmissions }) => {
-                setPreviousSubmissionList(previousSubmissions)
-            })
-    }, [problemId])
-    function submitSolution() {
-        const data = {
-            time: (new Date()) * 1,
-            fileExtension,
-            problemId: problemId,
-            submittedBy: currentUser.id,
-            contestId: problemInfo.contestId,
-            languageName
-        }
-        SubmissionService.submit(data, submissionFileURI)
-            .then(({ fileURL, submissionId }) => {
-                ContestService.judgeSubmission({
-                    fileURL,
-                    submissionId,
-                    problemInfo
-                })
-            })
 
-    }
+    }, [problemId])
+
     return (
         <div className="container_problemDetails">
             <div className="leftPanelsContainer">
                 <ContestInfoContainer contest={contest} />
-                <div className="submissionsContainer card"></div>
+                <SubmissionsContainer problem={problemInfo} currentUser={currentUser} />
             </div>
             <div className="problemBodyContainer card">
                 <div className="problemExtraInfoContainer">
@@ -107,6 +73,74 @@ export default function ProblemDetails({ currentUser }) {
             </div>
         </div>
     );
+
+}
+
+function SubmissionsContainer({ currentUser, problem }) {
+    const [submissionFileURI, setSubmissionFileURI] = React.useState("")
+    const [fileExtension, setFileExtension] = React.useState('')
+    const [languageName, setLanguageName] = React.useState('')
+    function submitSolution(e) {
+        const data = {
+            time: (new Date()) * 1,
+            fileExtension,
+            problemId: problem.id,
+            submittedBy: currentUser.id,
+            contestId: problem.contestId,
+            languageName
+        }
+
+        console.log(data)
+
+        SubmissionService.submit(data, submissionFileURI)
+            .then(({ fileURL, submissionId }) => {
+                ContestService.judgeSubmission({
+                    fileURL,
+                    submissionId,
+                    problem
+                })
+            })
+
+    }
+    function onfileChange(event) {
+        const fileObj = event.target.files && event.target.files[0];
+        if (!fileObj) {
+            return;
+        }
+        return (URL.createObjectURL(fileObj))
+    }
+
+    const [previousSubmissions, setPreviousSubmissionList] = React.useState([])
+    React.useEffect(() => {
+        SubmissionService.getPreviousSubmissions(problem?.id, currentUser?.id)
+            .then(({ previousSubmissions }) => {
+                setPreviousSubmissionList(previousSubmissions)
+            })
+    }, [currentUser, problem])
+    return <div className="submissionsContainer card">
+        <h3 style={{
+            margin: 0
+        }}>Submit?</h3>
+        {/* add a logged in checker */}
+        {/* to-do: add file checker */}
+        <div className="submissionContainer">
+            <select required onChange={e => {
+                let extName = e.target.value
+                setFileExtension(extName)
+                if (extName === '') return
+
+                if (extName === 'py') setLanguageName('python')
+
+            }} className='createSubmissionInput' name="" id=""  >
+                <option value=""> Select Language </option>
+                <option value="py">Python3</option>
+            </select>
+            <input required className='createSubmissionInput' type="file" name="" id="" onChange={e => {
+                setSubmissionFileURI(onfileChange(e))
+            }} />
+            <button onClick={submitSolution} className="btn" >Submit</button>
+        </div>
+    </div>
 
 }
 

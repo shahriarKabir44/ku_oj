@@ -25,6 +25,12 @@
     width: inherit;
 }
 
+.createSubmissionInput {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
 .problemStatementContainer {
     height: 100%;
     width: 100%;
@@ -37,4 +43,10 @@ iframe {
 
 h2.problemTitle {
     font-weight: 100;
+}
+
+.submissionContainer {
+    display: flex;
+    align-items: stretch;
+    gap: 5px;
 }

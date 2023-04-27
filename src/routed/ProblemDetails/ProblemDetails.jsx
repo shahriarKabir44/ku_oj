@@ -60,7 +60,7 @@ export default function ProblemDetails({ currentUser }) {
                     <h2 className='problemTitle'>{problemInfo.title}</h2>
                     <div className="pointsContainer">
                         <WorkspacePremiumIcon />
-                        <h4>{problemInfo.point} pts</h4>
+                        <h4>{problemInfo.points} pts</h4>
                     </div>
 
                 </div>
@@ -87,10 +87,11 @@ function SubmissionsContainer({ currentUser, problem }) {
             problemId: problem.id,
             submittedBy: currentUser.id,
             contestId: problem.contestId,
-            languageName
+            languageName,
+            points: problem.pointspoints
         }
 
-        console.log(data)
+
 
         SubmissionService.submit(data, submissionFileURI)
             .then((response) => {

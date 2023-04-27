@@ -18,7 +18,7 @@ export default function ContestProblemSet({ problems }) {
                         <div className="extraInfoContainer">
                             <div className="pointsContainer problemDesc_contest">
                                 <WorkspacePremiumIcon />
-                                <p>{problem.point} pts </p>
+                                <p>{problem.points} pts </p>
                             </div>
                             <div className="submissionCounter problemDesc_contest  ">
                                 <PersonIcon /> <p>x{problem.numSolutions}</p>

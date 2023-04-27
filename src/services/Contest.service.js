@@ -6,7 +6,7 @@ export default class ContestService {
         testcaseFileURL,
         outputFileURL,
         title,
-        point,
+        points,
         contestId,
         authorId,
         code
@@ -14,7 +14,7 @@ export default class ContestService {
 
         let { problemId } = await Global._fetch('/contests/createProblem', {
             title,
-            point,
+            points,
             contestId,
             authorId,
             code

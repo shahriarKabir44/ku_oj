@@ -19,7 +19,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
         testcaseFileURL: "",
         outputFileURL: "",
         title: "",
-        point: 0,
+        points: 0,
         contestId: 0,
         authorId: 1,
     })
@@ -66,8 +66,8 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                         }} type="text" name="contestTitle" /></div>
                     <div className='textInputContainer'>
                         <label htmlFor="contestTitle">Points </label>
-                        <input className='createContestInput' autoComplete='off' value={problemInfo.point} onChange={e => {
-                            setProblemInfo({ ...problemInfo, point: e.target.value })
+                        <input className='createContestInput' autoComplete='off' value={problemInfo.points} onChange={e => {
+                            setProblemInfo({ ...problemInfo, points: e.target.value })
 
                         }} type="text" name="contestTitle" />
                     </div>

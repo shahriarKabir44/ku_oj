@@ -94,48 +94,52 @@ function MySubmissionsContainer({ contest, user }) {
         {user && <>
             {mySubmissions.length === 0 && <h4>You haven't made any submission</h4>}
         </>}
-        {user && mySubmissions.length !== 0 && <div className="contestSubmissionContainer">
-            <table>
-                <thead style={{
-                    position: 'sticky',
-                    top: '0'
-                }}>
-                    <tr>
-                        <th>Time</th>
-                        <th>Problem</th>
-                        <th>Language</th>
-                        <th>Verdict</th>
-                        <th>Exec. time</th>
-                    </tr>
+        {user && mySubmissions.length !== 0 && <div style={{ height: 'inherit' }}>
+            <h2 style={{ margin: 0 }}>Your submisions</h2>
 
-                </thead>
-                <tbody>
-                    {mySubmissions.map((submission, index) => {
-                        return <tr key={index}>
-                            <td>
-                                <Link style={{
-                                    fontSize: '12px'
-                                }} to={`${Global.CLIENT_URL}/submission/${user.id}/${contest.id}/${submission.id}`}>{(new Date(submission.time)).toLocaleString()} </Link>
-                            </td>
-                            <td>
-                                <Link style={{
-                                    fontSize: '12px'
-                                }} to={`${Global.CLIENT_URL}/problem/${submission.problemId}`}>{submission.problemName} </Link>
-                            </td>
-                            <td>
-                                {submission.language}
-                            </td>
-                            <td>
-                                {submission.verdict}
-                            </td>
-                            <td>
-                                {submission.execTime} (ms)
-                            </td>
+            <div className="contestSubmissionContainer">
+                <table>
+                    <thead style={{
+                        position: 'sticky',
+                        top: '0'
+                    }}>
+                        <tr>
+                            <th>Time</th>
+                            <th>Problem</th>
+                            <th>Language</th>
+                            <th>Verdict</th>
+                            <th>Exec. time</th>
                         </tr>
-                    })}
 
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {mySubmissions.map((submission, index) => {
+                            return <tr key={index}>
+                                <td>
+                                    <Link style={{
+                                        fontSize: '12px'
+                                    }} to={`${Global.CLIENT_URL}/submission/${user.id}/${contest.id}/${submission.id}`}>{(new Date(submission.time)).toLocaleString()} </Link>
+                                </td>
+                                <td>
+                                    <Link style={{
+                                        fontSize: '12px'
+                                    }} to={`${Global.CLIENT_URL}/problem/${submission.problemId}`}>{submission.problemName} </Link>
+                                </td>
+                                <td>
+                                    {submission.language}
+                                </td>
+                                <td>
+                                    {submission.verdict}
+                                </td>
+                                <td>
+                                    {submission.execTime} (ms)
+                                </td>
+                            </tr>
+                        })}
+
+                    </tbody>
+                </table>
+            </div>
         </div>}
     </div>
 }

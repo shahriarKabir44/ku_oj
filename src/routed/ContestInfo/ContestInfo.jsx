@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import Global from '../../services/Global';
 import ContestService from '../../services/Contest.service'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
@@ -36,6 +37,7 @@ function ContestInfo({ currentUser }) {
             })
         ContestService.getContestProblems(id)
             .then(({ contestProblems }) => {
+
                 setProblemList(contestProblems)
             })
     }, [])
@@ -51,7 +53,7 @@ function ContestInfo({ currentUser }) {
                         <h3>1 hr 3 mins</h3>
                     </div>
                     <div className="card mySubmissionsContainer">
-                        <MySubmissionsContainer contestId={id} user={currentUser} />
+                        <MySubmissionsContainer contest={contest} user={currentUser} />
                     </div>
                 </div>
                 <div className="problemSetContainer card">
@@ -77,16 +79,64 @@ function ContestInfo({ currentUser }) {
     );
 }
 
-function MySubmissionsContainer({ contestId, user }) {
+function MySubmissionsContainer({ contest, user }) {
     const [mySubmissions, setMySubmissions] = React.useState([])
     React.useEffect(() => {
-        setMySubmissions([])
-    }, [])
+        if (user)
+            UserService.getContestSubmissions(user.id, contest.id)
+                .then(submissions => {
+                    setMySubmissions(submissions)
+                })
+
+    }, [contest, user])
     return <div className="submissionsListContainer">
         {!user && <h4>You need to log in to see your submissions</h4>}
         {user && <>
             {mySubmissions.length === 0 && <h4>You haven't made any submission</h4>}
         </>}
+        {user && mySubmissions.length !== 0 && <div className="contestSubmissionContainer">
+            <table>
+                <thead style={{
+                    position: 'sticky',
+                    top: '0'
+                }}>
+                    <tr>
+                        <th>Time</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                        <th>Verdict</th>
+                        <th>Exec. time</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {mySubmissions.map((submission, index) => {
+                        return <tr key={index}>
+                            <td>
+                                <Link style={{
+                                    fontSize: '12px'
+                                }} to={`${Global.CLIENT_URL}/submission/${user.id}/${contest.id}/${submission.id}`}>{(new Date(submission.time)).toLocaleString()} </Link>
+                            </td>
+                            <td>
+                                <Link style={{
+                                    fontSize: '12px'
+                                }} to={`${Global.CLIENT_URL}/problem/${submission.problemId}`}>{submission.problemName} </Link>
+                            </td>
+                            <td>
+                                {submission.language}
+                            </td>
+                            <td>
+                                {submission.verdict}
+                            </td>
+                            <td>
+                                {submission.execTime} (ms)
+                            </td>
+                        </tr>
+                    })}
+
+                </tbody>
+            </table>
+        </div>}
     </div>
 }
 

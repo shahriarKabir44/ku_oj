@@ -10,6 +10,7 @@ import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 export default function ProblemDetails({ currentUser }) {
 
     const [contest, setContestInfo] = React.useState({})
+    const [canSubmit, setSubmissionCapability] = React.useState()
 
     const { problemId } = useParams()
 
@@ -18,6 +19,7 @@ export default function ProblemDetails({ currentUser }) {
 
 
     React.useEffect(() => {
+        if (!currentUser) setSubmissionCapability(false)
         ContestService.searchContestByProblem(problemId)
             .then(contest => {
                 if (contest.endTime >= (new Date()) * 1) {
@@ -51,7 +53,7 @@ export default function ProblemDetails({ currentUser }) {
     return (
         <div className="container_problemDetails">
             <div className="leftPanelsContainer">
-                <ContestInfoContainer contest={contest} />
+                <ContestInfoContainer contest={contest} currentUser={currentUser} />
                 <SubmissionsContainer problem={problemInfo} currentUser={currentUser} />
             </div>
             <div className="problemBodyContainer card">
@@ -126,10 +128,11 @@ function SubmissionsContainer({ currentUser, problem }) {
     }
 
     React.useEffect(() => {
-        SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
-            .then(({ previousSubmissions }) => {
-                setPreviousSubmissionList(previousSubmissions)
-            })
+        if (currentUser)
+            SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
+                .then(({ previousSubmissions }) => {
+                    setPreviousSubmissionList(previousSubmissions)
+                })
     }, [currentUser, problem])
     return <div className="submissionsContainer card">
         <h3 style={{
@@ -142,7 +145,6 @@ function SubmissionsContainer({ currentUser, problem }) {
                 let extName = e.target.value
                 setFileExtension(extName)
                 if (extName === '') return
-
                 if (extName === 'py') setLanguageName('python')
 
             }} className='createSubmissionInput' name="" id=""  >
@@ -154,7 +156,7 @@ function SubmissionsContainer({ currentUser, problem }) {
             }} />
             <button onClick={submitSolution} className="btn" >Submit</button>
         </div>
-        <div className="previousSubmissionsContainer">
+        {currentUser && <div className="previousSubmissionsContainer">
             <table>
                 <thead style={{
                     position: 'sticky',
@@ -190,21 +192,27 @@ function SubmissionsContainer({ currentUser, problem }) {
 
                 </tbody>
             </table>
-        </div>
+        </div>}
+        {!currentUser && <h4>Log in to see your submissions</h4>}
     </div>
 
 }
 
-function ContestInfoContainer({ contest }) {
+function ContestInfoContainer({ contest, currentUser }) {
+    const isContestRunning = contest.endTime >= (new Date()) * 1
 
     return <div className="contestInfoContainer card">
         <h3 style={{
             margin: 0
         }}>{contest.title}</h3>
-        <div style={{
+        {isContestRunning && <div style={{
             display: 'flex',
             gap: "10px"
-        }}><h5>Time left:</h5>  <h3>1 hr 3 mins</h3> </div>
+        }}><h5>Time left:</h5>  <h3>1 hr 3 mins</h3> </div>}
+        {!isContestRunning && <div style={{
+            display: 'flex',
+            gap: "10px"
+        }}>   <h3>Contest ended</h3> </div>}
 
     </div>
 

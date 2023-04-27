@@ -112,9 +112,8 @@ function SubmissionsContainer({ currentUser, problem }) {
 
     const [submissions, setPreviousSubmissionList] = React.useState([])
     React.useEffect(() => {
-        SubmissionService.getPreviousSubmissions(problem?.id, currentUser?.id)
+        SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
             .then(({ previousSubmissions }) => {
-                console.log(previousSubmissions)
                 setPreviousSubmissionList(previousSubmissions)
             })
     }, [currentUser, problem])
@@ -151,6 +150,7 @@ function SubmissionsContainer({ currentUser, problem }) {
                         <th>Time</th>
                         <th>Language</th>
                         <th>Verdict</th>
+                        <th>Exec. time</th>
                     </tr>
 
                 </thead>
@@ -167,6 +167,9 @@ function SubmissionsContainer({ currentUser, problem }) {
                             </td>
                             <td>
                                 {submission.verdict}
+                            </td>
+                            <td>
+                                {submission.execTime} (ms)
                             </td>
                         </tr>
                     })}

@@ -22,8 +22,8 @@ export default class SubmissionService {
             points: 500
         })
     }
-    static async getPreviousSubmissions(problemId, userId) {
-        return Global._fetch('/submission/getPreviousSubmissions', { problemId, userId })
+    static async getPreviousSubmissionsOfProblem(problemId, userId) {
+        return Global._fetch('/submission/getPreviousSubmissionsOfProblem', { problemId, userId })
     }
     static async getSubmissionInfo(id) {
         return Global._fetch('/submission/getSubmissionInfo/' + id)

@@ -13,11 +13,14 @@ export default class SubmissionService {
             ext: fileExtension,
             submissionid: submissionId
         })
-        Global._fetch('/submission/setSubmissionFileURL', {
+        return Global._fetch('/submission/setSubmissionFileURL', {
             submissionFileURL: fileURL,
-            id: submissionId
+            id: submissionId,
+            contestId,
+            userId: submittedBy,
+            problemId,
+            points: 500
         })
-        return { fileURL, submissionId }
     }
     static async getPreviousSubmissions(problemId, userId) {
         return Global._fetch('/submission/getPreviousSubmissions', { problemId, userId })

@@ -93,12 +93,8 @@ function SubmissionsContainer({ currentUser, problem }) {
         console.log(data)
 
         SubmissionService.submit(data, submissionFileURI)
-            .then(({ fileURL, submissionId }) => {
-                ContestService.judgeSubmission({
-                    fileURL,
-                    submissionId,
-                    problem
-                })
+            .then((response) => {
+                console.log(response)
             })
 
     }

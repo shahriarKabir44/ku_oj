@@ -4,7 +4,6 @@ import ContestService from '../../services/Contest.service'
 import SubmissionService from '../../services/Submission.service'
 import './ProblemDetails.css'
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-
 import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
@@ -80,7 +79,11 @@ function SubmissionsContainer({ currentUser, problem }) {
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
     const [languageName, setLanguageName] = React.useState('')
-    function submitSolution(e) {
+    function submitSolution() {
+        if (!currentUser) {
+            alert('Please log in or sign up!')
+            return
+        }
         const data = {
             time: (new Date()) * 1,
             fileExtension,
@@ -107,10 +110,11 @@ function SubmissionsContainer({ currentUser, problem }) {
         return (URL.createObjectURL(fileObj))
     }
 
-    const [previousSubmissions, setPreviousSubmissionList] = React.useState([])
+    const [submissions, setPreviousSubmissionList] = React.useState([])
     React.useEffect(() => {
         SubmissionService.getPreviousSubmissions(problem?.id, currentUser?.id)
             .then(({ previousSubmissions }) => {
+                console.log(previousSubmissions)
                 setPreviousSubmissionList(previousSubmissions)
             })
     }, [currentUser, problem])
@@ -118,7 +122,7 @@ function SubmissionsContainer({ currentUser, problem }) {
         <h3 style={{
             margin: 0
         }}>Submit?</h3>
-        {/* add a logged in checker */}
+        {/* add registration  checker during contest */}
         {/* to-do: add file checker */}
         <div className="submissionContainer">
             <select required onChange={e => {
@@ -136,6 +140,39 @@ function SubmissionsContainer({ currentUser, problem }) {
                 setSubmissionFileURI(onfileChange(e))
             }} />
             <button onClick={submitSolution} className="btn" >Submit</button>
+        </div>
+        <div className="previousSubmissionsContainer">
+            <table>
+                <thead style={{
+                    position: 'sticky',
+                    top: '-10px'
+                }}>
+                    <tr>
+                        <th>Time</th>
+                        <th>Language</th>
+                        <th>Verdict</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    {submissions.map((submission, index) => {
+                        return <tr key={index}>
+                            <td>
+                                <Link style={{
+                                    fontSize: '12px'
+                                }} to={`${Global.CLIENT_URL}/submission/${currentUser.id}/${problem.contestId}/${submission.id}`}>{(new Date(submission.time)).toLocaleString()} </Link>
+                            </td>
+                            <td>
+                                {submission.language}
+                            </td>
+                            <td>
+                                {submission.verdict}
+                            </td>
+                        </tr>
+                    })}
+
+                </tbody>
+            </table>
         </div>
     </div>
 

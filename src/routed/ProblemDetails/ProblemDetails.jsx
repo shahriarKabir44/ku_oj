@@ -79,6 +79,8 @@ function SubmissionsContainer({ currentUser, problem }) {
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
     const [languageName, setLanguageName] = React.useState('')
+    const [submissions, setPreviousSubmissionList] = React.useState([])
+    const fileUploadRef = React.useRef(null), extSelectionRef = React.useRef(null)
     function submitSolution() {
         if (!currentUser) {
             alert('Please log in or sign up!')
@@ -93,12 +95,25 @@ function SubmissionsContainer({ currentUser, problem }) {
             languageName,
             points: problem.pointspoints
         }
+        let newSubmission = {
+            ...data,
+            execTime: '--',
+            verdict: '--',
+            id: 0
+        }
 
-
+        setPreviousSubmissionList([newSubmission, ...submissions])
 
         SubmissionService.submit(data, submissionFileURI)
             .then((response) => {
-                console.log(response)
+
+
+                fileUploadRef.current.value = null
+                extSelectionRef.current.value = ''
+                SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
+                    .then(({ previousSubmissions }) => {
+                        setPreviousSubmissionList(previousSubmissions)
+                    })
             })
 
     }
@@ -110,7 +125,6 @@ function SubmissionsContainer({ currentUser, problem }) {
         return (URL.createObjectURL(fileObj))
     }
 
-    const [submissions, setPreviousSubmissionList] = React.useState([])
     React.useEffect(() => {
         SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
             .then(({ previousSubmissions }) => {
@@ -124,7 +138,7 @@ function SubmissionsContainer({ currentUser, problem }) {
         {/* add registration  checker during contest */}
         {/* to-do: add file checker */}
         <div className="submissionContainer">
-            <select required onChange={e => {
+            <select ref={extSelectionRef} required onChange={e => {
                 let extName = e.target.value
                 setFileExtension(extName)
                 if (extName === '') return
@@ -135,7 +149,7 @@ function SubmissionsContainer({ currentUser, problem }) {
                 <option value=""> Select Language </option>
                 <option value="py">Python3</option>
             </select>
-            <input required className='createSubmissionInput' type="file" name="" id="" onChange={e => {
+            <input ref={fileUploadRef} required className='createSubmissionInput' type="file" name="" id="" onChange={e => {
                 setSubmissionFileURI(onfileChange(e))
             }} />
             <button onClick={submitSolution} className="btn" >Submit</button>
@@ -144,7 +158,7 @@ function SubmissionsContainer({ currentUser, problem }) {
             <table>
                 <thead style={{
                     position: 'sticky',
-                    top: '-10px'
+                    top: '0'
                 }}>
                     <tr>
                         <th>Time</th>
@@ -197,32 +211,3 @@ function ContestInfoContainer({ contest }) {
 }
 
 
-
-/*
-<div>
-           
-            <div className="mainContainer">
-               
-
-
-                <div className="submissionsContai">
-                    <h3>Previous submissions</h3>
-                    {previousSubmissions.map((submission, index) => {
-                        return <div key={index}>
-                            <div className="flex">
-                                <Link to={`/viewSubmission/${submission.id}`}>
-                                    {(new Date(submission.time)).toLocaleString()}
-                                </Link>
-                                <p>language:{submission.language}</p>
-                                <p>verdict:{submission.verdict}</p>
-                            </div>
-
-                        </div>
-                    })}
-                </div>
-            </div>
-
-        </div>
-
-
-*/

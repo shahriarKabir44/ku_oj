@@ -49,6 +49,7 @@ h2.problemTitle {
     display: flex;
     align-items: stretch;
     gap: 5px;
+    justify-content: space-between;
 }
 
 .previousSubmissionsContainer {

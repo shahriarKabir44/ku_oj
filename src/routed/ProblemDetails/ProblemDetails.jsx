@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ContestService from '../../services/Contest.service'
 import SubmissionService from '../../services/Submission.service'
 import './ProblemDetails.css'
@@ -8,7 +8,7 @@ import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 export default function ProblemDetails({ currentUser }) {
-
+    const nav = useNavigate()
     const [contest, setContestInfo] = React.useState({})
     const [canSubmit, setSubmissionCapability] = React.useState()
 
@@ -22,6 +22,10 @@ export default function ProblemDetails({ currentUser }) {
         if (!currentUser) setSubmissionCapability(false)
         ContestService.searchContestByProblem(problemId)
             .then(contest => {
+                if (!contest) {
+                    nav('/')
+                }
+
                 if (contest.endTime >= (new Date()) * 1) {
                     contest.isRunning = true
 
@@ -31,6 +35,10 @@ export default function ProblemDetails({ currentUser }) {
         try {
             ContestService.getProblemInfo(problemId)
                 .then(({ problemInfo }) => {
+                    if (!problemInfo) {
+                        nav('/')
+                    }
+                    document.title = problemInfo.title
                     NavbarDirectoryManager.setDitectory('problemDescription', {
                         contest: {
                             title: problemInfo.contestCode,
@@ -54,7 +62,7 @@ export default function ProblemDetails({ currentUser }) {
         <div className="container_problemDetails">
             <div className="leftPanelsContainer">
                 <ContestInfoContainer contest={contest} currentUser={currentUser} />
-                <SubmissionsContainer problem={problemInfo} currentUser={currentUser} />
+                <SubmissionsContainer problem={problemInfo} contest={contest} currentUser={currentUser} />
             </div>
             <div className="problemBodyContainer card">
                 <div className="problemExtraInfoContainer">
@@ -77,17 +85,28 @@ export default function ProblemDetails({ currentUser }) {
 
 }
 
-function SubmissionsContainer({ currentUser, problem }) {
+function SubmissionsContainer({ currentUser, problem, contest }) {
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
     const [languageName, setLanguageName] = React.useState('')
     const [submissions, setPreviousSubmissionList] = React.useState([])
     const fileUploadRef = React.useRef(null), extSelectionRef = React.useRef(null)
+    const [hasRegistered, setRegistrationStatus] = React.useState(false)
+    React.useEffect(() => {
+
+        if (currentUser) {
+            ContestService.isRegistered(contest.id, currentUser.id)
+                .then(({ isRegistered }) => {
+                    setRegistrationStatus(isRegistered)
+                })
+        }
+    }, [currentUser, problem])
     function submitSolution() {
         if (!currentUser) {
             alert('Please log in or sign up!')
             return
         }
+        let isOfficial = hasRegistered ? (contest.endTime >= (new Date()) * 1 ? true : false) : false
         const data = {
             time: (new Date()) * 1,
             fileExtension,
@@ -95,7 +114,8 @@ function SubmissionsContainer({ currentUser, problem }) {
             submittedBy: currentUser.id,
             contestId: problem.contestId,
             languageName,
-            points: problem.points
+            points: problem.points,
+            isOfficial
         }
         let newSubmission = {
             ...data,

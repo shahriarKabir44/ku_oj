@@ -30,6 +30,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
                 <thead>
                     <tr>
                         <th>Participant</th>
+                        <th>Points</th>
                         {problems.map((problem, index) => {
                             return <th key={index}>{problem.title}</th>
                         })}
@@ -41,6 +42,9 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
                         return <tr key={index}>
                             <td>
                                 <h3 className="contestantNameTD">{rank.contestantName}</h3>
+                            </td>
+                            <td>
+                                <h4> {rank.official_points} </h4>
                             </td>
                             {problems.map((problem, index1) => {
                                 let data = rank.official_description[problem.id]

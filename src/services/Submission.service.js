@@ -16,8 +16,6 @@ export default class SubmissionService {
                 contestId,
                 userId: submittedBy,
                 problemId,
-                //points: 500,
-                isOfficial: true,
                 ...submissionInfo
             })
         }, '/submission/submit')

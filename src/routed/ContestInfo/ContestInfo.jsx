@@ -26,6 +26,7 @@ function ContestInfo({ currentUser }) {
                 if (!contestInfo) {
                     navigate('/')
                 }
+                document.title = contestInfo.title
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
                         contest: {

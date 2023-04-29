@@ -7,7 +7,9 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
-export default function ProblemDetails({ currentUser }) {
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade'; export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
     const [contest, setContestInfo] = React.useState({})
     const [canSubmit, setSubmissionCapability] = React.useState()
@@ -91,6 +93,7 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
     const [languageName, setLanguageName] = React.useState('')
     const [submissions, setPreviousSubmissionList] = React.useState([])
     const fileUploadRef = React.useRef(null), extSelectionRef = React.useRef(null)
+    const [codePreviewModalVisibility, setCodePreviewModalVisibility] = React.useState(false)
     const [hasRegistered, setRegistrationStatus] = React.useState(false)
     React.useEffect(() => {
 
@@ -174,7 +177,9 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
             <input ref={fileUploadRef} required className='createSubmissionInput' type="file" name="" id="" onChange={e => {
                 setSubmissionFileURI(onfileChange(e))
             }} />
-            <button onClick={submitSolution} className="btn" >Submit</button>
+            <button onClick={() => {
+                setCodePreviewModalVisibility(true)
+            }} className="btn" >Submit</button>
         </div>
         {currentUser && <div className="previousSubmissionsContainer">
             <table>
@@ -214,8 +219,79 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
             </table>
         </div>}
         {!currentUser && <h4>Log in to see your submissions</h4>}
+        <CodePreviewModal onSubmit={submitSolution} languageName={languageName} submissionFileURI={submissionFileURI} title={problem.title} open={codePreviewModalVisibility} handleClose={setCodePreviewModalVisibility} />
     </div>
 
+}
+
+
+function CodePreviewModal({ languageName, submissionFileURI, title, open, handleClose, onSubmit }) {
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        maxHeight: '50vh',
+        height: '50vh',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        overflowY: 'auto'
+    };
+    return <Modal aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={() => {
+            handleClose()
+        }}
+        closeAfterTransition
+        slotProps={{
+            backdrop: {
+                timeout: 500,
+            },
+        }}>
+        <Fade in={open}>
+            <Box sx={style}>
+                <div className="codePreviewModalContainer">
+                    <h4 style={{
+                        fontFamily: "serif",
+                        fontWeight: 100
+                    }}>Before you submit</h4>
+                    <button className="btn btn-primary  " onClick={() => {
+                        handleClose()
+                        onSubmit()
+                    }} >Submit</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problem title</th>
+                            <th>Language</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{title}</td>
+                            <td>{languageName}</td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>Code:</td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>
+                                <iframe src={submissionFileURI} title='Code preview' frameBorder="0"></iframe>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </Box>
+        </Fade>
+    </Modal>
 }
 
 function ContestInfoContainer({ contest, currentUser }) {

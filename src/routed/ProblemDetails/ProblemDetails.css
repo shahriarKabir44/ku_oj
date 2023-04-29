@@ -57,3 +57,9 @@ h2.problemTitle {
     max-height: 30vh;
     overflow-y: auto;
 }
+
+.codePreviewModalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

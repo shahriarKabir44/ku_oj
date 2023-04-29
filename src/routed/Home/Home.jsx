@@ -9,7 +9,6 @@ export default function Home({ currentUser }) {
         setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
         ContestService.getContests()
             .then((contests) => {
-                console.log(contests)
                 setContestList(contests)
             })
 

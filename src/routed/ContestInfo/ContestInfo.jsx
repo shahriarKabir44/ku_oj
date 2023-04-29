@@ -6,6 +6,7 @@ import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
 import './ContestInfo.css'
 import UserService from '../../services/User.service';
 import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
+import ContestRankings from './ContestRankings/ContestRankings';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const navigate = useNavigate()
@@ -70,6 +71,7 @@ function ContestInfo({ currentUser }) {
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
                         </div>
                         {selectedTab === 1 && <ContestProblemSet problems={problems} />}
+                        {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
 
                     </div>
                 </div>

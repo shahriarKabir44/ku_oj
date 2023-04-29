@@ -95,7 +95,7 @@ function SubmissionsContainer({ currentUser, problem }) {
             submittedBy: currentUser.id,
             contestId: problem.contestId,
             languageName,
-            points: problem.pointspoints
+            points: problem.points
         }
         let newSubmission = {
             ...data,

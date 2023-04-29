@@ -105,8 +105,8 @@ export default class ContestService {
     static async registerForContest(contestId, userId) {
         return Global._fetch('/contests/registerForContest', { contestId, userId })
     }
-    static async getContestStandings(contestId, pageNumber) {
-        return Global._fetch('/contests/getContestStandings', { contestId, pageNumber })
+    static async getContestStandings(contestId, pageNumber, isOfficial) {
+        return Global._fetch('/contests/getContestStandings', { contestId, pageNumber, isOfficial })
 
     }
 }

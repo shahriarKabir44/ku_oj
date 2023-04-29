@@ -4,13 +4,15 @@ import './ContestRankings.css'
 export default function ContestRankings({ contestId, currentUser, problems }) {
     const [pageNumber, setPageNumber] = React.useState(0)
     const [rankings, setRankingList] = React.useState([])
+    const [isOfficial, toggleOfficialValue] = React.useState(true)
     function gerContestStandings() {
-        ContestService.getContestStandings(contestId, pageNumber)
+        ContestService.getContestStandings(contestId, pageNumber, isOfficial)
             .then(standings => {
                 standings.forEach((ranking) => {
                     ranking.official_description = JSON.parse(ranking.official_description)
                     ranking.description = JSON.parse(ranking.description)
-
+                    ranking.official_description = isOfficial ? ranking.official_description : ranking.description
+                    ranking.official_points = isOfficial ? ranking.official_points : ranking.points
                 })
 
                 setRankingList(standings)
@@ -18,10 +20,14 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
     }
     React.useEffect(() => {
         gerContestStandings()
-    }, [contestId, currentUser])
+    }, [contestId, currentUser, isOfficial])
 
     return (
         <div className="contestStantingsContainer">
+            <label htmlFor="showOfficial">show official</label>
+            <input checked={isOfficial} type="checkbox" onChange={(e) => {
+                toggleOfficialValue(1 ^ isOfficial)
+            }} name="showOfficial" id="" />
             <table style={{
                 width: 'auto',
                 borderCollapse: 'unset',
@@ -29,7 +35,10 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
             }}>
                 <thead>
                     <tr>
-                        <th>Participant</th>
+                        <th>
+                            <p>Participant</p>
+
+                        </th>
                         <th>Points</th>
                         {problems.map((problem, index) => {
                             return <th key={index}>{problem.title}</th>
@@ -53,6 +62,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
                             })}
                         </tr>
                     })}
+
                 </tbody>
             </table>
         </div>

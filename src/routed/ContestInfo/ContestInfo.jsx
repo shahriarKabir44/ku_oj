@@ -42,7 +42,7 @@ function ContestInfo({ currentUser }) {
 
                 setProblemList(contestProblems)
             })
-    }, [])
+    }, [id, navigate])
     return (
         <div className='contestinfo_container'>
 

@@ -23,7 +23,7 @@ export default class SubmissionService {
     static async getPreviousSubmissionsOfProblem(problemId, userId) {
         return Global._fetch('/submission/getPreviousSubmissionsOfProblem', { problemId, userId })
     }
-    static async getSubmissionInfo(id) {
-        return Global._fetch('/submission/getSubmissionInfo/' + id)
+    static async getSubmissionInfo(data) {
+        return Global._fetch('/submission/getSubmissionInfo', data)
     }
 }

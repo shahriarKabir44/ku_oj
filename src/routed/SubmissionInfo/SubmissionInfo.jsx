@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SubmissionService from '../../services/Submission.service';
 
-function SubmissionInfo(props) {
-    const { id } = useParams()
+function SubmissionInfo({ currentUser }) {
+    const params = useParams()
     const [submissionInfo, setSubmissionInfo] = React.useState({
         id: "",
         time: "",
@@ -16,12 +16,14 @@ function SubmissionInfo(props) {
         code: ""
     })
     React.useEffect(() => {
-        SubmissionService.getSubmissionInfo(id)
+        document.title = "Submission"
+        console.log(params)
+        SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser.id })
             .then(({ submissionInfo }) => {
                 setSubmissionInfo(submissionInfo)
             })
 
-    }, [id])
+    }, [currentUser])
     return (
         <div>
             <table>

@@ -30,7 +30,7 @@ function App() {
 					<Routes>
 						<Route path='/' element={<Home currentUser={currentUser} />} />
 						<Route path='/contest/:id' element={< ContestInfo currentUser={currentUser} />} />
-						<Route path='/viewSubmission/:submittedBy/:contestId/:submissionId/:problemId' element={<SubmissionInfo currentUser={currentUser} />} />
+						<Route path='/viewSubmission/:contestId/:submissionId/' element={<SubmissionInfo currentUser={currentUser} />} />
 						<Route path='/user/:id'>
 							<Route path='' element={<UserProfileRoot currentUser={currentUser} />} />
 							{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />

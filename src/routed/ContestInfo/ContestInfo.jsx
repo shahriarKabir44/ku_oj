@@ -121,7 +121,7 @@ function MySubmissionsContainer({ contest, user }) {
                                 <td>
                                     <Link style={{
                                         fontSize: '12px'
-                                    }} to={`${Global.CLIENT_URL}/viewSubmission/${user.id}/${contest.id}/${submission.id}/${submission.problemId}`}>{(new Date(submission.time)).toLocaleString()} </Link>
+                                    }} to={`${Global.CLIENT_URL}/viewSubmission/${contest.id}/${submission.id}`}>{(new Date(submission.time)).toLocaleString()} </Link>
                                 </td>
                                 <td>
                                     <Link style={{

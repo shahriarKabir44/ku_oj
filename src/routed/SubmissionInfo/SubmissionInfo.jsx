@@ -1,74 +1,63 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SubmissionService from '../../services/Submission.service';
+import Global from '../../services/Global';
 
 function SubmissionInfo({ currentUser }) {
     const params = useParams()
-    const [submissionInfo, setSubmissionInfo] = React.useState({
-        id: "",
-        time: "",
-        execTime: "",
-        verdict: "",
-        language: "",
-        submissionFileURL: "",
-        problemId: "",
-        submittedBy: "",
-        code: ""
-    })
+    const [submissionInfo, setSubmissionInfo] = React.useState({})
     React.useEffect(() => {
         document.title = "Submission"
-        console.log(params)
-        SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser.id })
-            .then(({ submissionInfo }) => {
-                setSubmissionInfo(submissionInfo)
+        console.log(params, currentUser?.id)
+        SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser?.id })
+            .then((submissionInfo) => {
+                if (submissionInfo.success) {
+                    console.log(submissionInfo)
+                    setSubmissionInfo(submissionInfo.submission)
+
+                }
             })
 
     }, [currentUser])
     return (
         <div>
             <table>
+                <thead>
+                    <tr>
+                        <th>Contest</th>
+                        <th>Problem</th>
+                        <th>Language</th>
+                        <th>Time</th>
+                        <th>Verdict</th>
+                        <th>Author</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <p>Problem</p>
-                            <p> <Link to={`/viewProblem/${submissionInfo.problemId}`}>
-                                {submissionInfo.problemName}
-                            </Link> </p>
+                            <Link to={`${Global.CLIENT_URL}/contest/${submissionInfo.contest?.id}`}>{submissionInfo.contest?.title}</Link>
                         </td>
                         <td>
-                            <p>Submitted by</p>
-                            <p> <Link  >
-                                {submissionInfo.user}
-                            </Link> </p>
+                            <Link to={`${Global.CLIENT_URL}/problem/${submissionInfo.problemId}`}>{submissionInfo.problemName}</Link>
                         </td>
                         <td>
-                            <p>Verdict</p>
-                            <p>{submissionInfo.verdict}</p>
+                            {submissionInfo.language}
                         </td>
                         <td>
-                            <p>Submitted on</p>
-                            <p>{new Date(submissionInfo.time).toLocaleString()} </p>
+                            {(new Date(submissionInfo.time)).toLocaleString()}
                         </td>
                         <td>
-                            <p>Language</p>
-                            <p>{submissionInfo.language}</p>
+                            {submissionInfo.verdict}
+                        </td>
+                        <td>
+                            <Link to={`${Global.CLIENT_URL}/user/${submissionInfo.submittedBy}`}>{submissionInfo.authorName}</Link>
+
+
                         </td>
                     </tr>
                 </tbody>
-
             </table>
-            <code>
-                <ol>
-                    {submissionInfo.code.split('\n').map((line, lineNum) => {
-                        return <li key={lineNum}>
-                            <pre>
-                                {line}
-                            </pre>
-                        </li>
-                    })}
-                </ol>
 
-            </code>
         </div>
     );
 }

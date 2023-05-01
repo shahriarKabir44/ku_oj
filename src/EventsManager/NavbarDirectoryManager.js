@@ -9,7 +9,7 @@ export default class NavbarDirectoryManager {
     static unsubscribe(client) {
         NavbarDirectoryManager.clients[client.label] = null
     }
-    static setDitectory(label, { userId, userName, contest, problem }) {
+    static setDitectory(label, { userId, userName, contest, problem, submission }) {
         let dirs = [{
             label: 'Home',
             path: '/'
@@ -56,6 +56,24 @@ export default class NavbarDirectoryManager {
                 {
                     label: problem.code,
                     path: Global.CLIENT_URL + '/problem/' + problem.id
+                }
+            ]
+        }
+        else if (label === 'submissionDetails') {
+            console.log(contest, problem, submission)
+            dirs = [
+                ...dirs,
+                {
+                    label: contest.title,
+                    path: Global.CLIENT_URL + '/contest/' + contest.id
+                },
+                {
+                    label: problem.title,
+                    path: Global.CLIENT_URL + '/problem/' + problem.id
+                },
+                {
+                    label: 'submission',
+                    path: `${Global.CLIENT_URL}/viewSubmission/${contest.id}/${submission.id}`
                 }
             ]
         }

@@ -2,19 +2,21 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SubmissionService from '../../services/Submission.service';
 import Global from '../../services/Global';
-
+import './SubmissionInfo.css'
 function SubmissionInfo({ currentUser }) {
     const params = useParams()
     const [submissionInfo, setSubmissionInfo] = React.useState({})
+    const [submittedCode, setSubmittedCode] = React.useState([])
     React.useEffect(() => {
         document.title = "Submission"
         console.log(params, currentUser?.id)
         SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser?.id })
             .then((submissionInfo) => {
+                console.log(submissionInfo)
                 if (submissionInfo.success) {
-                    console.log(submissionInfo)
-                    setSubmissionInfo(submissionInfo.submission)
 
+                    setSubmissionInfo(submissionInfo.submission)
+                    setSubmittedCode(submissionInfo.code.split('\n'))
                 }
             })
 
@@ -52,7 +54,23 @@ function SubmissionInfo({ currentUser }) {
                         <td>
                             <Link to={`${Global.CLIENT_URL}/user/${submissionInfo.submittedBy}`}>{submissionInfo.authorName}</Link>
 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colSpan={6}>Code</td>
+                    </tr>
+                    <tr>
+                        <td colSpan={6}>
+                            <div className="codeContainer">
+                                <ol>
+                                    {submittedCode.map((line, lineNum) => {
+                                        return <li key={lineNum}>
+                                            <code>{line} </code>
+                                        </li>
+                                    })}
+                                </ol>
 
+                            </div>
                         </td>
                     </tr>
                 </tbody>

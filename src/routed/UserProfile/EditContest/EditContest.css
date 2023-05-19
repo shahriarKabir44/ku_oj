@@ -1,0 +1,12 @@
+.titleContainer_updateProblem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.updateContestInput {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

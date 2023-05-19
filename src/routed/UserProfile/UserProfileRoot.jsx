@@ -106,7 +106,7 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
                             {(new Date(contest.endTime)).toLocaleString()}
                         </td>
                         {isCurrentUser && <td>
-                            {!hasEnded(contest.endTime) && <Link to={`${Global.CLIENT_URL}/editContest/${contest.id}`}>
+                            {(!hasEnded(contest.endTime) || true) && <Link to={`${Global.CLIENT_URL}/user/${currentUser.id}/editContest/${contest.id}`}>
                                 <button className="btn success" >edit</button>
                             </Link>}
                         </td>}

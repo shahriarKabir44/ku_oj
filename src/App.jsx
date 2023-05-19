@@ -11,6 +11,7 @@ import Home from './routed/Home/Home';
 import UserProfileRoot from './routed/UserProfile/UserProfileRoot';
 import UserService from './services/User.service';
 import ProblemDetails from './routed/ProblemDetails/ProblemDetails';
+import EditContest from './routed/UserProfile/EditContest/EditContest';
 function App() {
 	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
@@ -33,8 +34,9 @@ function App() {
 						<Route path='/viewSubmission/:contestId/:submissionId/' element={<SubmissionInfo currentUser={currentUser} />} />
 						<Route path='/user/:id'>
 							<Route path='' element={<UserProfileRoot currentUser={currentUser} />} />
-							{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />
-							}
+							{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />}
+							{currentUser && <Route path='editContest/:contestId' element={<EditContest currentUser={currentUser} />} />}
+
 						</Route>
 						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
 					</Routes>

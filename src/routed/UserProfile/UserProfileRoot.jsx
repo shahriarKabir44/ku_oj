@@ -22,6 +22,7 @@ export default function UserProfileRoot({ currentUser }) {
                         userId: user.id, userName: user.userName
                     })
                 }, 100)
+                document.title = user?.userName
                 setUser(user)
             })
     }, [id])
@@ -60,15 +61,15 @@ export default function UserProfileRoot({ currentUser }) {
 
 
 function HostedContestsContainer({ user, currentUser, isShowing }) {
-    const isCurrentUser = (user.id === currentUser.id)
+    const isCurrentUser = (user?.id === currentUser?.id)
     const [hostedContests, setHostedContestsList] = React.useState([])
+    const navigate = useNavigate()
     function hasEnded(endTime) {
         return endTime < (new Date()) * 1
     }
     React.useEffect(() => {
         UserService.getHostedContests(user.id)
             .then(contests => {
-                console.log(contests)
                 setHostedContestsList(contests)
             })
     }, [user])
@@ -105,8 +106,9 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
                             {(new Date(contest.endTime)).toLocaleString()}
                         </td>
                         {isCurrentUser && <td>
-                            {!hasEnded(contest.endTime) && <button className="btn success">edit</button>
-                            }
+                            {!hasEnded(contest.endTime) && <Link to={`${Global.CLIENT_URL}/editContest/${contest.id}`}>
+                                <button className="btn success" >edit</button>
+                            </Link>}
                         </td>}
                     </tr>
                 })}

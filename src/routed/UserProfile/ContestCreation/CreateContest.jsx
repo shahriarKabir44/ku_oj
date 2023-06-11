@@ -19,17 +19,26 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
-        ContestService.createContest({
-            ...contestInfo,
-            startTime: contestInfo.startTime * 1,
-            endTime: contestInfo.endTime * 1
-        })
-            .then((contestId) => {
-                ContestCreationEventManager.sendMessage(contestId)
-                    .then(() => {
-                        alert("Contest created!")
-                    })
+        if(
+            contestInfo.title.trim().length === 0 ||
+            contestInfo.startTime === contestInfo.endTime ||
+            contestInfo.code.length <= 4
+        ){
+            alert("Invalid contest!")
+        }
+        else{
+            ContestService.createContest({
+                ...contestInfo,
+                startTime: contestInfo.startTime * 1,
+                endTime: contestInfo.endTime * 1
             })
+                .then((contestId) => {
+                    ContestCreationEventManager.sendMessage(contestId)
+                        .then(() => {
+                            alert("Contest created!")
+                        })
+                })
+        }
 
     }
     React.useEffect(() => {

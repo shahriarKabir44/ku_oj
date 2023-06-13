@@ -3,6 +3,7 @@ body {
     --container-bg-color: #E3F6F5;
     --containerHeight: calc(100vh - 60px);
     --primary_color: #337ab7
+
 }
 
 .mainContainer {

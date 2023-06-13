@@ -9,7 +9,9 @@ import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade'; export default function ProblemDetails({ currentUser }) {
+import Fade from '@mui/material/Fade'; 
+
+export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
     const [contest, setContestInfo] = React.useState({})
     const [canSubmit, setSubmissionCapability] = React.useState()

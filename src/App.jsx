@@ -12,6 +12,7 @@ import UserProfileRoot from './routed/UserProfile/UserProfileRoot';
 import UserService from './services/User.service';
 import ProblemDetails from './routed/ProblemDetails/ProblemDetails';
 import EditContest from './routed/UserProfile/EditContest/EditContest';
+import ProblemSet from './routed/ProblemSet/ProblemSet';
 function App() {
 	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
@@ -39,6 +40,7 @@ function App() {
 
 						</Route>
 						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
+						<Route path='/problemset'  element={<ProblemSet currentUser={currentUser}/>}/>
 					</Routes>
 				</div>
 

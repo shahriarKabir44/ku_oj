@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 function CreateContest({ currentUser }) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
     const navigate = useNavigate()
+    const [problemCount, setProblemCount] = React.useState([])
 
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
@@ -19,14 +20,14 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
-        if(
+        if (
             contestInfo.title.trim().length === 0 ||
             contestInfo.startTime === contestInfo.endTime ||
             contestInfo.code.length <= 4
-        ){
+        ) {
             alert("Invalid contest!")
         }
-        else{
+        else {
             ContestService.createContest({
                 ...contestInfo,
                 startTime: contestInfo.startTime * 1,
@@ -58,7 +59,6 @@ function CreateContest({ currentUser }) {
 
 
     }, [])
-    const [problemCount, setProblemCount] = React.useState([])
     return (
         <div className="container_createContest">
             <div className="dashboardContainer">
@@ -67,7 +67,7 @@ function CreateContest({ currentUser }) {
 
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_createProblem">
-                                <h2 className="title">Create a contest</h2>
+                                <h2 className="createContestPage_title">Create a contest</h2>
                                 <button className="btn confirmContestCreation" onClick={createContest}>Create</button>
                             </div>
                             <div className='formContainer'>
@@ -98,13 +98,13 @@ function CreateContest({ currentUser }) {
                     <div className="problemsLabelPanel">
                         <div className="card">
                             <div className="titleContainer">
-                                <h3 className="title">Problems</h3>
+                                <h3 className="createContestPage_title">Problems</h3>
                                 <button onClick={() => {
                                     setProblemCount([...problemCount, {
                                         index: problemCount.length,
                                         title: `Problem ${problemCount.length + 1}`
                                     }])
-                                    setSelectedProblemForPreview(problemCount.length - 1)
+                                    setSelectedProblemForPreview(problemCount.length)
                                 }} className="addProblemBtn">
                                     <AddIcon />
                                 </button>
@@ -116,7 +116,8 @@ function CreateContest({ currentUser }) {
                                             setSelectedProblemForPreview(problem.index)
                                         }} className={`problemLabel ${problem.index === selectedProblemForPreview ? "selectedProblemForPreview" : ""}`}>{problem.title}</div>
                                         <div onClick={() => {
-                                            setProblemCount(problemCount.filter(p => p !== problem.index))
+
+                                            setProblemCount(problemCount.filter(p => p.index !== problem.index))
                                         }} className="deleteBtn"> <DeleteIcon /></div>
 
                                     </div>

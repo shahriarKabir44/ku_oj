@@ -7,9 +7,12 @@ import AddIcon from '@mui/icons-material/Add';
 import './EditContest.css'
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import { useNavigate } from 'react-router-dom';
+import EditProblem from './EditProblem/EditProblem';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
+    const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
+
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),
@@ -33,8 +36,9 @@ export default function EditContest({ currentUser }) {
                 //add validation
                 let { problems } = fullContestDetails
                 delete fullContestDetails.problems
+
                 setProblemCount(problems)
-                setContestInfo(contestInfo)
+                setContestInfo(fullContestDetails)
             })
 
     }, [currentUser, contestId])
@@ -47,7 +51,7 @@ export default function EditContest({ currentUser }) {
 
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_updateProblem">
-                                <h2 className="createContestPage_title">Update contest</h2>
+                                <h2 className="createContestPage_title">Update contest </h2>
                                 <button className="btn confirmContestCreation"  >Update</button>
                             </div>
                             <div className='formContainer'>
@@ -101,7 +105,18 @@ export default function EditContest({ currentUser }) {
                     </div>
 
                 </div>
-                <div className="problemsContainer"></div>
+                <div className="problemDetailsPanels">
+                    <div className="card" style={{ height: "inherit" }}>
+                        {problemCount.map((problem, index) => {
+                            return <EditProblem setProblemTitle={(title) => {
+                                let problems = [...problemCount]
+                                problems[index].title = title
+                                setProblemCount(problems)
+                            }} key={index} problemNum={index} isFocused={index === selectedProblemForPreview} />
+
+                        })}
+                    </div>
+                </div>
             </div>
         </div>
     )

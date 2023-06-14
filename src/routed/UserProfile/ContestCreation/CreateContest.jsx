@@ -23,7 +23,7 @@ function CreateContest({ currentUser }) {
         if (
             contestInfo.title.trim().length === 0 ||
             contestInfo.startTime === contestInfo.endTime ||
-            contestInfo.code.length <= 4
+            contestInfo.code.length < 4
         ) {
             alert("Invalid contest!")
         }

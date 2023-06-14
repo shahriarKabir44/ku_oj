@@ -6,6 +6,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
     const [rankings, setRankingList] = React.useState([])
     const [isOfficial, toggleOfficialValue] = React.useState(true)
     function gerContestStandings() {
+        console.log(contestId)
         ContestService.getContestStandings(contestId, pageNumber, isOfficial)
             .then(standings => {
                 standings.forEach((ranking) => {
@@ -14,8 +15,13 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
                     ranking.official_description = isOfficial ? ranking.official_description : ranking.description
                     ranking.official_points = isOfficial ? ranking.official_points : ranking.points
                 })
-
-                setRankingList(standings)
+                let filteredStandingInfo = []
+                standings.forEach((ranking) => {
+                    if (isOfficial && ranking.official_description == null) return
+                    filteredStandingInfo.push(ranking)
+                });
+                console.log(filteredStandingInfo)
+                setRankingList(filteredStandingInfo)
             })
     }
     React.useEffect(() => {

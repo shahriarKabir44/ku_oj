@@ -65,7 +65,7 @@ function ContestInfo({ currentUser }) {
                                 setSelectedTab(1)
                             }} className={`tabSelectorBtn btn ${selectedTab === 1 ? 'selectedTab' : ''}`}>Problems</div>
                             <div onClick={() => {
-                                setSelectedTab(2)
+                                // setSelectedTab(2)
                             }} className={`tabSelectorBtn btn ${selectedTab === 2 ? 'selectedTab' : ''}`}>Global Submissions</div>
                             <div onClick={() => {
                                 setSelectedTab(3)

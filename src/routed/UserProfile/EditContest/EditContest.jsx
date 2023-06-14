@@ -19,7 +19,21 @@ export default function EditContest({ currentUser }) {
     })
     React.useEffect(() => {
         ContestService.getFullContestDetails(contestId)
-            .then(({ contestInfo, problems }) => {
+            .then((fullContestDetails) => {
+                NavbarDirectoryManager.setDitectory('editContest', {
+                    userId: currentUser.id,
+                    userName: currentUser.userName,
+                    contest: {
+                        id: contestId,
+                        title: fullContestDetails.title
+                    }
+
+                })
+
+                //add validation
+                let { problems } = fullContestDetails
+                delete fullContestDetails.problems
+                setProblemCount(problems)
                 setContestInfo(contestInfo)
             })
 
@@ -33,7 +47,7 @@ export default function EditContest({ currentUser }) {
 
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_updateProblem">
-                                <h2 className="title">Update contest</h2>
+                                <h2 className="createContestPage_title">Update contest</h2>
                                 <button className="btn confirmContestCreation"  >Update</button>
                             </div>
                             <div className='formContainer'>
@@ -64,7 +78,7 @@ export default function EditContest({ currentUser }) {
                     <div className="problemsLabelPanel">
                         <div className="card">
                             <div className="titleContainer">
-                                <h3 className="title">Problems</h3>
+                                <h3 className="createContestPage_title">Problems</h3>
                                 <button onClick={() => {
 
                                 }} className="addProblemBtn">

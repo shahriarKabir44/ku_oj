@@ -77,7 +77,20 @@ export default class NavbarDirectoryManager {
                 }
             ]
         }
+        else if (label === 'editContest') {
+            dirs = [
+                ...dirs,
+                {
+                    label: userName,
+                    path: '/user/' + userId
+                },
+                {
+                    label: `Edit "${contest.title}"`,
+                    path: ""
 
+                }
+            ]
+        }
         this.clients['navbar']?.handler(dirs)
     }
 }

@@ -1,12 +1,11 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import ContestService from '../../../services/Contest.service'
-import ContestCreationEventManager from '../../../EventsManager/ContestCreationEventManager'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import './EditContest.css'
+import ReplayIcon from '@mui/icons-material/Replay';
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
-import { useNavigate } from 'react-router-dom';
 import EditProblem from './EditProblem/EditProblem';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
@@ -20,6 +19,22 @@ export default function EditContest({ currentUser }) {
         hostId: currentUser.id,
         code: ""
     })
+    function insertNewProblem() {
+        let problems = structuredClone(problemCount)
+        let newProblem = {
+            title: "new problem",
+            code: "",
+            statementFileURL: "",
+            points: "",
+            testcaseFileURL: "",
+            outputFileURL: "",
+            isExisting: false,
+            index: problems.length
+        }
+        problems.push(newProblem)
+        setSelectedProblemForPreview(problems.length - 1)
+        setProblemCount(problems)
+    }
     React.useEffect(() => {
         ContestService.getFullContestDetails(contestId)
             .then((fullContestDetails) => {
@@ -36,7 +51,12 @@ export default function EditContest({ currentUser }) {
                 //add validation
                 let { problems } = fullContestDetails
                 delete fullContestDetails.problems
+                problems.forEach((problem) => {
+                    problem.isExisting = true
+                    problem.isDeleted = false
+                    problem.isEdited = false
 
+                })
                 setProblemCount(problems)
                 setContestInfo(fullContestDetails)
             })
@@ -83,9 +103,7 @@ export default function EditContest({ currentUser }) {
                         <div className="card">
                             <div className="titleContainer">
                                 <h3 className="createContestPage_title">Problems</h3>
-                                <button onClick={() => {
-
-                                }} className="addProblemBtn">
+                                <button onClick={insertNewProblem} className="addProblemBtn">
                                     <AddIcon />
                                 </button>
                             </div>
@@ -93,10 +111,31 @@ export default function EditContest({ currentUser }) {
                                 {problemCount.map((problem, index) => {
                                     return <div key={index} className="problemItem">
                                         <div onClick={() => {
+                                            if (problem.isDeleted) return
+                                            setSelectedProblemForPreview(index)
+                                        }} className={`problemLabel ${selectedProblemForPreview === index ? "selectedProblemForPreview" : ""}`}>{problem.title}</div>
+                                        {!problem.isDeleted && <div onClick={() => {
+                                            let problems = structuredClone(problemCount)
 
-                                        }} className={`problemLabel selectedProblemForPreview`}>{problem.title}</div>
-                                        <div onClick={() => {
-                                        }} className="deleteBtn"> <DeleteIcon /></div>
+                                            if (problem.isExisting) {
+                                                problems[index].isDeleted = true
+
+                                            }
+                                            else {
+                                                problems = problems.filter((_, ind) => {
+                                                    return ind !== index;
+                                                })
+                                            }
+                                            setProblemCount(problems)
+                                        }} className="deleteBtn"> <DeleteIcon /></div>}
+                                        {problem.isDeleted && <div onClick={() => {
+                                            let problems = structuredClone(problemCount)
+
+                                            if (problem.isExisting) {
+                                                problems[index].isDeleted = false
+                                                setProblemCount(problems)
+                                            }
+                                        }} className="deleteBtn"> <ReplayIcon /></div>}
 
                                     </div>
                                 })}
@@ -112,7 +151,7 @@ export default function EditContest({ currentUser }) {
                                 let problems = [...problemCount]
                                 problems[index].title = title
                                 setProblemCount(problems)
-                            }} key={index} problemNum={index} isFocused={index === selectedProblemForPreview} />
+                            }} key={index} problemNum={index} problemnfo={problem} isFocused={index === selectedProblemForPreview} />
 
                         })}
                     </div>

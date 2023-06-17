@@ -3,26 +3,18 @@ import ContestCreationEventManager from '../../../../EventsManager/ContestCreati
 import ContestService from '../../../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './EditProblem.css'
-function EditProblem({ problemNum, isFocused, setProblemTitle }) {
+function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
     const problemStatementUploadRef = React.useRef(null)
     const testcaseUploadRef = React.useRef(null)
     const outputUploadRef = React.useRef(null)
-
+    console.log(problemInfo)
     const problemCreationFormRef = React.useRef(null)
 
     const [fileForPreview, setFileForPreview] = React.useState({
         file: null,
         label: ""
     })
-    const [problemInfo, setProblemInfo] = React.useState({
-        statementFileURL: "",
-        testcaseFileURL: "",
-        outputFileURL: "",
-        title: "",
-        points: '',
-        contestId: 0,
-        authorId: 1,
-    })
+    const [problem, setProblemInfo] = React.useState(structuredClone(problemInfo))
     React.useEffect(() => {
         ContestCreationEventManager.subscribe({
             id: problemNum,
@@ -60,21 +52,21 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
             <div ref={problemCreationFormRef} className='createProblem' >
                 <div className="createProblemlableContainer">
                     <div className='textInputContainer'><label htmlFor="contestTitle">Title </label>
-                        <input className='createContestInput' autoComplete='off' value={problemInfo.title} onChange={e => {
-                            setProblemInfo({ ...problemInfo, title: e.target.value })
+                        <input className='createContestInput' autoComplete='off' value={problem.title} onChange={e => {
+                            setProblemInfo({ ...problem, title: e.target.value })
                             setProblemTitle(e.target.value)
                         }} type="text" name="contestTitle" /></div>
                     <div className='textInputContainer'>
                         <label htmlFor="contestTitle">Points </label>
-                        <input placeholder='x100' className='createContestInput' autoComplete='off' value={problemInfo.points} onChange={e => {
-                            setProblemInfo({ ...problemInfo, points: e.target.value })
+                        <input placeholder='x100' className='createContestInput' autoComplete='off' value={problem.points} onChange={e => {
+                            setProblemInfo({ ...problem, points: e.target.value })
 
                         }} type="text" name="contestTitle" />
                     </div>
                     <div className='textInputContainer'>
                         <label htmlFor="contestTitle">Code </label>
-                        <input placeholder='Code' className='createContestInput' autoComplete='off' value={problemInfo.code} onChange={e => {
-                            setProblemInfo({ ...problemInfo, code: e.target.value })
+                        <input placeholder='Code' className='createContestInput' autoComplete='off' value={problem.code} onChange={e => {
+                            setProblemInfo({ ...problem, code: e.target.value })
 
                         }} type="text" name="contestTitle" />
                     </div>
@@ -83,8 +75,8 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
                 <div className="uplodsContainer">
                     <div className="uploadBtnContainer">
                         <button className={`previewBtn ${fileForPreview.label === 'statement' ? "previewing" : ""} `} onClick={(e) => {
-                            console.log(problemInfo.statementFileURL)
-                            setFileForPreview({ file: problemInfo.statementFileURL, label: "statement" })
+                            console.log(problem.statementFileURL)
+                            setFileForPreview({ file: problem.statementFileURL, label: "statement" })
                         }} >Problem statement</button>
                         <div onClick={() => {
                             problemStatementUploadRef.current.click()
@@ -95,13 +87,13 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
                                 console.log(fileURL)
                                 setFileForPreview({ file: fileURL, label: "statement" })
 
-                                setProblemInfo({ ...problemInfo, statementFileURL: fileURL })
+                                setProblemInfo({ ...problem, statementFileURL: fileURL })
                             }}
                             type="file" name="" ref={problemStatementUploadRef} />
                     </div>
                     <div className="uploadBtnContainer">
                         <button onClick={() => {
-                            setFileForPreview({ file: problemInfo.testcaseFileURL, label: "Testcase" })
+                            setFileForPreview({ file: problem.testcaseFileURL, label: "Testcase" })
                         }} className={`previewBtn ${fileForPreview.label === 'Testcase' ? "previewing" : ""} `}>Test Inputs</button>
                         <div onClick={() => {
                             testcaseUploadRef.current.click()
@@ -111,7 +103,7 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
                                 let fileURL = onfileChange(e, "Testcase.txt")
                                 setFileForPreview({ file: fileURL, label: "Testcase" })
 
-                                setProblemInfo({ ...problemInfo, testcaseFileURL: fileURL })
+                                setProblemInfo({ ...problem, testcaseFileURL: fileURL })
                             }}
                             type="file" name="" ref={testcaseUploadRef} />
 
@@ -119,7 +111,7 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
                     </div>
                     <div className="uploadBtnContainer">
                         <button onClick={() => {
-                            setFileForPreview({ file: problemInfo.outputFileURL, label: "Output" })
+                            setFileForPreview({ file: problem.outputFileURL, label: "Output" })
                         }} className={`previewBtn ${fileForPreview.label === 'Output' ? "previewing" : ""} `}>Test Outputs</button>
                         <div onClick={() => {
                             outputUploadRef.current.click()
@@ -129,7 +121,7 @@ function EditProblem({ problemNum, isFocused, setProblemTitle }) {
                                 let fileURL = onfileChange(e, "Testcase.txt")
                                 setFileForPreview({ file: fileURL, label: "Output" })
 
-                                setProblemInfo({ ...problemInfo, outputFileURL: fileURL })
+                                setProblemInfo({ ...problem, outputFileURL: fileURL })
                             }}
                             type="file" name="" ref={outputUploadRef} />
                     </div>

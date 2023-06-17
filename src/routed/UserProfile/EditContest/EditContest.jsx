@@ -7,6 +7,7 @@ import './EditContest.css'
 import ReplayIcon from '@mui/icons-material/Replay';
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import EditProblem from './EditProblem/EditProblem';
+import Global from '../../../services/Global';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
@@ -55,6 +56,9 @@ export default function EditContest({ currentUser }) {
                     problem.isExisting = true
                     problem.isDeleted = false
                     problem.isEdited = false
+                    problem.statementFileURL = Global.SERVER_URL + problem.statementFileURL
+                    problem.testcaseFileURL = Global.SERVER_URL + problem.testcaseFileURL
+                    problem.outputFileURL = Global.SERVER_URL + problem.outputFileURL
 
                 })
                 setProblemCount(problems)
@@ -151,7 +155,7 @@ export default function EditContest({ currentUser }) {
                                 let problems = [...problemCount]
                                 problems[index].title = title
                                 setProblemCount(problems)
-                            }} key={index} problemNum={index} problemnfo={problem} isFocused={index === selectedProblemForPreview} />
+                            }} key={index} problemNum={index} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
 
                         })}
                     </div>

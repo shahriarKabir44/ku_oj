@@ -9,8 +9,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding-left: 300px;
-    padding-right: 300px;
+    padding-left: 10%;
+    padding-right: 10%;
 
 }
 
@@ -29,7 +29,7 @@
 
 .problemList{
     /* background-color: green; */
-    width: 1320px;
+    width: 80%;
     padding: 20px;
 }
 

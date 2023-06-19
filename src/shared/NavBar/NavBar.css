@@ -72,3 +72,8 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #45a049;
 }
+
+
+.btn{
+    text-decoration: none;
+}

@@ -40,7 +40,7 @@ function App() {
 
 						</Route>
 						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
-						<Route path='/problemset'  element={<ProblemSet currentUser={currentUser}/>}/>
+						<Route path='/problemset/:pageNumber'  element={<ProblemSet currentUser={currentUser}/>}/>
 					</Routes>
 				</div>
 

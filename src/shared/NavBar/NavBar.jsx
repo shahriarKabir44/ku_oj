@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import UserService from '../../services/User.service';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function NavBar({ currentUser, setCurrentUser }) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
@@ -19,7 +19,7 @@ function NavBar({ currentUser, setCurrentUser }) {
             <div className="logoContainer">
                 <button className="logobtn">KU_OJ</button>
                 <button className="btn menuBtn">Contests</button>
-                <button className="btn menuBtn">Problems</button>
+                <Link to='/problemset/1' className="btn menuBtn">Problems</Link>
 
             </div>
 

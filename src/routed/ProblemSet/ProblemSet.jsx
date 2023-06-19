@@ -1,5 +1,6 @@
 import React from "react";
 import "./ProblemSet.css";
+import { useParams } from "react-router-dom";
 
 function ListItem({ contestid, name, points }) {
   return (
@@ -12,6 +13,8 @@ function ListItem({ contestid, name, points }) {
 }
 
 export default function ProblemSet() {
+
+  let {pageNumber} = useParams();
   let items = [
     {
       contestid: 23423,
@@ -85,8 +88,12 @@ export default function ProblemSet() {
           <div className="name">Name</div>
           <div className="point">Points</div>
         </div>
-        { items.map((item)=><ListItem {...item}/>)}
+        {items.map((item) => (
+          <ListItem {...item} />
+        ))}
       </div>
+
+      
     </div>
   );
 }

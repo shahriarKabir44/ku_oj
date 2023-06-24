@@ -13,6 +13,7 @@ import UserService from './services/User.service';
 import ProblemDetails from './routed/ProblemDetails/ProblemDetails';
 import EditContest from './routed/UserProfile/EditContest/EditContest';
 import ProblemSet from './routed/ProblemSet/ProblemSet';
+import Standings from './routed/Standings/Standings';
 function App() {
 	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
@@ -41,6 +42,7 @@ function App() {
 						</Route>
 						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
 						<Route path='/problemset/:pageNumber'  element={<ProblemSet currentUser={currentUser}/>}/>
+						<Route path='/standings/:contestId'  element={<Standings currentUser={currentUser}/>}/>
 					</Routes>
 				</div>
 

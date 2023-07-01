@@ -49,7 +49,24 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
                         outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
                         ...problem
                     })
-                    console.log(await convertBlobToBase64(problemStatementUploadRef.current?.files[0]))
+                    return 1
+                }
+                else {
+                    if (!problemStatementUploadRef.current.files[0]) {
+                        await ContestService.updateProblem({
+                            testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
+                            outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                            ...problem
+                        })
+                    }
+                    else {
+                        await ContestService.updateProblem({
+                            statementFile: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                            testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
+                            outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                            ...problem
+                        })
+                    }
                     return 1
                 }
             }
@@ -58,7 +75,7 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
         return () => {
             UpdateContestEventManager.unsubscribe("editProblem" + problemNum,)
         }
-    }, [problemNum])
+    }, [problemNum, problem])
 
     function convertBlobToBase64(blob) {
         const reader = new FileReader();

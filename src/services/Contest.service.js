@@ -79,11 +79,12 @@ export default class ContestService {
         })
         let promises = []
         const tasks = [
-            ['statementfile', statementFile, 'pdf'],
             ['testcaseinput', testcaseFileContent, 'txt'],
-            ['testcaseoutput', outputFileContent, 'txt'],
-
+            ['testcaseoutput', outputFileContent, 'txt']
         ]
+        if (statementFile) {
+            tasks.push(['statementfile', statementFile, 'pdf'])
+        }
         tasks.forEach(task => {
             promises.push(UploadManager.uploadFile(
                 task[1],
@@ -101,7 +102,45 @@ export default class ContestService {
         return problemId
     }
 
+    static async updateProblem({
+        statementFile,
+        outputFileContent,
+        testcaseFileContent,
+        title,
+        points,
+        id,
+        code
+    }) {
+        Global._fetch('/contests/updateProblemInfo', {
+            title,
+            points,
+            id,
+            code
+        })
+        let promises = []
+        const tasks = [
+            ['testcaseinput', testcaseFileContent, 'txt'],
+            ['testcaseoutput', outputFileContent, 'txt']
+        ]
+        if (statementFile) {
+            tasks.push(['statementfile', statementFile, 'pdf'])
+        }
+        tasks.forEach(task => {
+            promises.push(UploadManager.uploadFile(
+                task[1],
+                {
+                    filetype: task[0],
+                    problemid: id,
+                    ext: task[2],
+                },
+                '/uploadFile/upload'
+            ))
+        })
 
+        return await Promise.all(promises)
+
+
+    }
 
 
     static async createContest(contestInfo) {

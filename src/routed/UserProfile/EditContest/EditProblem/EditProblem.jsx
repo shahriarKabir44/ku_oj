@@ -44,7 +44,7 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
             submitData: async function () {
                 if (problem.isNew) {
                     await ContestService.addNewProblem({
-                        statementFileURL: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                        statementFile: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
                         testcaseFileContent: (testcaseInputRef.current?.value),
                         outputFileContent: (outputInputRef.current?.value),
                         ...problem

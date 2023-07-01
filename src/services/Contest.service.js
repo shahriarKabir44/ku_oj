@@ -54,16 +54,14 @@ export default class ContestService {
                 statementFileURL = fileURL
             })
         ])
-        this.setFileURLs(problemId, statementFileURL,
-            testcaseFileURL,
-            outputFileURL)
+
         return problemId
 
     }
 
 
     static async addNewProblem({
-        statementFileURL,
+        statementFile,
         outputFileContent,
         testcaseFileContent,
         title,
@@ -79,12 +77,20 @@ export default class ContestService {
             authorId,
             code
         })
+        UploadManager.uploadFile(
+            statementFile,
+            {
+                filetype: 'statementfile',
+                problemid: problemId,
+                ext: 'pdf',
+            },
+            '/uploadFile/upload'
+        )
         await Promise.all([
-
             Global._fetch('/uploadFile/storeContent', {
                 problemId,
                 testcaseFileContent,
-                outputFileContent
+                outputFileContent,
             })
 
         ])

@@ -166,6 +166,7 @@ export default class ContestService {
     }
 
     static async judgeSubmission(submissionInfo) {
+        console.log(submissionInfo)
         return Global._fetch('/judge/judgeSubmission', submissionInfo)
     }
     static async searchContestByProblem(problemId) {

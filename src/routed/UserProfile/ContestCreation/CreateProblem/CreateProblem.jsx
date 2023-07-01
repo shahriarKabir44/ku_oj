@@ -28,8 +28,9 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
             id: problemNum,
             onMessage: (contestId) => {
                 return ContestService.createProblem({ ...problemInfo, contestId })
-
-
+            },
+            onErrorCheking: async(contestId)=>{
+                
             }
         })
         return () => {

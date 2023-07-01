@@ -60,7 +60,6 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'submissionDetails') {
-            console.log(contest, problem, submission)
             dirs = [
                 ...dirs,
                 {

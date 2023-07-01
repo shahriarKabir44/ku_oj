@@ -77,23 +77,26 @@ export default class ContestService {
             authorId,
             code
         })
-        UploadManager.uploadFile(
-            statementFile,
-            {
-                filetype: 'statementfile',
-                problemid: problemId,
-                ext: 'pdf',
-            },
-            '/uploadFile/upload'
-        )
-        await Promise.all([
-            Global._fetch('/uploadFile/storeContent', {
-                problemId,
-                testcaseFileContent,
-                outputFileContent,
-            })
+        let promises = []
+        const tasks = [
+            ['statementfile', statementFile, 'pdf'],
+            ['testcaseinput', testcaseFileContent, 'txt'],
+            ['testcaseoutput', outputFileContent, 'txt'],
 
-        ])
+        ]
+        tasks.forEach(task => {
+            promises.push(UploadManager.uploadFile(
+                task[1],
+                {
+                    filetype: task[0],
+                    problemid: problemId,
+                    ext: task[2],
+                },
+                '/uploadFile/upload'
+            ))
+        })
+
+        await Promise.all(promises)
 
         return problemId
     }

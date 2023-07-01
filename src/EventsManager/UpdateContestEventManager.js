@@ -1,7 +1,6 @@
 export default class UpdateContestEventManager {
     static clients = []
     static subscribe(client) {
-        console.log(client)
         this.unsubscribe(client.id)
         this.clients.push(client)
     }
@@ -17,7 +16,6 @@ export default class UpdateContestEventManager {
             }))
         })
         await Promise.all(promises)
-        alert(isErrorFree)
         if (!isErrorFree) {
             return {
                 status: 0,

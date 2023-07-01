@@ -43,13 +43,13 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
             },
             submitData: async function () {
                 if (problem.isNew) {
-                    // await ContestService.addNewProblem({
-                    //     statementFileURL: problem.statementFileURL,
-                    //     testcaseFileURL: convertContentsToBlob(testcaseInputRef.current?.value),
-                    //     outputFileURL: convertContentsToBlob(outputInputRef.current?.value),
-                    //     ...problem
-                    // })
-
+                    await ContestService.addNewProblem({
+                        statementFileURL: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                        testcaseFileContent: (testcaseInputRef.current?.value),
+                        outputFileContent: (outputInputRef.current?.value),
+                        ...problem
+                    })
+                    console.log(await convertBlobToBase64(problemStatementUploadRef.current?.files[0]))
                     return 1
                 }
             }
@@ -58,12 +58,30 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
         return () => {
             UpdateContestEventManager.unsubscribe("editProblem" + problemNum,)
         }
-    }, [problemNum, problem])
+    }, [problemNum])
 
+    function convertBlobToBase64(blob) {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise(resolve => {
+            reader.onloadend = () => {
+                resolve(reader.result);
+            };
+        });
+    }
 
-    function convertContentsToBlob(content) {
-        let newFile = new File([content], 'abcd,txt', { type: 'text/plain' })
-        return new Blob([newFile], { type: 'text/plain' })
+    function convertTextToBase64(content) {
+        console.log(content)
+        const file = new File([content], 'abcd.txt', { type: 'text/plain' });
+
+        let blob = new Blob([file], { type: 'text/plain' });
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        return new Promise(resolve => {
+            reader.onloadend = () => {
+                resolve(reader.result);
+            };
+        });
     }
 
 
@@ -81,44 +99,45 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
     }
 
     function showPreview() {
+
+        let file = problem.statementFileURL
+
         if (fileForPreview.label.toLowerCase() === 'statement') {
-            let file = problem.statementFileURL
             if (problemStatementUploadRef.current?.files[0]) {
                 file = URL.createObjectURL(problemStatementUploadRef.current?.files[0])
             }
             else if (!problem.isNew)
                 file = problem.statementFileURL
-            return <iframe style={{
+
+        }
+
+
+
+
+        return <>
+            <textarea style={{
                 height: "50vh",
-                width: "100%"
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'output' ? 'block' : 'none'}`
+            }} name="" id="" ref={outputInputRef} cols="30" rows="10" onChange={(e) => {
+                setTempFileContent({ ...temFileContent, output: e.target.value })
+
+            }} value={temFileContent.output} ></textarea>
+            <textarea style={{
+                height: "50vh",
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'testcase' ? 'block' : 'none'}`
+            }} name="" id="" ref={testcaseInputRef} cols="30" rows="10" onChange={(e) => {
+                setTempFileContent({ ...temFileContent, testcase: e.target.value })
+
+            }} value={temFileContent.testcase} ></textarea>
+            <iframe style={{
+                height: "50vh",
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'statement' ? 'block' : 'none'}`
+
             }} src={file} title='Problem statement' frameBorder="1" ></iframe >
-        }
-
-        if (fileForPreview.label.toLowerCase() === 'testcase') {
-            return <div className="originalTestcaseView">
-                <textarea style={{
-                    height: "50vh",
-                    width: "100%"
-                }} name="" ref={testcaseInputRef} onChange={(e) => {
-                    setTempFileContent({ ...temFileContent, testcase: e.target.value })
-                }} cols="30" rows="10" value={temFileContent.testcase} ></textarea>
-
-            </div>
-
-        }
-        if (fileForPreview.label.toLowerCase() === 'output') {
-            return <div className="originalTestcaseView">
-                <textarea style={{
-                    height: "50vh",
-                    width: "100%"
-                }} name="" id="" ref={outputInputRef} cols="30" rows="10" onChange={(e) => {
-                    setTempFileContent({ ...temFileContent, output: e.target.value })
-
-                }} value={temFileContent.output} ></textarea>
-
-            </div>
-
-        }
+        </>
     }
 
     return (

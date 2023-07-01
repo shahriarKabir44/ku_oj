@@ -64,8 +64,8 @@ export default class ContestService {
 
     static async addNewProblem({
         statementFileURL,
-        testcaseFileURL,
-        outputFileURL,
+        outputFileContent,
+        testcaseFileContent,
         title,
         points,
         contestId,
@@ -80,58 +80,21 @@ export default class ContestService {
             code
         })
         await Promise.all([
-            UploadManager.uploadBlobData(
-                testcaseFileURL,
-                {
-                    filetype: 'testcaseinput',
-                    problemid: problemId,
-                    ext: 'txt',
-                },
-                '/uploadFile/upload'
-            ).then(({ fileURL }) => {
-                testcaseFileURL = fileURL
-            }),
-            UploadManager.uploadBlobData(
-                outputFileURL,
-                {
-                    filetype: 'testcaseoutput',
-                    problemid: problemId,
-                    ext: 'txt',
-                },
-                '/uploadFile/upload'
-            ).then(({ fileURL }) => {
-                outputFileURL = fileURL
-            }),
-            UploadManager.uploadFile(
-                statementFileURL,
-                {
-                    filetype: 'statementfile',
-                    problemid: problemId,
-                    ext: 'pdf',
-                },
-                '/uploadFile/upload'
-            ).then(({ fileURL }) => {
-                statementFileURL = fileURL
+
+            Global._fetch('/uploadFile/storeContent', {
+                problemId,
+                testcaseFileContent,
+                outputFileContent
             })
+
         ])
-        this.setFileURLs(problemId, statementFileURL,
-            testcaseFileURL,
-            outputFileURL)
+
         return problemId
     }
 
 
 
-    static async setFileURLs(problemId, statementFileURL,
-        testcaseFileURL,
-        outputFileURL) {
-        Global._fetch('/contests/setProblemFilesURL', {
-            problemId,
-            statementFileURL,
-            testcaseFileURL,
-            outputFileURL
-        })
-    }
+
     static async createContest(contestInfo) {
         let { contestId } = await Global._fetch('/contests/createContest', contestInfo)
         return contestId

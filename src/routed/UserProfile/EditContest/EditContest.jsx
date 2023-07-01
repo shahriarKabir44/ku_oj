@@ -8,6 +8,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import EditProblem from './EditProblem/EditProblem';
 import Global from '../../../services/Global';
+import UpdateContestEventManager from '../../../EventsManager/UpdateContestEventManager';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
@@ -30,12 +31,22 @@ export default function EditContest({ currentUser }) {
             testcaseFileURL: "",
             outputFileURL: "",
             isExisting: false,
-            index: problems.length
+            index: problems.length,
+            isNew: true,
+            contestId
         }
         problems.push(newProblem)
         setSelectedProblemForPreview(problems.length - 1)
         setProblemCount(problems)
     }
+
+    function updateContest() {
+        ContestService.updateContestInfo(contestInfo)
+
+        UpdateContestEventManager.sendMessage(contestId)
+
+    }
+
     React.useEffect(() => {
         ContestService.getFullContestDetails(contestId)
             .then((fullContestDetails) => {
@@ -76,7 +87,7 @@ export default function EditContest({ currentUser }) {
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_updateProblem">
                                 <h2 className="createContestPage_title">Update contest </h2>
-                                <button className="btn confirmContestCreation"  >Update</button>
+                                <button onClick={updateContest} className="btn confirmContestCreation"  >Update</button>
                             </div>
                             <div className='formContainer'>
                                 <label htmlFor="title">Contest title:</label>
@@ -91,7 +102,8 @@ export default function EditContest({ currentUser }) {
 
                                 <label htmlFor="start">Start Time:</label>
                                 <input className='updateContestInput' onChange={e => {
-                                    setContestInfo({ ...contestInfo, startTime: (new Date(e.target.value)) * 1 })
+                                    if ((new Date()) * 1 < contestInfo.startTime)
+                                        setContestInfo({ ...contestInfo, startTime: (new Date(e.target.value)) * 1 })
                                 }} type="datetime-local" name="start" value={new Date(contestInfo.startTime).toISOString().slice(0, 16)} />
 
 

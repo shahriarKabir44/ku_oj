@@ -61,6 +61,67 @@ export default class ContestService {
 
     }
 
+
+    static async addNewProblem({
+        statementFileURL,
+        testcaseFileURL,
+        outputFileURL,
+        title,
+        points,
+        contestId,
+        authorId,
+        code
+    }) {
+        let { problemId } = await Global._fetch('/contests/createProblem', {
+            title,
+            points,
+            contestId,
+            authorId,
+            code
+        })
+        await Promise.all([
+            UploadManager.uploadBlobData(
+                testcaseFileURL,
+                {
+                    filetype: 'testcaseinput',
+                    problemid: problemId,
+                    ext: 'txt',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                testcaseFileURL = fileURL
+            }),
+            UploadManager.uploadBlobData(
+                outputFileURL,
+                {
+                    filetype: 'testcaseoutput',
+                    problemid: problemId,
+                    ext: 'txt',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                outputFileURL = fileURL
+            }),
+            UploadManager.uploadFile(
+                statementFileURL,
+                {
+                    filetype: 'statementfile',
+                    problemid: problemId,
+                    ext: 'pdf',
+                },
+                '/uploadFile/upload'
+            ).then(({ fileURL }) => {
+                statementFileURL = fileURL
+            })
+        ])
+        this.setFileURLs(problemId, statementFileURL,
+            testcaseFileURL,
+            outputFileURL)
+        return problemId
+    }
+
+
+
     static async setFileURLs(problemId, statementFileURL,
         testcaseFileURL,
         outputFileURL) {
@@ -115,5 +176,10 @@ export default class ContestService {
     }
     static async getProblemFiles(problemId) {
         return Global._fetch(`/contests/getProblemFiles/${problemId}`)
+    }
+
+
+    static async updateContestInfo(contestInfo) {
+        return Global._fetch('/contests/updateContestInfo', contestInfo)
     }
 }

@@ -2,3 +2,40 @@
     width: 100%;
     overflow-x: auto;
 }
+.main-container{
+    background-color: blue;
+    padding: 10px;
+}
+.table-row{
+    display: flex;
+    background-color: red;
+    font-size: 20px;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 20px;
+    margin:10px;
+}
+
+.participants-container{
+    background-color: yellow;
+    width: 223px;
+    margin: 15px 0px 15px 0px;
+}
+.problems-container{
+    background-color: aqua;
+    margin: 15px 0px 15px 0px;
+}
+
+.points-container{
+    background-color: bisque;
+    width: 130px;
+    text-align: center;
+    margin: 15px 0px 15px 0px;
+}
+
+.problem-title{
+    width:75px;
+    text-align: center;
+
+}
+

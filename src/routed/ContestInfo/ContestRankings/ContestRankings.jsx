@@ -2,20 +2,20 @@ import React from "react";
 import ContestService from "../../../services/Contest.service";
 import "./ContestRankings.css";
 
-function RankingItem({ problems, rank }) {
+function RankingItem({ problems, rank, serial}) {
   return (
     <div className="table-row">
-      <div className="participants-container">{rank.contestantName}</div>
+      <div className="participants-container">{serial}.{rank.contestantName}</div>
       <div className="problems-container">
         {problems.map((problem, index) => {
           let data = rank.official_description[problems.id];
 
           if (data === 0) {
-            return <div className="not-submitted">N/A</div>;
+            return <div className="problem-title not-submitted">N/A</div>;
           } else if (data > 0) {
-            return <div className="passed-submit">Passed</div>;
+            return <div className="problem-title passed-submit">Passed</div>;
           } else {
-            return <div className="failed-submit">Failed</div>;
+            return <div className="problem-title failed-submit">Failed</div>;
           }
         })}
       </div>
@@ -82,11 +82,11 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
                 }
 
             </div>
-            <div className="points-container">points</div>
+            <div className="points-container">Points</div>
 
         </div>
         {rankings.map((rank, index) => (
-          <RankingItem key={index} problems={problems} rank={rank} />
+          <RankingItem key={index} serial={index+1} problems={problems} rank={rank} />
         ))}
       </div>
       {/* <table>

@@ -4,13 +4,13 @@ export default class UpdateContestEventManager {
         this.unsubscribe(client.id)
         this.clients.push(client)
     }
-    static async sendMessage(contestId) {
+    static async sendMessage(contestInfo) {
         let promises = []
 
         let isErrorFree = 1
         let errorMessage = ""
         this.clients.forEach(client => {
-            promises.push(client.onErrorCheking(contestId).then((status) => {
+            promises.push(client.onErrorCheking(contestInfo).then((status) => {
                 isErrorFree &= status.code
                 errorMessage = status.errorMessage
             }))
@@ -24,7 +24,7 @@ export default class UpdateContestEventManager {
         }
         promises = []
         this.clients.forEach(client => {
-            promises.push(client.submitData(contestId))
+            promises.push(client.submitData(contestInfo))
         })
         await Promise.all(promises)
         return {

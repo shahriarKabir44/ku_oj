@@ -22,15 +22,21 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
         points: '',
         contestId: 0,
         authorId: 1,
+        code: ""
     })
     React.useEffect(() => {
         ContestCreationEventManager.subscribe({
             id: problemNum,
-            onMessage: (contestId) => {
-                return ContestService.createProblem({ ...problemInfo, contestId })
+            submitData: (contestInfo) => {
+
+                return ContestService.createProblem({ ...problemInfo, contestId: contestInfo.id, createdOn: contestInfo.startTime })
             },
-            onErrorCheking: async(contestId)=>{
-                
+            onErrorCheking: async (contestId) => {
+                console.log('shahriar kabir')
+                return {
+                    status: 1,
+                    errorMessage: ""
+                }
             }
         })
         return () => {
@@ -70,7 +76,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                         <input placeholder='x100' className='createContestInput' autoComplete='off' value={problemInfo.points} onChange={e => {
                             setProblemInfo({ ...problemInfo, points: e.target.value })
 
-                        }} type="text" name="contestTitle" />
+                        }} type="number" name="contestTitle" />
                     </div>
                     <div className='textInputContainer'>
                         <label htmlFor="contestTitle">Code </label>

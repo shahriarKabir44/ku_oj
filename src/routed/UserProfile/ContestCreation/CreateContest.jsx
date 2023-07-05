@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import './CreateContest.css'
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import { useNavigate } from 'react-router-dom';
+import Global from '../../../services/Global';
 function CreateContest({ currentUser }) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
     const navigate = useNavigate()
@@ -20,26 +21,27 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
-        if (
-            contestInfo.title.trim().length === 0 ||
-            contestInfo.startTime === contestInfo.endTime ||
-            contestInfo.code.length < 4
-        ) {
-            alert("Invalid contest!")
-        }
-        else {
-            ContestService.createContest({
-                ...contestInfo,
-                startTime: contestInfo.startTime * 1,
-                endTime: contestInfo.endTime * 1
-            })
-                .then((contestId) => {
-                    ContestCreationEventManager.sendMessage(contestId)
-                        .then(() => {
-                            alert("Contest created!")
-                        })
+
+        ContestService.createContest({
+            ...contestInfo,
+            startTime: contestInfo.startTime * 1,
+            endTime: contestInfo.endTime * 1
+        })
+            .then((contestId) => {
+                ContestCreationEventManager.sendMessage({
+                    ...contestInfo,
+                    startTime: contestInfo.startTime * 1,
+                    endTime: contestInfo.endTime * 1,
+                    id: contestId
                 })
-        }
+                    .then(({ status, errorMessage }) => {
+                        if (!status) {
+                            alert(errorMessage)
+                            return
+                        }
+                        window.location.href = `${Global.CLIENT_URL}/contest/${contestId}`
+                    })
+            })
 
     }
     React.useEffect(() => {

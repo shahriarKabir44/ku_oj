@@ -9,7 +9,8 @@ export default class ContestService {
         points,
         contestId,
         authorId,
-        code
+        code,
+        createdOn
     }) {
 
         let { problemId } = await Global._fetch('/contests/createProblem', {
@@ -17,7 +18,8 @@ export default class ContestService {
             points,
             contestId,
             authorId,
-            code
+            code,
+            createdOn
         })
         await Promise.all([
             UploadManager.uploadFile(
@@ -68,14 +70,16 @@ export default class ContestService {
         points,
         contestId,
         authorId,
-        code
+        code,
+        createdOn
     }) {
         let { problemId } = await Global._fetch('/contests/createProblem', {
             title,
             points,
             contestId,
             authorId,
-            code
+            code,
+            createdOn
         })
         let promises = []
         const tasks = [

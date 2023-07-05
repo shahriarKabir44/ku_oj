@@ -1,5 +1,5 @@
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ContestService from '../../../services/Contest.service'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -15,7 +15,6 @@ export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
-    const navigate = useNavigate()
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),
@@ -45,7 +44,7 @@ export default function EditContest({ currentUser }) {
     function updateContest() {
         ContestService.updateContestInfo(contestInfo)
 
-        UpdateContestEventManager.sendMessage(contestId)
+        UpdateContestEventManager.sendMessage(contestInfo)
             .then(({ status, errorMessage }) => {
                 if (!status) {
                     alert(errorMessage)

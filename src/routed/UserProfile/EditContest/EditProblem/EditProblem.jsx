@@ -41,12 +41,13 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
 
                 return { code: 1 }
             },
-            submitData: async function () {
+            submitData: async function (contestInfo) {
                 if (problem.isNew) {
                     await ContestService.addNewProblem({
                         statementFile: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
                         testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
                         outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                        createdOn: (new Date()) * 1,
                         ...problem
                     })
                     return 1

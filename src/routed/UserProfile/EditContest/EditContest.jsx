@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ContestService from '../../../services/Contest.service'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -8,12 +8,14 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import EditProblem from './EditProblem/EditProblem';
 import Global from '../../../services/Global';
+
 import UpdateContestEventManager from '../../../EventsManager/UpdateContestEventManager';
+import SubmissionService from '../../../services/Submission.service';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
-
+    const navigate = useNavigate()
     const [contestInfo, setContestInfo] = React.useState({
         title: "",
         startTime: new Date(),
@@ -44,10 +46,22 @@ export default function EditContest({ currentUser }) {
         ContestService.updateContestInfo(contestInfo)
 
         UpdateContestEventManager.sendMessage(contestId)
+            .then(({ status, errorMessage }) => {
+                if (!status) {
+                    alert(errorMessage)
+                    return
+                }
+                SubmissionService.rejudgeContestSubmissions(contestId)
+                    .then(() => {
+                        window.location.href = (`${Global.CLIENT_URL}/contest/${contestId}`)
+
+                    })
+            })
 
     }
 
     React.useEffect(() => {
+        document.title = "Edit Contest"
         ContestService.getFullContestDetails(contestId)
             .then((fullContestDetails) => {
                 NavbarDirectoryManager.setDitectory('editContest', {

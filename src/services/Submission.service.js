@@ -26,4 +26,7 @@ export default class SubmissionService {
     static async getSubmissionInfo(data) {
         return Global._fetch('/submission/getSubmissionInfo', data)
     }
+    static async rejudgeContestSubmissions(contestId) {
+        return Global._fetch('/submission/rejudgeContestSubmissions/' + contestId)
+    }
 }

@@ -194,4 +194,6 @@ export default class ContestService {
     static async updateContestInfo(contestInfo) {
         return Global._fetch('/contests/updateContestInfo', contestInfo)
     }
+
+
 }

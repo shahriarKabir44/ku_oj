@@ -27,11 +27,9 @@ export default class UpdateContestEventManager {
             promises.push(client.submitData(contestId))
         })
         await Promise.all(promises)
-        if (!isErrorFree) {
-            return {
-                status: 0,
-                errorMessage
-            }
+        return {
+            status: 1,
+            errorMessage: ""
         }
 
     }

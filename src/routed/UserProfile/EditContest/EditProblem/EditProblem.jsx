@@ -88,7 +88,6 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
     }
 
     function convertTextToBase64(content) {
-        console.log(content)
         const file = new File([content], 'abcd.txt', { type: 'text/plain' });
 
         let blob = new Blob([file], { type: 'text/plain' });

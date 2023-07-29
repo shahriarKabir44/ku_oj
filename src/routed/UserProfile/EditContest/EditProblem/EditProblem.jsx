@@ -3,6 +3,7 @@ import ContestService from '../../../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './EditProblem.css'
 import UpdateContestEventManager from '../../../../EventsManager/UpdateContestEventManager';
+import UploadManager from '../../../../services/UploadManager';
 function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
     const problemStatementUploadRef = React.useRef(null)
     const problemCreationFormRef = React.useRef(null)
@@ -44,9 +45,9 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
             submitData: async function (contestInfo) {
                 if (problem.isNew) {
                     await ContestService.addNewProblem({
-                        statementFile: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
-                        testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
-                        outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                        statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                        testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+                        outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
                         createdOn: (new Date()) * 1,
                         ...problem
                     })
@@ -55,16 +56,16 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
                 else {
                     if (!problemStatementUploadRef.current.files[0]) {
                         await ContestService.updateProblem({
-                            testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
-                            outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                            testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+                            outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
                             ...problem
                         })
                     }
                     else {
                         await ContestService.updateProblem({
-                            statementFile: await convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
-                            testcaseFileContent: await convertTextToBase64(testcaseInputRef.current?.value),
-                            outputFileContent: await convertTextToBase64(outputInputRef.current?.value),
+                            statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                            testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+                            outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
                             ...problem
                         })
                     }
@@ -78,28 +79,9 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
         }
     }, [problemNum, problem])
 
-    function convertBlobToBase64(blob) {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        return new Promise(resolve => {
-            reader.onloadend = () => {
-                resolve(reader.result);
-            };
-        });
-    }
 
-    function convertTextToBase64(content) {
-        const file = new File([content], 'abcd.txt', { type: 'text/plain' });
 
-        let blob = new Blob([file], { type: 'text/plain' });
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        return new Promise(resolve => {
-            reader.onloadend = () => {
-                resolve(reader.result);
-            };
-        });
-    }
+
 
 
     /**

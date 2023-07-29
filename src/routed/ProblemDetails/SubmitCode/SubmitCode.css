@@ -1,0 +1,15 @@
+.languageSelector {
+    background-color: #f2f2f2;
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    flex: 1;
+    padding-right: 25px;
+}
+
+.languageSelector option {
+    background-color: #f2f2f2;
+    color: #333;
+}

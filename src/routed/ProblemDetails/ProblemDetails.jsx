@@ -7,14 +7,12 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import Global from '../../services/Global'
 import { Link } from 'react-router-dom'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade'; 
+import SubmitCode from './SubmitCode/SubmitCode'
+
 
 export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
     const [contest, setContestInfo] = React.useState({})
-    const [canSubmit, setSubmissionCapability] = React.useState()
 
     const { problemId } = useParams()
 
@@ -23,7 +21,6 @@ export default function ProblemDetails({ currentUser }) {
 
 
     React.useEffect(() => {
-        if (!currentUser) setSubmissionCapability(false)
         ContestService.searchContestByProblem(problemId)
             .then(contest => {
                 if (!contest) {
@@ -92,10 +89,9 @@ export default function ProblemDetails({ currentUser }) {
 function SubmissionsContainer({ currentUser, problem, contest }) {
     const [submissionFileURI, setSubmissionFileURI] = React.useState("")
     const [fileExtension, setFileExtension] = React.useState('')
-    const [languageName, setLanguageName] = React.useState('')
     const [submissions, setPreviousSubmissionList] = React.useState([])
     const fileUploadRef = React.useRef(null), extSelectionRef = React.useRef(null)
-    const [codePreviewModalVisibility, setCodePreviewModalVisibility] = React.useState(false)
+    const [codeSubmissionModalVisibility, setCodeSubmissionModalVisibility] = React.useState(false)
     const [hasRegistered, setRegistrationStatus] = React.useState(false)
     React.useEffect(() => {
 
@@ -106,44 +102,7 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
                 })
         }
     }, [currentUser, problem])
-    function submitSolution() {
-        if (!currentUser) {
-            alert('Please log in or sign up!')
-            return
-        }
-        let isOfficial = hasRegistered ? (contest.endTime >= (new Date()) * 1 ? true : false) : false
-        const data = {
-            time: (new Date()) * 1,
-            fileExtension,
-            problemId: problem.id,
-            submittedBy: currentUser.id,
-            contestId: problem.contestId,
-            languageName,
-            points: problem.points,
-            isOfficial
-        }
-        let newSubmission = {
-            ...data,
-            execTime: '--',
-            verdict: '--',
-            id: 0
-        }
 
-        setPreviousSubmissionList([newSubmission, ...submissions])
-
-        SubmissionService.submit(data, submissionFileURI)
-            .then((response) => {
-
-
-                fileUploadRef.current.value = null
-                extSelectionRef.current.value = ''
-                SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
-                    .then(({ previousSubmissions }) => {
-                        setPreviousSubmissionList(previousSubmissions)
-                    })
-            })
-
-    }
     function onfileChange(event) {
         const fileObj = event.target.files && event.target.files[0];
         if (!fileObj) {
@@ -166,21 +125,12 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
         {/* add registration  checker during contest */}
         {/* to-do: add file checker */}
         <div className="submissionContainer">
-            <select ref={extSelectionRef} required onChange={e => {
-                let extName = e.target.value
-                setFileExtension(extName)
-                if (extName === '') return
-                if (extName === 'py') setLanguageName('python')
 
-            }} className='createSubmissionInput' name="" id=""  >
-                <option value=""> Select Language </option>
-                <option value="py">Python3</option>
-            </select>
-            <input ref={fileUploadRef} required className='createSubmissionInput' type="file" name="" id="" onChange={e => {
-                setSubmissionFileURI(onfileChange(e))
-            }} />
-            <button onClick={() => {
-                setCodePreviewModalVisibility(true)
+            <button style={{
+                flex: 1,
+                margin: "5px"
+            }} onClick={() => {
+                setCodeSubmissionModalVisibility(true)
             }} className="btn" >Submit</button>
         </div>
         {currentUser && <div className="previousSubmissionsContainer">
@@ -221,80 +171,20 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
             </table>
         </div>}
         {!currentUser && <h4>Log in to see your submissions</h4>}
-        <CodePreviewModal onSubmit={submitSolution} languageName={languageName} submissionFileURI={submissionFileURI} title={problem.title} open={codePreviewModalVisibility} handleClose={setCodePreviewModalVisibility} />
+        <SubmitCode contestTitle={contest.title} open={codeSubmissionModalVisibility} handleClose={setCodeSubmissionModalVisibility}
+            isOfficial={hasRegistered ? (contest.endTime >= (new Date()) * 1 ? true : false) : false}
+            problem={problem}
+            currentUser={currentUser}
+            setPreviousSubmissionList={(newSubmission) => {
+                setPreviousSubmissionList([newSubmission, ...submissions])
+            }}
+        />
     </div>
 
 }
 
 
-function CodePreviewModal({ languageName, submissionFileURI, title, open, handleClose, onSubmit }) {
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80vw',
-        maxHeight: '50vh',
-        height: '50vh',
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        overflowY: 'auto'
-    };
-    return <Modal aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={() => {
-            handleClose()
-        }}
-        closeAfterTransition
-        slotProps={{
-            backdrop: {
-                timeout: 500,
-            },
-        }}>
-        <Fade in={open}>
-            <Box sx={style}>
-                <div className="codePreviewModalContainer">
-                    <h4 style={{
-                        fontFamily: "serif",
-                        fontWeight: 100
-                    }}>Before you submit</h4>
-                    <button className="btn btn-primary  " onClick={() => {
-                        handleClose()
-                        onSubmit()
-                    }} >Submit</button>
-                </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Problem title</th>
-                            <th>Language</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{title}</td>
-                            <td>{languageName}</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={2}>Code:</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={2}>
-                                <iframe src={submissionFileURI} title='Code preview' frameBorder="0"></iframe>
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
-
-            </Box>
-        </Fade>
-    </Modal>
-}
 
 function ContestInfoContainer({ contest, currentUser }) {
     const isContestRunning = contest.endTime >= (new Date()) * 1

@@ -4,18 +4,23 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import './SubmitCode.css'
 import SubmissionService from '../../../services/Submission.service';
+import UploadManager from '../../../services/UploadManager';
 function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList, onSubmit, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
     const [languageName, setLanguageName] = React.useState('')
     async function submitSolution() {
+        function getExtName() {
+            if (languageName === 'python') return 'py'
+        }
         const data = {
             time: (new Date()) * 1,
             problemId: problem.id,
             submittedBy: currentUser.id,
             contestId: problem.contestId,
-
+            fileExtension: getExtName(),
             points: problem.points,
-            isOfficial
+            isOfficial,
+            languageName,
         }
         let newSubmission = {
             ...data,
@@ -30,10 +35,13 @@ function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList
 
 
         setPreviousSubmissionList(newSubmission)
-        const newCodeFile = new File([codeText.current.value], 'submission.' + languageName)
+        const newCodeFileBlob = UploadManager.convertTextToBlob(codeText.current.value)
+        console.log(codeText.current.value)
 
-
-        // SubmissionService.submit(data, newCodeFile)
+        SubmissionService.submit(data, newCodeFileBlob)
+            .then(res => {
+                console.log(res)
+            })
         //     .then((response) => {
 
 
@@ -99,7 +107,7 @@ function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList
                                     setLanguageName(e.target.value)
                                 }} id="">
                                 <option value="">Please Select</option>
-                                <option value="py">python</option>
+                                <option value="python">python</option>
                             </select>
                         </td>
                     </tr>

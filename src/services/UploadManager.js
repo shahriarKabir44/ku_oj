@@ -20,7 +20,7 @@ export default class UploadManager {
     }
     static async uploadBlobData(blob, additionalData, apiURL = '/uploadFile/upload') {
         let formData = new FormData()
-
+        console.log(additionalData)
         formData.append("file", blob)
 
         let url = await fetch(Globals.SERVER_URL + apiURL, {
@@ -33,11 +33,15 @@ export default class UploadManager {
         }).then(res => res.json())
         return url
     }
-
-    static async convertTextToBase64(content) {
+    static convertTextToBlob(content) {
         const file = new File([content], 'abcd.txt', { type: 'text/plain' });
 
-        let blob = new Blob([file], { type: 'text/plain' });
+        return new Blob([file], { type: 'text/plain' });
+    }
+    static async convertTextToBase64(content) {
+
+
+        let blob = this.convertTextToBlob(content)
         const reader = new FileReader();
         reader.readAsDataURL(blob);
         return new Promise(resolve => {

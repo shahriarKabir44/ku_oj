@@ -1,10 +1,10 @@
 import Global from "./Global"
 import UploadManager from "./UploadManager"
 export default class SubmissionService {
-    static async submit(submissionInfo, submissionFileURL) {
+    static async submit(submissionInfo, submissionFileBlob) {
         const { fileExtension, problemId, submittedBy, contestId } = submissionInfo
 
-        return await UploadManager.uploadFile(submissionFileURL, {
+        return await UploadManager.uploadBlobData(submissionFileBlob, {
             filetype: 'submission',
             problemid: problemId,
             postedby: submittedBy,

@@ -3,20 +3,19 @@ import ContestService from "../../../services/Contest.service";
 import "./ContestRankings.css";
 
 function RankingItem({ problems, rank, serial }) {
+	console.log(rank)
 	return (
 		<div className="table-row">
 			<div className="participants-container">{serial}.{rank.contestantName}</div>
 			<div className="problems-container">
 				{problems.map((problem, index) => {
-					let data = rank.official_description[problems.id];
+					let data = rank.officialVerdicts[problem.id];
+					if (data === 'AC') {
+						return <div key={index} className="problem-title passed-submit">{data}</div>;
 
-					if (data === 0) {
-						return <div className="problem-title not-submitted">N/A</div>;
-					} else if (data > 0) {
-						return <div className="problem-title passed-submit">Passed</div>;
-					} else {
-						return <div className="problem-title failed-submit">Failed</div>;
 					}
+
+					return <div key={index} className="problem-title failed-submit">{data}</div>;
 				})}
 			</div>
 			<div className="points-container">{rank.official_points}</div>
@@ -36,15 +35,19 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 						ranking.official_description
 					);
 					ranking.description = JSON.parse(ranking.description);
+					ranking.verdicts = JSON.parse(ranking.verdicts)
 					ranking.official_description = isOfficial
 						? ranking.official_description
 						: ranking.description;
 					ranking.official_points = isOfficial
 						? ranking.official_points
 						: ranking.points;
+					ranking.officialVerdicts = isOfficial
+						? ranking.officialVerdicts :
+						ranking.verdicts
 				});
 				let filteredStandingInfo = [];
-				console.log(standings);
+				//console.log(standings);
 				standings.forEach((ranking) => {
 					if (isOfficial && ranking.official_description == null) return;
 					filteredStandingInfo.push(ranking);
@@ -77,7 +80,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 					<div className="problems-container">
 						{
 							problems.map((_, index) => (
-								<div className="problem-title"> {String.fromCharCode(65 + index)} </div>
+								<div key={index} className="problem-title"> {String.fromCharCode(65 + index)} </div>
 							))
 						}
 

@@ -14,7 +14,7 @@ function SubmissionInfo({ currentUser }) {
             .then((submissionInfo) => {
                 if (submissionInfo.success) {
                     let { submission } = submissionInfo
-                    console.log(submission.contest.title)
+                    console.log(submission)
                     NavbarDirectoryManager.setDitectory('submissionDetails', {
                         contest: { id: submission.contest?.id, title: submission.contest?.code },
                         problem: { id: submission.problemId, title: submission.problemCode },

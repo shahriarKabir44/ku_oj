@@ -171,7 +171,12 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
             </table>
         </div>}
         {!currentUser && <h4>Log in to see your submissions</h4>}
-        <SubmitCode contestTitle={contest.title} open={codeSubmissionModalVisibility} handleClose={setCodeSubmissionModalVisibility}
+        <SubmitCode contestTitle={contest.title} open={codeSubmissionModalVisibility} handleClose={() => {
+            setCodeSubmissionModalVisibility(false)
+        }}
+            setSubmissionList={(submissionList) => {
+                setPreviousSubmissionList(submissionList)
+            }}
             isOfficial={hasRegistered ? (contest.endTime >= (new Date()) * 1 ? true : false) : false}
             problem={problem}
             currentUser={currentUser}

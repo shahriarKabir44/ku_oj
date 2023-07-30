@@ -5,7 +5,7 @@ import Fade from '@mui/material/Fade';
 import './SubmitCode.css'
 import SubmissionService from '../../../services/Submission.service';
 import UploadManager from '../../../services/UploadManager';
-function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList, onSubmit, problem, isOfficial, currentUser }) {
+function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
     const [languageName, setLanguageName] = React.useState('')
     async function submitSolution() {
@@ -39,19 +39,18 @@ function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList
         console.log(codeText.current.value)
 
         SubmissionService.submit(data, newCodeFileBlob)
-            .then(res => {
-                console.log(res)
+
+            .then((response) => {
+
+
+                codeText.current.value = null
+                setLanguageName("")
+                SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
+                    .then(({ previousSubmissions }) => {
+                        setSubmissionList(previousSubmissions)
+                        handleClose()
+                    })
             })
-        //     .then((response) => {
-
-
-        //         codeText.current.value = null
-        //         extSelectionRef.current.value = ''
-        //         SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
-        //             .then(({ previousSubmissions }) => {
-        //                 setPreviousSubmissionList(previousSubmissions)
-        //             })
-        //     })
 
     }
     const style = {

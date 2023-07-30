@@ -51,12 +51,3 @@
 .problemSetContainer.card {
     height: calc(100vh - 140px);
 }
-
-.contestSubmissionContainer {
-    max-height: calc(100% - 30px);
-    overflow-y: auto;
-}
-
-.submissionsListContainer {
-    height: 100%;
-}

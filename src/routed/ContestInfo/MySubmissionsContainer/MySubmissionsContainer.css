@@ -1,0 +1,8 @@
+.submissionsListContainer {
+    height: 100%;
+}
+
+.contestSubmissionContainer {
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+}

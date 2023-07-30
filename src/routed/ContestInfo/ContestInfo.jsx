@@ -6,6 +6,7 @@ import './ContestInfo.css'
 import MySubmissionsContainer from './MySubmissionsContainer/MySubmissionsContainer';
 import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
 import ContestRankings from './ContestRankings/ContestRankings';
+import ContestSubmissions from './ContestSubmissions/ContestSubmissions';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const navigate = useNavigate()
@@ -71,6 +72,7 @@ function ContestInfo({ currentUser }) {
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
                         </div>
                         {selectedTab === 1 && <ContestProblemSet problems={problems} />}
+                        {selectedTab === 2 && <ContestSubmissions />}
                         {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
 
                     </div>

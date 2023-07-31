@@ -13,6 +13,7 @@ function ContestSubmissionTable({ submissions, contest }) {
                     <tr>
                         <th>Time</th>
                         <th>Problem</th>
+                        {submissions[0] && submissions[0].author && <th>Author</th>}
                         <th>Language</th>
                         <th>Verdict</th>
                         <th>Exec. time</th>
@@ -32,6 +33,12 @@ function ContestSubmissionTable({ submissions, contest }) {
                                     fontSize: '12px'
                                 }} to={`${Global.CLIENT_URL}/problem/${submission.problemId}`}>{submission.problemName} </Link>
                             </td>
+                            {submission.author && <td>
+                                <Link style={{
+                                    fontSize: '12px'
+                                }} to={`${Global.CLIENT_URL}/user/${submission.submittedBy}`}>{submission.author} </Link>
+
+                            </td>}
                             <td>
                                 {submission.language}
                             </td>

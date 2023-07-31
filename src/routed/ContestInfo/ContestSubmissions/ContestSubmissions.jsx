@@ -1,12 +1,18 @@
 import React from 'react';
-
-function ContestSubmissions(props) {
+import SubmissionService from '../../../services/Submission.service';
+import ContestSubmissionTable from '../ContestSubmissionTable/ContestSubmissionTable';
+import './ContestSubmissions.css'
+function ContestSubmissions({ contest, currentUser }) {
+    const [submissions, setSubmissionList] = React.useState([])
     React.useEffect(() => {
-
+        SubmissionService.getContestSubmissions(contest.id, 0)
+            .then(submissions => {
+                setSubmissionList([...submissions, ...submissions, ...submissions])
+            })
     })
     return (
-        <div>
-
+        <div className='tableContainer'>
+            <ContestSubmissionTable contest={contest} submissions={submissions} />
         </div>
     );
 }

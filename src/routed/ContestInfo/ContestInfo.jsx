@@ -72,7 +72,7 @@ function ContestInfo({ currentUser }) {
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
                         </div>
                         {selectedTab === 1 && <ContestProblemSet problems={problems} />}
-                        {selectedTab === 2 && <ContestSubmissions />}
+                        {selectedTab === 2 && <ContestSubmissions contest={contest} />}
                         {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
 
                     </div>

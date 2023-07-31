@@ -87,10 +87,7 @@ export default function ProblemDetails({ currentUser }) {
 }
 
 function SubmissionsContainer({ currentUser, problem, contest }) {
-    const [submissionFileURI, setSubmissionFileURI] = React.useState("")
-    const [fileExtension, setFileExtension] = React.useState('')
     const [submissions, setPreviousSubmissionList] = React.useState([])
-    const fileUploadRef = React.useRef(null), extSelectionRef = React.useRef(null)
     const [codeSubmissionModalVisibility, setCodeSubmissionModalVisibility] = React.useState(false)
     const [hasRegistered, setRegistrationStatus] = React.useState(false)
     React.useEffect(() => {
@@ -103,13 +100,7 @@ function SubmissionsContainer({ currentUser, problem, contest }) {
         }
     }, [currentUser, problem])
 
-    function onfileChange(event) {
-        const fileObj = event.target.files && event.target.files[0];
-        if (!fileObj) {
-            return;
-        }
-        return (URL.createObjectURL(fileObj))
-    }
+
 
     React.useEffect(() => {
         if (currentUser)

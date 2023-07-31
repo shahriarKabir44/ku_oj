@@ -6,7 +6,7 @@ export default function MySubmissionsContainer({ contest, user }) {
     const [mySubmissions, setMySubmissions] = React.useState([])
     React.useEffect(() => {
         if (user)
-            UserService.getContestSubmissions(user.id, contest.id)
+            UserService.getUsersContestSubmissions(user.id, contest.id)
                 .then(submissions => {
                     setMySubmissions(submissions)
                 })

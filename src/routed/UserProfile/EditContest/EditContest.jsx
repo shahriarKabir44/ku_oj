@@ -60,7 +60,6 @@ export default function EditContest({ currentUser }) {
     }
 
     React.useEffect(() => {
-        document.title = "Edit Contest"
         ContestService.getFullContestDetails(contestId)
             .then((fullContestDetails) => {
                 NavbarDirectoryManager.setDitectory('editContest', {

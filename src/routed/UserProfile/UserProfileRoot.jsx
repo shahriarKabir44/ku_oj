@@ -22,7 +22,6 @@ export default function UserProfileRoot({ currentUser }) {
                         userId: user.id, userName: user.userName
                     })
                 }, 100)
-                document.title = user?.userName
                 setUser(user)
             })
     }, [id])

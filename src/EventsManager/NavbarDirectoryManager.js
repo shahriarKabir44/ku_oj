@@ -10,11 +10,16 @@ export default class NavbarDirectoryManager {
         NavbarDirectoryManager.clients[client.label] = null
     }
     static setDitectory(label, { userId, userName, contest, problem, submission }) {
+        if (label === 'home') {
+            document.title = 'Home'
+        }
         let dirs = [{
             label: 'Home',
             path: '/'
         }]
         if (label === 'createContest') {
+            document.title = 'Create Contest'
+
             dirs = [
                 ...dirs,
                 {
@@ -28,6 +33,7 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'profile') {
+            document.title = userName
             dirs = [
                 ...dirs,
                 {
@@ -37,6 +43,7 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'contestInfo') {
+            document.title = contest
             let { title, id } = contest
             dirs = [
                 ...dirs,
@@ -47,6 +54,8 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'problemDescription') {
+
+            document.title = problem.title
             dirs = [
                 ...dirs,
                 {
@@ -60,6 +69,7 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'submissionDetails') {
+            document.title = 'Submission'
             dirs = [
                 ...dirs,
                 {
@@ -77,6 +87,7 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'editContest') {
+            document.title = `Edit "${contest.title}"`
             dirs = [
                 ...dirs,
                 {

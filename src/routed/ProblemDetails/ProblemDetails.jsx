@@ -39,7 +39,6 @@ export default function ProblemDetails({ currentUser }) {
                     if (!problemInfo) {
                         nav('/')
                     }
-                    document.title = problemInfo.title
                     NavbarDirectoryManager.setDitectory('problemDescription', {
                         contest: {
                             title: problemInfo.contestCode,

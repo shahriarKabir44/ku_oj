@@ -7,7 +7,7 @@ function ContestSubmissions({ contest, currentUser }) {
     React.useEffect(() => {
         SubmissionService.getContestSubmissions(contest.id, 0)
             .then(submissions => {
-                setSubmissionList([...submissions, ...submissions, ...submissions])
+                setSubmissionList([...submissions])
             })
     })
     return (

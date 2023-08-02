@@ -9,7 +9,6 @@ function SubmissionInfo({ currentUser }) {
     const [submissionInfo, setSubmissionInfo] = React.useState({})
     const [submittedCode, setSubmittedCode] = React.useState([])
     React.useEffect(() => {
-        document.title = "Submission"
         SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser?.id })
             .then((submissionInfo) => {
                 if (submissionInfo.success) {

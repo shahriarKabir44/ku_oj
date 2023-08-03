@@ -51,3 +51,7 @@
 .problemSetContainer.card {
     height: calc(100vh - 140px);
 }
+
+.basicInfoContainer>p {
+    line-height: 1px;
+}

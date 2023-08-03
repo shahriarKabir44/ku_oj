@@ -18,15 +18,21 @@ function ContestInfo({ currentUser }) {
         hostName: "",
         code: ""
     })
+
     const [problems, setProblemList] = React.useState([])
     React.useEffect(() => {
-
         ContestService.getContestInfo(id)
             .then(({ contestInfo }) => {
                 if (!contestInfo) {
                     navigate('/')
                 }
-                console.log(contestInfo)
+                if (contestInfo.beginTime <= (new Date()) * 1) {
+                    ContestService.getContestProblems(id)
+                        .then(({ contestProblems }) => {
+
+                            setProblemList(contestProblems)
+                        })
+                }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
                         contest: {
@@ -38,11 +44,8 @@ function ContestInfo({ currentUser }) {
                 }, 100)
                 setContestInfo(contestInfo)
             })
-        ContestService.getContestProblems(id)
-            .then(({ contestProblems }) => {
 
-                setProblemList(contestProblems)
-            })
+
     }, [id, navigate])
     return (
         <div className='contestinfo_container'>
@@ -50,10 +53,16 @@ function ContestInfo({ currentUser }) {
             <div className="gridContainer">
                 <div className="leftPanel_contest">
                     <div className="card basicInfoContainer">
-                        <h3>{contest.title}</h3>
+                        <h2>{contest.title}</h2>
                         <p>Organised by: <span>{contest.hostName}</span> </p>
-                        <h5>Time left:</h5>
-                        <h3>1 hr 3 mins</h3>
+                        <p>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
+                        {contest.startTime < (new Date()) * 1 && <>
+                            {contest.endTime < (new Date()) * 1 && <b>Contest has ended</b>}
+                            {contest.endTime >= (new Date()) * 1 && <CountDown endTime={contest.endTime} />}
+
+
+                        </>}
+                        {contest.startTime > (new Date()) * 1 && <b>Contest hasn't started yet</b>}
                     </div>
                     <div className="card mySubmissionsContainer">
                         <MySubmissionsContainer contest={contest} user={currentUser} />
@@ -83,8 +92,63 @@ function ContestInfo({ currentUser }) {
         </div>
     );
 }
+function convertMinutesToDHM(minutes) {
+    if (typeof minutes !== 'number' || minutes < 0) {
+        throw new Error('Invalid input. Please provide a non-negative number of minutes.');
+    }
 
+    const oneDayInMinutes = 1440; // 24 hours * 60 minutes
+    const oneHourInMinutes = 60;
 
+    const days = Math.floor(minutes / oneDayInMinutes);
+    const remainingMinutesAfterDays = minutes % oneDayInMinutes;
+    const hours = Math.floor(remainingMinutesAfterDays / oneHourInMinutes);
+    const remainingMinutes = remainingMinutesAfterDays % oneHourInMinutes;
+
+    let result = '';
+    if (days > 0) {
+        result += `${days} day${days > 1 ? 's' : ''} `;
+    }
+    if (hours > 0) {
+        result += `${hours} hour${hours > 1 ? 's' : ''} `;
+    }
+    if (remainingMinutes > 0) {
+        result += `${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''} `;
+    }
+
+    return result.trim();
+}
+const CountDown = React.memo((props) => {
+    const [timeRemaining, setTimeRemaining] = React.useState(calculateTimeRemaining());
+
+    React.useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeRemaining(calculateTimeRemaining());
+        }, 60 * 1000);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, []);
+
+    function calculateTimeRemaining() {
+
+        const targetDate = new Date(props.endTime);
+        const now = new Date();
+        const difference = (targetDate - now);
+        const minutesRemaining = Math.ceil(difference / (1000 * 60));
+        return minutesRemaining > 0 ? minutesRemaining : 0;
+    }
+    return (
+        <div>
+
+            <p style={{
+                fontSize: "12px"
+            }}>Time Remaining: {convertMinutesToDHM(timeRemaining)}</p>
+        </div>
+    );
+
+})
 
 
 export default ContestInfo;

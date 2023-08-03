@@ -26,7 +26,7 @@ function ContestInfo({ currentUser }) {
                 if (!contestInfo) {
                     navigate('/')
                 }
-                if (contestInfo.beginTime <= (new Date()) * 1) {
+                if (contestInfo.startTime <= (new Date()) * 1) {
                     ContestService.getContestProblems(id)
                         .then(({ contestProblems }) => {
 
@@ -55,14 +55,16 @@ function ContestInfo({ currentUser }) {
                     <div className="card basicInfoContainer">
                         <h2>{contest.title}</h2>
                         <p>Organised by: <span>{contest.hostName}</span> </p>
-                        <p>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
+                        <p style={{
+                            fontSize: "12px"
+                        }}>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
                         {contest.startTime < (new Date()) * 1 && <>
                             {contest.endTime < (new Date()) * 1 && <b>Contest has ended</b>}
-                            {contest.endTime >= (new Date()) * 1 && <CountDown endTime={contest.endTime} />}
+                            {contest.endTime >= (new Date()) * 1 && <CountDown content={"Remaining Time"} endTime={contest.endTime} />}
 
 
                         </>}
-                        {contest.startTime > (new Date()) * 1 && <b>Contest hasn't started yet</b>}
+                        {contest.startTime > (new Date()) * 1 && <CountDown content={"Before Start"} endTime={contest.startTime} />}
                     </div>
                     <div className="card mySubmissionsContainer">
                         <MySubmissionsContainer contest={contest} user={currentUser} />
@@ -137,6 +139,9 @@ const CountDown = React.memo((props) => {
         const now = new Date();
         const difference = (targetDate - now);
         const minutesRemaining = Math.ceil(difference / (1000 * 60));
+        if (minutesRemaining <= 0) {
+            window.location.reload()
+        }
         return minutesRemaining > 0 ? minutesRemaining : 0;
     }
     return (
@@ -144,7 +149,7 @@ const CountDown = React.memo((props) => {
 
             <p style={{
                 fontSize: "12px"
-            }}>Time Remaining: {convertMinutesToDHM(timeRemaining)}</p>
+            }}>{props.content}: {convertMinutesToDHM(timeRemaining)}</p>
         </div>
     );
 

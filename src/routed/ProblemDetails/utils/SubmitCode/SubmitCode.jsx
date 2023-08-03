@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './SubmitCode.css'
-import SubmissionService from '../../../services/Submission.service';
-import UploadManager from '../../../services/UploadManager';
+import SubmissionService from '../../../../services/Submission.service';
+import UploadManager from '../../../../services/UploadManager';
 function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
     const [languageName, setLanguageName] = React.useState('')

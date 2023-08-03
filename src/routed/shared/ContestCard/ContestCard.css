@@ -1,0 +1,9 @@
+.card.contestCard {
+    width: 50vw;
+    text-decoration: none;
+    display: flex;
+    color: black;
+    align-items: center;
+    justify-content: space-between;
+
+}

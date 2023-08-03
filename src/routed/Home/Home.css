@@ -21,15 +21,7 @@ p.contestsCardHeading {
     align-items: center;
 }
 
-.card.contestCard {
-    width: 50vw;
-    text-decoration: none;
-    display: flex;
-    color: black;
-    align-items: center;
-    justify-content: space-between;
 
-}
 
 button.btn.contestRegisterBtn {
     background: #337ab7 !important;

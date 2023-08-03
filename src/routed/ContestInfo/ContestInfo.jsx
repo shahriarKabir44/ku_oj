@@ -26,11 +26,13 @@ function ContestInfo({ currentUser }) {
                 if (!contestInfo) {
                     navigate('/')
                 }
+                console.log(contestInfo)
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
                         contest: {
                             id,
-                            title: contestInfo.code
+                            code: contestInfo.code,
+                            title: contestInfo.title
                         }
                     })
                 }, 100)

@@ -43,12 +43,12 @@ export default class NavbarDirectoryManager {
             ]
         }
         else if (label === 'contestInfo') {
-            document.title = contest
-            let { title, id } = contest
+            document.title = contest.title
+            let { code, id } = contest
             dirs = [
                 ...dirs,
                 {
-                    label: title,
+                    label: code,
                     path: Global.CLIENT_URL + '/contest/' + id
                 }
             ]

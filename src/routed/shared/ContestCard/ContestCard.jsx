@@ -1,8 +1,8 @@
 import React from "react"
-import ContestService from "../../../services/Contest.service"
 import { Link } from "react-router-dom"
 import Global from "../../../services/Global"
-export default function ContestCard({ contest, currentUser }) {
+import './ContestCard.css'
+export default function ContestCard({ contest }) {
     function calculateDuration({ startTime, endTime }) {
         let duration = endTime * 1 - startTime * 1
         duration = Math.floor(duration / 60000)

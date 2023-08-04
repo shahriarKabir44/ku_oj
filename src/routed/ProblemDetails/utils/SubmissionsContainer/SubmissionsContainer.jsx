@@ -1,5 +1,6 @@
 import SubmitCode from "../SubmitCode/SubmitCode"
 import React from "react"
+import './SubmissionsContainer.css'
 import SubmissionService from "../../../../services/Submission.service"
 import { Link } from "react-router-dom"
 import Global from "../../../../services/Global"

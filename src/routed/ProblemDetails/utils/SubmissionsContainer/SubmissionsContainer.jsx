@@ -29,8 +29,8 @@ export default function SubmissionsContainer({ currentUser, problem, contest }) 
         <div className="submissionContainer">
 
             <button style={{
-                flex: 1,
-                margin: "5px"
+                width: "100%",
+                margin: "5px 0px"
             }} onClick={() => {
                 setCodeSubmissionModalVisibility(true)
             }} className="btn" >Submit</button>

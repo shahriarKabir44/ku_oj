@@ -95,11 +95,9 @@ function ContestInfo({ currentUser }) {
     );
 }
 function convertMinutesToDHM(minutes) {
-    if (typeof minutes !== 'number' || minutes < 0) {
-        throw new Error('Invalid input. Please provide a non-negative number of minutes.');
-    }
 
-    const oneDayInMinutes = 1440; // 24 hours * 60 minutes
+
+    const oneDayInMinutes = 1440;
     const oneHourInMinutes = 60;
 
     const days = Math.floor(minutes / oneDayInMinutes);
@@ -109,13 +107,13 @@ function convertMinutesToDHM(minutes) {
 
     let result = '';
     if (days > 0) {
-        result += `${days} day${days > 1 ? 's' : ''} `;
+        result += `${days} D `;
     }
     if (hours > 0) {
-        result += `${hours} hour${hours > 1 ? 's' : ''} `;
+        result += `${hours} H `;
     }
     if (remainingMinutes > 0) {
-        result += `${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''} `;
+        result += `${remainingMinutes} M `;
     }
 
     return result.trim();

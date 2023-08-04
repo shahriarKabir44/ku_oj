@@ -4,12 +4,13 @@ import Modal from '@mui/material/Modal';
 import './SubmitCode.css'
 import SubmissionService from '../../../../services/Submission.service';
 import UploadManager from '../../../../services/UploadManager';
-function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
+function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
     const [languageName, setLanguageName] = React.useState('')
     async function submitSolution() {
         function getExtName() {
             if (languageName === 'python') return 'py'
+            else if (languageName === 'c++') return 'cpp'
         }
         const data = {
             time: (new Date()) * 1,
@@ -98,7 +99,7 @@ function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{contestTitle}</td>
+                        <td>{problem.title}</td>
                         <td>
                             <select className='languageSelector' name="" value={languageName}
                                 onChange={e => {
@@ -106,6 +107,7 @@ function SubmitCode({ contestTitle, open, handleClose, setPreviousSubmissionList
                                 }} id="">
                                 <option value="">Please Select</option>
                                 <option value="python">python</option>
+                                <option value="c++">c++</option>
                             </select>
                         </td>
                     </tr>

@@ -31,11 +31,11 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 		ContestService.getContestStandings(contestId, pageNumber, isOfficial).then(
 			(standings) => {
 				standings.forEach((ranking) => {
-					ranking.official_description = JSON.parse(
-						ranking.official_description
-					);
+
 					ranking.description = JSON.parse(ranking.description);
 					ranking.verdicts = JSON.parse(ranking.verdicts)
+					ranking.official_description = JSON.parse(ranking.official_description)
+					ranking.officialVerdicts = JSON.parse(ranking.officialVerdicts)
 					ranking.official_description = isOfficial
 						? ranking.official_description
 						: ranking.description;
@@ -47,12 +47,12 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 						ranking.verdicts
 				});
 				let filteredStandingInfo = [];
-				//console.log(standings);
 				standings.forEach((ranking) => {
-					if (isOfficial && ranking.official_description == null) return;
+					if (ranking.official_description == null) return;
+
 					filteredStandingInfo.push(ranking);
 				});
-				// console.log(filteredStandingInfo)
+				console.log(filteredStandingInfo)
 				setRankingList(filteredStandingInfo);
 			}
 		);

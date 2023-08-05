@@ -9,7 +9,7 @@ function ContestSubmissions({ contest, currentUser }) {
             .then(submissions => {
                 setSubmissionList([...submissions])
             })
-    })
+    }, [])
     return (
         <div className='tableContainer'>
             <ContestSubmissionTable contest={contest} submissions={submissions} />

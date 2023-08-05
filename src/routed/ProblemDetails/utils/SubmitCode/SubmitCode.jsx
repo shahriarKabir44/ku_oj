@@ -36,7 +36,6 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
 
         setPreviousSubmissionList(newSubmission)
         const newCodeFileBlob = UploadManager.convertTextToBlob(codeText.current.value)
-        console.log(codeText.current.value)
 
         SubmissionService.submit(data, newCodeFileBlob)
 

@@ -32,7 +32,6 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                 return ContestService.createProblem({ ...problemInfo, contestId: contestInfo.id, createdOn: contestInfo.startTime })
             },
             onErrorCheking: async (contestId) => {
-                console.log('shahriar kabir')
                 return {
                     status: 1,
                     errorMessage: ""
@@ -90,7 +89,6 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                 <div className="uplodsContainer">
                     <div className="uploadBtnContainer">
                         <button className={`previewBtn ${fileForPreview.label === 'statement' ? "previewing" : ""} `} onClick={(e) => {
-                            console.log(problemInfo.statementFileURL)
                             setFileForPreview({ file: problemInfo.statementFileURL, label: "statement" })
                         }} >Problem statement</button>
                         <div onClick={() => {
@@ -99,7 +97,6 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                         <input style={{ display: "none" }}
                             onChange={e => {
                                 let fileURL = onfileChange(e, "Statement.pdf")
-                                console.log(fileURL)
                                 setFileForPreview({ file: fileURL, label: "statement" })
 
                                 setProblemInfo({ ...problemInfo, statementFileURL: fileURL })

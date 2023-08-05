@@ -21,7 +21,6 @@ export default class Global {
         return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
     }
     static async _postReq(url, data) {
-        console.log(data)
         return fetch(this.SERVER_URL + url, {
             method: 'POST',
             headers: {

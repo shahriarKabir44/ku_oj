@@ -6,12 +6,10 @@ export default class ContestCreationEventManager {
     }
     static async sendMessage(contestInfo) {
         let promises = []
-        console.log(contestInfo)
         let isErrorFree = 1
         let errorMessage = ""
         this.clients.forEach(client => {
             promises.push(client.onErrorCheking(contestInfo.id).then((status) => {
-                console.log(status)
                 isErrorFree &= status.status
                 errorMessage = status.errorMessage
             }))

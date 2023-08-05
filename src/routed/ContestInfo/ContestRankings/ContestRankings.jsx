@@ -3,7 +3,6 @@ import ContestService from "../../../services/Contest.service";
 import "./ContestRankings.css";
 
 function RankingItem({ problems, rank, serial }) {
-	console.log(rank)
 	return (
 		<div className="table-row">
 			<div className="participants-container">{serial}.{rank.contestantName}</div>
@@ -52,7 +51,6 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 
 					filteredStandingInfo.push(ranking);
 				});
-				console.log(filteredStandingInfo)
 				setRankingList(filteredStandingInfo);
 			}
 		);

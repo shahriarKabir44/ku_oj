@@ -6,7 +6,7 @@ import './ProblemDetails.css'
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import Global from '../../services/Global'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
-
+import CountDown from '../shared/CountDown/CountDown'
 
 export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
@@ -88,20 +88,17 @@ export default function ProblemDetails({ currentUser }) {
 
 
 function ContestInfoContainer({ contest }) {
-    const isContestRunning = contest.endTime >= (new Date()) * 1
 
     return <div className="contestInfoContainer card">
-        <h3 style={{
-            margin: 0
-        }}>{contest.title}</h3>
-        {isContestRunning && <div style={{
-            display: 'flex',
-            gap: "10px"
-        }}><h5>Time left:</h5>  <h3>1 hr 3 mins</h3> </div>}
-        {!isContestRunning && <div style={{
-            display: 'flex',
-            gap: "10px"
-        }}>   <h3>Contest ended</h3> </div>}
+        <h2>{contest.title}</h2>
+        <p style={{
+            fontSize: "12px"
+        }}>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
+        {contest.endTime < (new Date()) * 1 && <b>Contest has ended</b>}
+        {contest.endTime >= (new Date()) * 1 && <CountDown content={"Remaining Time"} endTime={contest.endTime} />}
+
+
+
 
     </div>
 

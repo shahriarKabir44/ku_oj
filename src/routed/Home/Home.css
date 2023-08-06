@@ -20,11 +20,3 @@ p.contestsCardHeading {
     flex-direction: column;
     align-items: center;
 }
-
-
-
-button.btn.contestRegisterBtn {
-    background: #337ab7 !important;
-    border: 1px solid;
-    color: white;
-}

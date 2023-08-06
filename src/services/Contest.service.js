@@ -175,12 +175,8 @@ export default class ContestService {
     static async searchContestByProblem(problemId) {
         return Global._fetch('/contests/searchContestByProblem/' + problemId)
     }
-    static async isRegistered(contestId, userId) {
-        return Global._fetch('/contests/isRegistered', { contestId, userId })
-    }
-    static async registerForContest(contestId, userId) {
-        return Global._fetch('/contests/registerForContest', { contestId, userId })
-    }
+
+
     static async getContestStandings(contestId, pageNumber, isOfficial) {
         return Global._fetch('/contests/getContestStandings', { contestId, pageNumber, isOfficial })
 

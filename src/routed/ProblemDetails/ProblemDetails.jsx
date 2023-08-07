@@ -13,10 +13,9 @@ export default function ProblemDetails({ currentUser }) {
     const [contest, setContestInfo] = React.useState({})
 
     const { problemId } = useParams()
-
-
+    console.log()
+    const [hasSolved, setSolvedFlag] = React.useState(2)
     const [problemInfo, setProblemInfo] = React.useState({})
-
 
     React.useEffect(() => {
         ContestService.searchContestByProblem(problemId)
@@ -32,6 +31,18 @@ export default function ProblemDetails({ currentUser }) {
                 setContestInfo(contest)
             })
         try {
+            if (currentUser) {
+                ContestService.hasSolvedProblem(currentUser.id, problemId)
+                    .then(({ finalVerdict, finalVerdictOfficial }) => {
+                        if (contest.endTime > (new Date()) * 1) {
+                            setSolvedFlag(finalVerdictOfficial)
+                        }
+                        else {
+                            setSolvedFlag(finalVerdict)
+                        }
+                    })
+
+            }
             ContestService.getProblemInfo(problemId)
                 .then(({ problemInfo }) => {
                     if (!problemInfo) {

@@ -2,50 +2,77 @@
     width: 100%;
     overflow-x: auto;
 }
-.main-container{
+
+.main-container {
     /* background-color: blue; */
     padding: 10px;
-    color:white;
+    color: white;
 }
-.table-row{
+
+.table-row {
     display: flex;
     background-color: #272643;
     font-size: 20px;
     justify-content: space-between;
     padding: 10px;
     border-radius: 20px;
-    margin:10px;
+    margin: 10px;
 }
 
-.participants-container{
+.participants-container {
     /* background-color: yellow; */
     width: 223px;
     margin: 15px 0px 15px 0px;
     padding: 0px 0px 0px 20px;
 }
-.problems-container{
+
+.problems-container {
     /* background-color: aqua; */
     margin: 15px 0px 15px 0px;
 }
 
-.points-container{
+.points-container {
     /* background-color: bisque; */
     width: 130px;
     text-align: center;
     margin: 15px 0px 15px 0px;
 }
 
-.problem-title{
-    width:75px;
+.problem-title {
+    width: 75px;
     text-align: center;
     padding: 0px 5px 0px 5px;
 
 }
 
-.failed-submit{
+.failed-submit {
     color: #FF5B5B;
 }
 
-.passed-submit{
+.passed-submit {
     color: #78D12F;
+}
+
+.rankingContainerGrid {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.rankingContainerGrid>* {
+    border-top: 1px solid;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scoreboardHeader {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid;
 }

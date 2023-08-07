@@ -72,7 +72,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 				id=""
 			/>
 
-			<div className="main-container">
+			{/* <div className="main-container">
 				<div className="table-row">
 					<div className="participants-container">Participants</div>
 					<div className="problems-container">
@@ -89,39 +89,115 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 				{rankings.map((rank, index) => (
 					<RankingItem key={index} serial={index + 1} problems={problems} rank={rank} />
 				))}
+			</div> */}
+			{/* <table className="styled-table">
+				<thead>
+					<tr>
+						<th>
+							<p>Participants</p>
+						</th>
+						<th>Points</th>
+						{problems.map((problem, index) => {
+							return <th key={index}>{problem.title}</th>
+						})}
+						 
+
+					</tr>
+				</thead>
+				<tbody>
+					{rankings.map((rank, index) => {
+						return <tr key={index}>
+							<td>
+								<h3 className="contestantNameTD">{rank.contestantName}</h3>
+							</td>
+							<td>
+								<h4> {rank.official_points} </h4>
+							</td>
+							{problems.map((problem, index1) => {
+								let data = rank.official_description[problem.id]
+								let value = data ? (data > 0 ? "✅" : "❌") : ""
+								return <td key={index1}>{value}</td>
+							})}
+						</tr>
+					})}
+
+				</tbody>
+			</table> */}
+			<div className="rankingContainerGrid" style={{
+				gridTemplateColumns: `repeat( ${2 + problems.length}, 200px)`
+			}}>
+				<h3 className="scoreboardHeader">Participant</h3>
+				<h3 className="scoreboardHeader">Score</h3>
+				{problems.map((_, index) => (
+					<h3 key={index} className="scoreboardHeader"> {String.fromCharCode(65 + index)} </h3>
+				))}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
+				{rankings.map((rank, index) => {
+					return <React.Fragment key={index}>
+						<h3 className="contestantNameTD">{rank.contestantName}</h3>
+						<h4> {rank.official_points} </h4>
+						{problems.map((problem, index1) => {
+							let data = rank.official_description[problem.id]
+							let value = data ? (data > 0 ? "✅" : "❌") : ""
+							return <p key={index1}>{value}</p>
+						})}
+					</React.Fragment>
+				})}
 			</div>
-			{/* <table>
-                <thead>
-                    <tr>
-                        <th>
-                            <p>Participants</p>
-                        </th>
-                        <th>Points</th>
-                        {problems.map((problem, index) => {
-                            return <th key={index}>{problem.title}</th>
-                        })}
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {rankings.map((rank, index) => {
-                        return <tr key={index}>
-                            <td>
-                                <h3 className="contestantNameTD">{rank.contestantName}</h3>
-                            </td>
-                            <td>
-                                <h4> {rank.official_points} </h4>
-                            </td>
-                            {problems.map((problem, index1) => {
-                                let data = rank.official_description[problem.id]
-                                let value = data ? (data > 0 ? "✅" : "❌") : ""
-                                return <td key={index1}>{value}</td>
-                            })}
-                        </tr>
-                    })}
-
-                </tbody>
-            </table> */}
 		</div>
 	);
 }

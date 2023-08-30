@@ -61,9 +61,10 @@
 }
 
 .rankingContainerGrid>* {
-    border-top: 1px solid;
+    border-top: 1px solid rgb(139, 136, 136);
     width: 100%;
-    height: 100%;
+    height: 30px;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,5 +75,5 @@
     top: 0;
     z-index: 100;
     background: white;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid rgb(139, 136, 136);
 }

@@ -158,8 +158,8 @@ export default class ContestService {
         return Global._fetch('/contests/getUpcomingContests')
 
     }
-    static async getContestInfo(id) {
-        return Global._fetch('/contests/getContestInfo/' + id)
+    static async findContestById(id) {
+        return Global._fetch('/contests/findContestById/' + id)
     }
     static async getContestProblems(id) {
         return Global._fetch('/contests/getContestProblems/' + id)

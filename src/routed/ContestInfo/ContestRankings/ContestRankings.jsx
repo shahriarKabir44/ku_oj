@@ -2,25 +2,7 @@ import React from "react";
 import ContestService from "../../../services/Contest.service";
 import "./ContestRankings.css";
 
-function RankingItem({ problems, rank, serial }) {
-	return (
-		<div className="table-row">
-			<div className="participants-container">{serial}.{rank.contestantName}</div>
-			<div className="problems-container">
-				{problems.map((problem, index) => {
-					let data = rank.officialVerdicts[problem.id];
-					if (data === 'AC') {
-						return <div key={index} className="problem-title passed-submit">{data}</div>;
 
-					}
-
-					return <div key={index} className="problem-title failed-submit">{data}</div>;
-				})}
-			</div>
-			<div className="points-container">{rank.official_points}</div>
-		</div>
-	);
-}
 
 export default function ContestRankings({ contestId, currentUser, problems }) {
 	const [pageNumber, setPageNumber] = React.useState(0);
@@ -142,61 +124,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 						})}
 					</React.Fragment>
 				})}
-				{rankings.map((rank, index) => {
-					return <React.Fragment key={index}>
-						<h3 className="contestantNameTD">{rank.contestantName}</h3>
-						<h4> {rank.official_points} </h4>
-						{problems.map((problem, index1) => {
-							let data = rank.official_description[problem.id]
-							let value = data ? (data > 0 ? "✅" : "❌") : ""
-							return <p key={index1}>{value}</p>
-						})}
-					</React.Fragment>
-				})}
-				{rankings.map((rank, index) => {
-					return <React.Fragment key={index}>
-						<h3 className="contestantNameTD">{rank.contestantName}</h3>
-						<h4> {rank.official_points} </h4>
-						{problems.map((problem, index1) => {
-							let data = rank.official_description[problem.id]
-							let value = data ? (data > 0 ? "✅" : "❌") : ""
-							return <p key={index1}>{value}</p>
-						})}
-					</React.Fragment>
-				})}
-				{rankings.map((rank, index) => {
-					return <React.Fragment key={index}>
-						<h3 className="contestantNameTD">{rank.contestantName}</h3>
-						<h4> {rank.official_points} </h4>
-						{problems.map((problem, index1) => {
-							let data = rank.official_description[problem.id]
-							let value = data ? (data > 0 ? "✅" : "❌") : ""
-							return <p key={index1}>{value}</p>
-						})}
-					</React.Fragment>
-				})}
-				{rankings.map((rank, index) => {
-					return <React.Fragment key={index}>
-						<h3 className="contestantNameTD">{rank.contestantName}</h3>
-						<h4> {rank.official_points} </h4>
-						{problems.map((problem, index1) => {
-							let data = rank.official_description[problem.id]
-							let value = data ? (data > 0 ? "✅" : "❌") : ""
-							return <p key={index1}>{value}</p>
-						})}
-					</React.Fragment>
-				})}
-				{rankings.map((rank, index) => {
-					return <React.Fragment key={index}>
-						<h3 className="contestantNameTD">{rank.contestantName}</h3>
-						<h4> {rank.official_points} </h4>
-						{problems.map((problem, index1) => {
-							let data = rank.official_description[problem.id]
-							let value = data ? (data > 0 ? "✅" : "❌") : ""
-							return <p key={index1}>{value}</p>
-						})}
-					</React.Fragment>
-				})}
+
 			</div>
 		</div>
 	);

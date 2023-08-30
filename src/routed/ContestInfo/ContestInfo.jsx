@@ -22,7 +22,7 @@ function ContestInfo({ currentUser }) {
 
     const [problems, setProblemList] = React.useState([])
     React.useEffect(() => {
-        ContestService.getContestInfo(id)
+        ContestService.findContestById(id)
             .then(({ contestInfo }) => {
                 if (!contestInfo) {
                     navigate('/')

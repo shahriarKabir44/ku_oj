@@ -60,14 +60,33 @@
 
 }
 
-.rankingContainerGrid>* {
+.rankingContainerGrid>.scoreboardCell {
     border-top: 1px solid rgb(139, 136, 136);
     width: 100%;
-    height: 30px;
+    height: 50px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.scoreCell {
+    flex-direction: column;
+}
+
+.scoreCell>p {
+    margin: 0;
+    padding: 0;
+}
+
+.err_cell {
+    background: #eb3d3d;
+    color: white;
+}
+
+.AC_cell {
+    background: #58df58;
+    color: white;
 }
 
 .scoreboardHeader {

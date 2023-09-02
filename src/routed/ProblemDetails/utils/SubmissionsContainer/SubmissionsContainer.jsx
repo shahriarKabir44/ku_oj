@@ -25,14 +25,17 @@ export default function SubmissionsContainer({ currentUser, problem, contest }) 
         <h3 style={{
             margin: 0
         }}>Submit?</h3>
-        {/* add registration  checker during contest */}
-        {/* to-do: add file checker */}
+
         <div className="submissionContainer">
 
             <button style={{
                 width: "100%",
                 margin: "5px 0px"
             }} onClick={() => {
+                if (!currentUser) {
+                    alert("You have to log in first!")
+                    return
+                }
                 setCodeSubmissionModalVisibility(true)
             }} className="btn" >Submit</button>
         </div>

@@ -19,8 +19,9 @@ function ContestInfo({ currentUser }) {
         hostName: "",
         code: ""
     })
-
+    const [isContestRunning, setRunningStatus] = React.useState(false)
     const [problems, setProblemList] = React.useState([])
+    const [contestResult, setContestResult] = React.useState(null)
     React.useEffect(() => {
         ContestService.findContestById(id)
             .then(({ contestInfo }) => {
@@ -33,6 +34,23 @@ function ContestInfo({ currentUser }) {
 
                             setProblemList(contestProblems)
                         })
+                    if (contestInfo.endTime >= (new Date()) * 1) {
+                        setRunningStatus(true)
+                    }
+                    console.log(currentUser)
+                    if (currentUser) {
+                        ContestService.getContestResult({
+                            userId: currentUser.id,
+                            contestId: id
+                        }).then(_contestResult => {
+                            if (_contestResult) {
+                                _contestResult.verdicts = JSON.parse(_contestResult.verdicts)
+
+                                _contestResult.officialVerdicts = JSON.parse(_contestResult.officialVerdicts)
+                            }
+                            setContestResult(_contestResult)
+                        })
+                    }
                 }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
@@ -47,7 +65,7 @@ function ContestInfo({ currentUser }) {
             })
 
 
-    }, [id, navigate])
+    }, [id, currentUser])
     return (
         <div className='contestinfo_container'>
 
@@ -55,7 +73,6 @@ function ContestInfo({ currentUser }) {
                 <div className="leftPanel_contest">
                     <div className="card basicInfoContainer">
                         <h2>{contest.title}</h2>
-                        <p>Organised by: <span>{contest.hostName}</span> </p>
                         <p style={{
                             fontSize: "12px"
                         }}>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
@@ -84,7 +101,7 @@ function ContestInfo({ currentUser }) {
                                 setSelectedTab(3)
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
                         </div>
-                        {selectedTab === 1 && <ContestProblemSet problems={problems} />}
+                        {selectedTab === 1 && <ContestProblemSet isContestRunning={isContestRunning} contestResult={contestResult} problems={problems} />}
                         {selectedTab === 2 && <ContestSubmissions contest={contest} currentUser={currentUser} />}
                         {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
 

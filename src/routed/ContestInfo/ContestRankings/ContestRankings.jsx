@@ -12,7 +12,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 		ContestService.getContestStandings(contestId, pageNumber, isOfficial).then(
 			(standings) => {
 				standings.forEach((ranking) => {
-
+					console.log(ranking)
 					ranking.description = JSON.parse(ranking.description);
 					ranking.verdicts = JSON.parse(ranking.verdicts)
 					ranking.official_description = JSON.parse(ranking.official_description)
@@ -26,6 +26,10 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 					ranking.officialVerdicts = isOfficial
 						? ranking.officialVerdicts :
 						ranking.verdicts
+					ranking.official_ac_time = isOfficial ?
+						JSON.parse(ranking.official_ac_time) :
+						JSON.parse(ranking.unofficial_ac_time)
+
 				});
 				let filteredStandingInfo = [];
 				standings.forEach((ranking) => {
@@ -40,7 +44,9 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 	React.useEffect(() => {
 		gerContestStandings();
 	}, [contestId, currentUser, isOfficial]);
+	function processTime(time) {
 
+	}
 	return (
 		<div className="contestStantingsContainer">
 			<label htmlFor="showOfficial">show official</label>
@@ -68,11 +74,13 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 						<h4 className=" scoreboardCell"> {rank.official_points} </h4>
 						{problems.map((problem, index1) => {
 							let data = rank.official_description[problem.id]
+							let time = rank.official_ac_time[problem.id]
+
 							if (!data) return <div className="scoreboardCell"></div>
 							let value = data ? data[1] : ""
 							return <div className={`${data[0] ? 'AC_cell' : 'err_cell'} scoreboardCell scoreCell`} key={index1}>
-								<p>{data[2]}</p>
-								{value > 0 && <p>-{value}</p>}
+								{time && <b>{new Date(time * 1000).toISOString().substr(11, 8)}</b>}
+								{value > 0 && <i>(-{value})</i>}
 							</div>
 						})}
 					</React.Fragment>

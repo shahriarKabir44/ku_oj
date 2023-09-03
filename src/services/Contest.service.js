@@ -146,7 +146,9 @@ export default class ContestService {
 
     }
 
-
+    static async getContestResult({ userId, contestId }) {
+        return Global._fetch(`/contests/getContestResult/${userId}/${contestId}`)
+    }
     static async createContest(contestInfo) {
         let { contestId } = await Global._fetch('/contests/createContest', contestInfo)
         return contestId

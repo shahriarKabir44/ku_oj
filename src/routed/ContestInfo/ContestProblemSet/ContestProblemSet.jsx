@@ -1,10 +1,10 @@
 import React from 'react'
 import './ContestProblemSet.css'
-import PersonIcon from '@mui/icons-material/Person';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import { Link } from 'react-router-dom';
 import Global from '../../../services/Global';
-export default function ContestProblemSet({ problems }) {
+export default function ContestProblemSet({ problems, contestResult, isContestRunning }) {
+
     return (
         <div className="problemListContainer">
             {problems.map((problem, index) => {
@@ -21,7 +21,20 @@ export default function ContestProblemSet({ problems }) {
                                 <p>{problem.points} pts </p>
                             </div>
                             <div className="submissionCounter problemDesc_contest  ">
-                                <PersonIcon /> <p>x{problem.numSolutions}</p>
+                                {(() => {
+                                    if (contestResult) {
+                                        if (isContestRunning) {
+                                            return <p>{contestResult.officialVerdicts[problem.id] === 1 ? '✅' :
+                                                contestResult.officialVerdicts[problem.id] === -1 ? '❌' : ''
+                                            }</p>
+                                        }
+                                        else {
+                                            return <p>{contestResult.verdicts[problem.id] === 1 ? '✅' :
+                                                contestResult.verdicts[problem.id] === -1 ? '❌' : ''
+                                            }</p>
+                                        }
+                                    }
+                                })()}
 
                             </div>
                         </div>

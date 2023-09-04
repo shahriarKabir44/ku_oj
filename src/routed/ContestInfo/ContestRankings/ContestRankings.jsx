@@ -12,7 +12,6 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 		ContestService.getContestStandings(contestId, pageNumber, isOfficial).then(
 			(standings) => {
 				standings.forEach((ranking) => {
-					console.log(ranking)
 					ranking.description = JSON.parse(ranking.description);
 					ranking.verdicts = JSON.parse(ranking.verdicts)
 					ranking.official_description = JSON.parse(ranking.official_description)

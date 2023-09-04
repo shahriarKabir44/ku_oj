@@ -43,11 +43,7 @@ function ContestInfo({ currentUser }) {
                             userId: currentUser.id,
                             contestId: id
                         }).then(_contestResult => {
-                            if (_contestResult) {
-                                _contestResult.verdicts = JSON.parse(_contestResult.verdicts)
-
-                                _contestResult.officialVerdicts = JSON.parse(_contestResult.officialVerdicts)
-                            }
+                            console.log(_contestResult)
                             setContestResult(_contestResult)
                         })
                     }

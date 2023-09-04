@@ -34,6 +34,9 @@ export default function ContestProblemSet({ problems, contestResult, isContestRu
                                             }</p>
                                         }
                                     }
+                                    else {
+                                        return <></>
+                                    }
                                 })()}
 
                             </div>

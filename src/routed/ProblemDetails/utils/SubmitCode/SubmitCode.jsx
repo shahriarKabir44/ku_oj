@@ -6,11 +6,22 @@ import SubmissionService from '../../../../services/Submission.service';
 import UploadManager from '../../../../services/UploadManager';
 function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
+    const NOT_SUBMITTED = 0
+    const NOT_JUDGED = 1
+    const JUDGED = 2
+    const [submissionStatus, setSubmissionStatus] = React.useState(NOT_SUBMITTED)
     const [languageName, setLanguageName] = React.useState('')
+    const [submissionInfo, setSubmissionInfo] = React.useState({
+        time: (new Date()) * 1,
+        execTime: '--',
+        verdict: '--'
+    })
     async function submitSolution() {
+        setSubmissionStatus(NOT_JUDGED)
         function getExtName() {
             if (languageName === 'python') return 'py'
             else if (languageName === 'c++') return 'cpp'
+            else if (languageName === 'java') return 'java'
         }
         const data = {
             time: (new Date()) * 1,
@@ -22,6 +33,12 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
             isOfficial,
             languageName,
         }
+        setSubmissionInfo({
+            time: data.time,
+            execTime: '--',
+            verdict: '--'
+        })
+
         let newSubmission = {
             ...data,
             execTime: '--',
@@ -39,15 +56,19 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
 
         SubmissionService.submit(data, newCodeFileBlob)
 
-            .then((response) => {
+            .then(({ verdict, execTime }) => {
+                console.log(verdict, execTime)
+                setSubmissionInfo({
+                    ...submissionInfo,
+                    verdict,
+                    execTime
+                })
 
-
-                codeText.current.value = null
-                setLanguageName("")
                 SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
                     .then(({ previousSubmissions }) => {
                         setSubmissionList(previousSubmissions)
-                        handleClose()
+                        setSubmissionStatus(JUDGED)
+                        //handleClose()
                     })
             })
 
@@ -70,6 +91,10 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
         aria-describedby="transition-modal-description"
         open={open}
         onClose={() => {
+            if (submissionStatus === NOT_JUDGED) return
+            codeText.current.value = null
+            setLanguageName("")
+            setSubmissionStatus(NOT_SUBMITTED)
             handleClose()
         }}
         closeAfterTransition
@@ -84,22 +109,42 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                     fontFamily: "serif",
                     fontWeight: 100
                 }}>Submit code:</h4>
-                <button className="btn btn-primary  " onClick={() => {
+                <button disabled={submissionStatus === NOT_JUDGED} className="btn btn-primary  " onClick={() => {
                     submitSolution()
                 }} >Submit</button>
             </div>
 
+            {submissionStatus !== NOT_SUBMITTED && <table>
+                <thead>
+                    <tr><th>Time</th> <th>Vertict</th> <th>Exec. time</th> </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {(new Date(submissionInfo.time)).toISOString()}
+                        </td>
+                        <td>
+                            {submissionInfo.verdict}
+                        </td>
+                        <td>
+                            {submissionInfo.execTime}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>}
             <table>
                 <thead>
                     <tr>
                         <th>Problem title</th>
-                        <th>Language</th>
+                        <th >Language</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{problem.title}</td>
-                        <td>
+                        <td style={{
+
+                        }}>
                             <select className='languageSelector' name="" value={languageName}
                                 onChange={e => {
                                     setLanguageName(e.target.value)
@@ -107,9 +152,15 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                                 <option value="">Please Select</option>
                                 <option value="python">python</option>
                                 <option value="c++">c++</option>
-                            </select>
+                                <option value="java">Java</option>
+                            </select>{languageName === 'java' && <i style={{
+                                fontSize: "12px",
+
+                            }} >The name of the main class must be 'Solution'</i>}
                         </td>
+
                     </tr>
+
                     <tr>
                         <td colSpan={2}>Code:</td>
                     </tr>

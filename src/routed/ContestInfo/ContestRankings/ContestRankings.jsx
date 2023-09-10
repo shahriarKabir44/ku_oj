@@ -5,11 +5,10 @@ import "./ContestRankings.css";
 
 
 export default function ContestRankings({ contestId, currentUser, problems }) {
-	const [pageNumber, setPageNumber] = React.useState(0);
 	const [rankings, setRankingList] = React.useState([]);
 	const [isOfficial, toggleOfficialValue] = React.useState(true);
 	function gerContestStandings() {
-		ContestService.getContestStandings(contestId, pageNumber, isOfficial).then(
+		ContestService.getContestStandings(contestId, isOfficial).then(
 			(standings) => {
 				standings.forEach((ranking) => {
 					ranking.description = JSON.parse(ranking.description);
@@ -43,8 +42,14 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 	React.useEffect(() => {
 		gerContestStandings();
 	}, [contestId, currentUser, isOfficial]);
-	function processTime(time) {
+	function convertMillisecondsToDHMS(milliseconds) {
+		const seconds = Math.floor((milliseconds / 1000) % 60);
+		const minutes = Math.floor((milliseconds / (1000 * 60)) % 60);
+		const hours = Math.floor((milliseconds / (1000 * 60 * 60)) % 24);
+		const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
 
+		const formattedString = `${days}:${hours}:${minutes}:${seconds}`;
+		return formattedString;
 	}
 	return (
 		<div className="contestStantingsContainer">
@@ -78,7 +83,7 @@ export default function ContestRankings({ contestId, currentUser, problems }) {
 							if (!data) return <div className="scoreboardCell"></div>
 							let value = data ? data[1] : ""
 							return <div className={`${data[0] ? 'AC_cell' : 'err_cell'} scoreboardCell scoreCell`} key={index1}>
-								{time && <b>{new Date(time * 1000).toISOString().substr(11, 8)}</b>}
+								{time && <b>{convertMillisecondsToDHMS(time)}</b>}
 								{value > 0 && <i>(-{value})</i>}
 							</div>
 						})}

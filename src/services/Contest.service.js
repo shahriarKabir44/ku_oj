@@ -179,8 +179,8 @@ export default class ContestService {
     }
 
 
-    static async getContestStandings(contestId, pageNumber, isOfficial) {
-        return Global._fetch('/contests/getContestStandings', { contestId, pageNumber, isOfficial })
+    static async getContestStandings(contestId, isOfficial) {
+        return Global._fetch('/contests/getContestStandings', { contestId, isOfficial })
 
     }
 

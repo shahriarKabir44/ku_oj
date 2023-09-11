@@ -2,10 +2,13 @@ import React, { useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import './SubmitCode.css'
+import { Link } from 'react-router-dom'
 import SubmissionService from '../../../../services/Submission.service';
 import UploadManager from '../../../../services/UploadManager';
+import Global from '../../../../services/Global';
 function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissionList, problem, isOfficial, currentUser }) {
     const codeText = useRef(null)
+    const [newSubmissionId, setNewSubmissionId] = React.useState(-1)
     const NOT_SUBMITTED = 0
     const NOT_JUDGED = 1
     const JUDGED = 2
@@ -67,8 +70,9 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
 
         SubmissionService.submit(data, newCodeFileBlob)
 
-            .then(({ verdict, execTime }) => {
-                console.log(verdict, execTime)
+            .then((resp) => {
+                let { verdict, execTime, id } = resp
+                setNewSubmissionId(id)
                 setSubmissionInfo({
                     ...submissionInfo,
                     verdict,
@@ -77,6 +81,7 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
 
                 SubmissionService.getPreviousSubmissionsOfProblem(problem?.id, currentUser?.id)
                     .then(({ previousSubmissions }) => {
+
                         setSubmissionList(previousSubmissions)
                         setSubmissionStatus(JUDGED)
                         //handleClose()
@@ -132,7 +137,8 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                 <tbody>
                     <tr>
                         <td>
-                            {(new Date(submissionInfo.time)).toLocaleString()}
+                            {submissionStatus === JUDGED && <Link to={`${Global.CLIENT_URL}/viewSubmission/${problem.contestId}/${newSubmissionId}`}>{new Date(submissionInfo.time).toLocaleString()}</Link>}
+                            {submissionStatus !== JUDGED && (new Date(submissionInfo.time)).toLocaleString()}
                         </td>
                         <td>
                             {submissionInfo.verdict}

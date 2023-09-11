@@ -68,8 +68,10 @@ function SubmissionInfo({ currentUser }) {
                                 <div className="codeContainer">
                                     <ol>
                                         {submittedCode.map((line, lineNum) => {
-                                            return <li key={lineNum}>
-                                                <code>{line} </code>
+                                            return <li style={{
+                                                fontSize: "12px"
+                                            }} key={lineNum}>
+                                                <pre>{line} </pre>
                                             </li>
                                         })}
                                     </ol>
@@ -77,6 +79,14 @@ function SubmissionInfo({ currentUser }) {
                                 </div>
                             </td>
                         </tr>
+                        {submissionInfo.message !== null && <tr>
+                            <td colSpan={6} style={{
+                                fontSize: "12px"
+                            }}>
+                                <pre>{submissionInfo.errorMessage}</pre>
+
+                            </td>
+                        </tr>}
                     </tbody>
                 </table>
             </div>

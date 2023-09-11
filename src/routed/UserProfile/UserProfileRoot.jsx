@@ -4,6 +4,7 @@ import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import UserService from '../../services/User.service'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Global from '../../services/Global';
+import UserSubmissions from './UserSubmissions/UserSubmissions';
 
 export default function UserProfileRoot({ currentUser }) {
     const navigate = useNavigate()
@@ -52,6 +53,7 @@ export default function UserProfileRoot({ currentUser }) {
                         setSelectedContentPanel(3)
                     }} className={`tabSelectorBtn btn ${selectedContentPanel === 3 ? 'selectedTab' : ''}`}>Contests Hosted</div>
                 </div>
+                <UserSubmissions userId={id} isShowing={selectedContentPanel === 1} />
                 <HostedContestsContainer user={user} currentUser={currentUser} isShowing={selectedContentPanel === 3} />
             </div>
         </div>
@@ -62,7 +64,6 @@ export default function UserProfileRoot({ currentUser }) {
 function HostedContestsContainer({ user, currentUser, isShowing }) {
     const isCurrentUser = (user?.id === currentUser?.id)
     const [hostedContests, setHostedContestsList] = React.useState([])
-    const navigate = useNavigate()
     function hasEnded(endTime) {
         return endTime < (new Date()) * 1
     }

@@ -33,4 +33,7 @@ export default class SubmissionService {
         return Global._fetch(`/submission/getContestSubmissions/${contestId}/${pageNumber}`)
 
     }
+    static async getUserSubmissions(userId, pageNumber) {
+        return Global._fetch(`/submission/getUserSubmissions/${userId}/${pageNumber}`)
+    }
 }

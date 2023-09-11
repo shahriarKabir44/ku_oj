@@ -19,7 +19,7 @@ export default class UserService {
     static async getHostedContests(id) {
         return Global._fetch('/user/getHostedContests/' + id)
     }
-    static async getUsersContestSubmissions(userId, contestId) {
-        return Global._fetch('/user/getUsersContestSubmissions', { userId, contestId })
+    static async getUsersContestSubmissions(userId, contestId, pageNumber) {
+        return Global._fetch('/user/getUsersContestSubmissions', { userId, contestId, pageNumber })
     }
 }

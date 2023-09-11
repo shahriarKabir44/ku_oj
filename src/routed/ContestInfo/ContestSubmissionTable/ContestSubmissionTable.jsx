@@ -2,7 +2,7 @@ import React from 'react';
 import Global from '../../../services/Global';
 import { Link } from 'react-router-dom';
 import './ContestSubmissionTable.css'
-function ContestSubmissionTable({ submissions, contest }) {
+function ContestSubmissionTable({ submissions, contest, loadMore, shouldLoadMore }) {
     return (
         <div className="contestSubmissionContainer">
             <table>
@@ -50,7 +50,16 @@ function ContestSubmissionTable({ submissions, contest }) {
                             </td>
                         </tr>
                     })}
-
+                    {shouldLoadMore && <tr>
+                        <td colSpan={submissions[0] && submissions[0].author ? 6 : 5}>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}>
+                                <button onClick={loadMore} className="btn">Load more</button>
+                            </div>
+                        </td>
+                    </tr>}
                 </tbody>
             </table>
         </div>

@@ -37,13 +37,11 @@ function ContestInfo({ currentUser }) {
                     if (contestInfo.endTime >= (new Date()) * 1) {
                         setRunningStatus(true)
                     }
-                    console.log(currentUser)
                     if (currentUser) {
                         ContestService.getContestResult({
                             userId: currentUser.id,
                             contestId: id
                         }).then(_contestResult => {
-                            console.log(_contestResult)
                             setContestResult(_contestResult)
                         })
                     }

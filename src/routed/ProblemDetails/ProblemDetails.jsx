@@ -13,7 +13,6 @@ export default function ProblemDetails({ currentUser }) {
     const [contest, setContestInfo] = React.useState({})
 
     const { problemId } = useParams()
-    console.log()
     const [hasSolved, setSolvedFlag] = React.useState(2)
     const [problemInfo, setProblemInfo] = React.useState({})
 

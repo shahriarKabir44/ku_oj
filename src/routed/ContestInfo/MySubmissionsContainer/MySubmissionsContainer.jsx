@@ -4,12 +4,18 @@ import UserService from "../../../services/User.service"
 import ContestSubmissionTable from "../ContestSubmissionTable/ContestSubmissionTable"
 export default function MySubmissionsContainer({ contest, user }) {
     const [mySubmissions, setMySubmissions] = React.useState([])
+    const [pageNumber, setPageNumber] = React.useState(0)
+    function getUsersContestSubmissions() {
+        UserService.getUsersContestSubmissions(user.id, contest.id, pageNumber)
+            .then(submissions => {
+                setMySubmissions([...mySubmissions, ...submissions])
+            })
+    }
     React.useEffect(() => {
-        if (user)
-            UserService.getUsersContestSubmissions(user.id, contest.id)
-                .then(submissions => {
-                    setMySubmissions(submissions)
-                })
+        if (user) {
+            getUsersContestSubmissions()
+        }
+
 
     }, [contest, user])
     return <div className="submissionsListContainer">
@@ -20,7 +26,14 @@ export default function MySubmissionsContainer({ contest, user }) {
         {user && mySubmissions.length !== 0 && <div style={{ height: 'inherit' }}>
             <h2 style={{ margin: 0 }}>Your submisions</h2>
 
-            <ContestSubmissionTable submissions={mySubmissions} contest={contest} />
+            <ContestSubmissionTable submissions={mySubmissions}
+                shouldLoadMore={user !== null}
+                contest={contest} loadMore={() => {
+                    setPageNumber(pageNumber + 10)
+                    setTimeout(() => {
+                        getUsersContestSubmissions()
+                    }, 500)
+                }} />
         </div>}
     </div>
 }

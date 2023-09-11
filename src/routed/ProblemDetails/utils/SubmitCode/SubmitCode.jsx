@@ -16,13 +16,27 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
         execTime: '--',
         verdict: '--'
     })
+    function getExtName() {
+        if (languageName === 'python') return 'py'
+        else if (languageName === 'c++') return 'cpp'
+        else if (languageName === 'java') return 'java'
+        else return -1
+    }
     async function submitSolution() {
-        setSubmissionStatus(NOT_JUDGED)
-        function getExtName() {
-            if (languageName === 'python') return 'py'
-            else if (languageName === 'c++') return 'cpp'
-            else if (languageName === 'java') return 'java'
+        if (!currentUser) {
+            alert('Please log in or sign up!')
+            return
         }
+        if (getExtName() === -1) {
+            alert('Please choose a language')
+            return
+        }
+        if (codeText.current.value.length === 0) {
+            alert('Paste your code please!')
+            return
+        }
+        setSubmissionStatus(NOT_JUDGED)
+
         const data = {
             time: (new Date()) * 1,
             problemId: problem.id,
@@ -45,10 +59,7 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
             verdict: '--',
             id: 0
         }
-        if (!currentUser) {
-            alert('Please log in or sign up!')
-            return
-        }
+
 
 
         setPreviousSubmissionList(newSubmission)
@@ -121,7 +132,7 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                 <tbody>
                     <tr>
                         <td>
-                            {(new Date(submissionInfo.time)).toISOString()}
+                            {(new Date(submissionInfo.time)).toLocaleString()}
                         </td>
                         <td>
                             {submissionInfo.verdict}
@@ -136,13 +147,13 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                 <thead>
                     <tr>
                         <th>Problem title</th>
-                        <th >Language</th>
+                        <th colSpan={2} >Language</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{problem.title}</td>
-                        <td style={{
+                        <td colSpan={2} style={{
 
                         }}>
                             <select className='languageSelector' name="" value={languageName}
@@ -152,11 +163,8 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                                 <option value="">Please Select</option>
                                 <option value="python">python</option>
                                 <option value="c++">c++</option>
-                                <option value="java">Java</option>
-                            </select>{languageName === 'java' && <i style={{
-                                fontSize: "12px",
-
-                            }} >The name of the main class must be 'Solution'</i>}
+                                <option value="java">Java (The name of the main class must be 'Solution')</option>
+                            </select>
                         </td>
 
                     </tr>

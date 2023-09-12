@@ -5,6 +5,7 @@ import UserService from '../../services/User.service'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Global from '../../services/Global';
 import UserSubmissions from './UserSubmissions/UserSubmissions';
+import ParticipatedContests from './ParticipatedContests';
 
 export default function UserProfileRoot({ currentUser }) {
     const navigate = useNavigate()
@@ -54,6 +55,7 @@ export default function UserProfileRoot({ currentUser }) {
                     }} className={`tabSelectorBtn btn ${selectedContentPanel === 3 ? 'selectedTab' : ''}`}>Contests Hosted</div>
                 </div>
                 <UserSubmissions userId={id} isShowing={selectedContentPanel === 1} />
+                <ParticipatedContests userId={id} isShowing={selectedContentPanel === 2} />
                 <HostedContestsContainer user={user} currentUser={currentUser} isShowing={selectedContentPanel === 3} />
             </div>
         </div>

@@ -52,11 +52,18 @@ function ContestSubmissionTable({ submissions, contest, loadMore, shouldLoadMore
                     })}
                     {shouldLoadMore && <tr>
                         <td colSpan={submissions[0] && submissions[0].author ? 6 : 5}>
+
                             <div style={{
                                 display: 'flex',
-                                justifyContent: 'center'
+                                justifyContent: 'space-between'
                             }}>
-                                <button onClick={loadMore} className="btn">Load more</button>
+
+                                <button className="btn" onClick={() => {
+                                    loadMore(-1)
+                                }}> prev. </button>
+                                <button onClick={() => {
+                                    loadMore(1)
+                                }} className="btn">next</button>
                             </div>
                         </td>
                     </tr>}

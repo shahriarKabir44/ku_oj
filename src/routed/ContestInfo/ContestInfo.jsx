@@ -37,14 +37,19 @@ function ContestInfo({ currentUser }) {
                     if (contestInfo.endTime >= (new Date()) * 1) {
                         setRunningStatus(true)
                     }
-                    if (currentUser) {
-                        ContestService.getContestResult({
-                            userId: currentUser.id,
-                            contestId: id
-                        }).then(_contestResult => {
-                            setContestResult(_contestResult)
-                        })
-                    }
+
+                }
+
+                if (currentUser !== null) {
+                    ContestService.getContestResult({
+                        userId: currentUser.id,
+                        contestId: id
+                    }).then(_contestResult => {
+                        setContestResult(_contestResult)
+                    })
+                }
+                else {
+                    setContestResult(null)
                 }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('contestInfo', {
@@ -59,7 +64,7 @@ function ContestInfo({ currentUser }) {
             })
 
 
-    }, [id, currentUser])
+    }, [currentUser])
     return (
         <div className='contestinfo_container'>
 

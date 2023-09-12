@@ -19,7 +19,7 @@ function NavBar({ currentUser, setCurrentUser }) {
             <div className="logoContainer">
                 <button className="logobtn">KU_OJ</button>
                 <button className="btn menuBtn">Contests</button>
-                <Link to='/problemset/1' className="btn menuBtn">Problems</Link>
+                <Link to='/problemset' className="btn menuBtn">Problems</Link>
 
             </div>
 

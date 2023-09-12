@@ -8,7 +8,7 @@ function UserSubmissions({ userId, isShowing }) {
     function getSubmissions() {
         SubmissionService.getUserSubmissions(userId, pageNumber)
             .then(submissionList => {
-                setSubmissionList([...submissions, ...submissionList])
+                setSubmissionList([...submissionList])
             })
     }
     React.useEffect(() => {
@@ -67,14 +67,20 @@ function UserSubmissions({ userId, isShowing }) {
                         <td colSpan={6}>
                             <div style={{
                                 display: 'flex',
-                                justifyContent: 'center'
+                                justifyContent: 'space-between'
                             }} >
+                                <button onClick={() => {
+                                    setPageNumber(Math.max(0, pageNumber - 10))
+                                    setTimeout(() => {
+                                        getSubmissions()
+                                    }, 500)
+                                }} className="btn">prev</button>
                                 <button className="btn" onClick={() => {
                                     setPageNumber(pageNumber + 10)
                                     setTimeout(() => {
                                         getSubmissions()
                                     }, 500)
-                                }}>Load more</button>
+                                }}>next</button>
                             </div>
 
                         </td>

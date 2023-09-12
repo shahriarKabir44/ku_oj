@@ -17,7 +17,9 @@ export default function ContestProblemSet({ problems, contestResult, isContestRu
             return getEmoji((official))
 
         }
-        return getEmoji(unofficial)
+        if (unofficial)
+            return getEmoji(unofficial)
+        return 1
     }
     function getEmoji(flag) {
         return flag === 1 ? '✅' : flag === -1 ? '❌' : ''
@@ -38,7 +40,7 @@ export default function ContestProblemSet({ problems, contestResult, isContestRu
                                 <p>{problem.points} pts </p>
                             </div>
                             <div className="submissionCounter problemDesc_contest  ">
-                                {getAcceptanceStatus(contestResult.officialVerdicts[problem.id], contestResult.verdicts[problem.id])}
+                                {getAcceptanceStatus(contestResult?.officialVerdicts[problem.id], contestResult?.verdicts[problem.id])}
 
                             </div>
                         </div>

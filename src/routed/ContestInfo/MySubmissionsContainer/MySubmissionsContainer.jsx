@@ -8,11 +8,14 @@ export default function MySubmissionsContainer({ contest, user }) {
     function getUsersContestSubmissions() {
         UserService.getUsersContestSubmissions(user.id, contest.id, pageNumber)
             .then(submissions => {
-                setMySubmissions([...mySubmissions, ...submissions])
+                console.log(submissions)
+                setMySubmissions([...submissions])
             })
     }
     React.useEffect(() => {
+
         if (user) {
+            setMySubmissions([])
             getUsersContestSubmissions()
         }
 
@@ -28,8 +31,8 @@ export default function MySubmissionsContainer({ contest, user }) {
 
             <ContestSubmissionTable submissions={mySubmissions}
                 shouldLoadMore={user !== null}
-                contest={contest} loadMore={() => {
-                    setPageNumber(pageNumber + 10)
+                contest={contest} loadMore={(flag) => {
+                    setPageNumber(Math.max(0, pageNumber + 10 * flag))
                     setTimeout(() => {
                         getUsersContestSubmissions()
                     }, 500)

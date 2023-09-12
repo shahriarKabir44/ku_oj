@@ -15,63 +15,69 @@ function ParticipatedContests({ userId, isShowing }) {
         getParticipatedContestList()
     }, [])
     return (
-        <div>
-            <div style={{
-                display: `${isShowing ? 'block' : 'none'}`
-            }} className="contestSubmissionContainer">
-                <table>
-                    <thead style={{
-                        position: 'sticky',
-                        top: '0'
-                    }}>
-                        <tr>
-                            <th>Time</th>
-                            <th>Contest</th>
-                            <th>Position</th>
-                            <th>Points</th>
-                        </tr>
+        <div style={{
+            display: `${isShowing ? 'block' : 'none'}`
+        }} className="contestSubmissionContainer">
+            <table>
+                <thead style={{
+                    position: 'sticky',
+                    top: '0'
+                }}>
+                    <tr>
+                        <th>Time</th>
+                        <th>Contest</th>
+                        <th>Position</th>
+                        <th>Points</th>
+                    </tr>
 
-                    </thead>
-                    <tbody>
-                        {participatedContests.map((participation, index) => {
-                            return <tr key={index}>
-                                <td>
-                                    {(new Date(participation.participationTime)).toLocaleString()}
-                                </td>
-                                <td>
-                                    <Link style={{
-                                        fontSize: '12px'
-                                    }} to={`${Global.CLIENT_URL}/contest/${participation.contestId}`}>{participation.contestTitle} </Link>
-                                </td>
+                </thead>
+                <tbody>
+                    {participatedContests.map((participation, index) => {
+                        return <tr key={index}>
+                            <td>
+                                {(new Date(participation.participationTime)).toLocaleString()}
+                            </td>
+                            <td>
+                                <Link style={{
+                                    fontSize: '12px'
+                                }} to={`${Global.CLIENT_URL}/contest/${participation.contestId}`}>{participation.contestTitle} </Link>
+                            </td>
 
 
-                                <td>
-                                    {participation.position}
-                                </td>
-                                <td>
-                                    {participation.official_points}
-                                </td>
-                            </tr>
-                        })}
-                        <tr>
-                            <td colSpan={6}>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center'
-                                }} >
-                                    <button className="btn" onClick={() => {
-                                        setPageNumber(pageNumber + 10)
-                                        setTimeout(() => {
-                                            getParticipatedContestList()
-                                        }, 500)
-                                    }}>Load more</button>
-                                </div>
-
+                            <td>
+                                {participation.position}
+                            </td>
+                            <td>
+                                {participation.official_points}
                             </td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
+                    })}
+                    <tr>
+                        <td colSpan={6}>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                            }} >
+                                <button className="btn" onClick={() => {
+                                    setPageNumber(Math.max(0, pageNumber - 10))
+                                    setTimeout(() => {
+                                        getParticipatedContestList()
+                                    }, 500)
+                                }}>
+                                    prev
+                                </button>
+                                <button className="btn" onClick={() => {
+                                    setPageNumber(pageNumber + 10)
+                                    setTimeout(() => {
+                                        getParticipatedContestList()
+                                    }, 500)
+                                }}>next</button>
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     );
 }

@@ -1,99 +1,75 @@
 import React from "react";
 import "./ProblemSet.css";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Global from "../../services/Global";
+import ContestService from "../../services/Contest.service";
 
-function ListItem({ contestid, name, points }) {
-  return (
-    <div className="problemItem">
-      <div className="contest-id-item">{contestid}</div>
-      <div className="name-item">{name}</div>
-      <div className="point-item">{points}</div>
-    </div>
-  );
-}
 
 export default function ProblemSet() {
+	const [problems, setProblemList] = React.useState([])
+	const [pageNumber, setPageNumber] = React.useState(0)
+	function getProblems() {
+		ContestService.getProblems(pageNumber)
+			.then(problemList => {
+				setProblemList(problemList)
+			})
+	}
+	React.useEffect(() => {
+		getProblems()
+	}, [])
 
-  let {pageNumber} = useParams();
-  let items = [
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-    {
-      contestid: 23423,
-      name: "capture the rabbit",
-      points: 1300,
-    },
-  ];
+	return (
+		<div className="Container">
+			<div className="title">Problem Set</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Problem</th>
+						<th>Contest</th>
+						<th>Points</th>
+					</tr>
+				</thead>
+				<tbody>
+					{problems.map((problem, index) => {
+						return <tr key={index}>
+							<td>
+								<Link to={`${Global.CLIENT_URL}/problem/${problem.id}`}>{problem.title}</Link>
+							</td>
+							<td>
+								<Link to={`${Global.CLIENT_URL}/contest/${problem.contestId}`}> {problem.contestTitle} </Link>
+							</td>
+							<td>
+								{problem.points}
+							</td>
+						</tr>
+					})}
+					<tr>
+						<td colSpan={3}>
+							<div style={{
+								display: 'flex',
+								justifyContent: 'space-between'
+							}} >
+								<button onClick={() => {
+									setPageNumber(Math.max(0, pageNumber - 10))
+									setTimeout(() => {
+										getProblems()
+									}, 500)
+								}} className="btn">prev</button>
+								<button className="btn" onClick={() => {
+									setPageNumber(pageNumber + 10)
+									setTimeout(() => {
+										getProblems()
+									}, 500)
+								}}>next</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-  return (
-    <div className="Container">
-      <div className="title">Problem Set</div>
 
-      <div className="problemList">
-        <div className="problemItem">
-          <div className="contest-id">Contest ID</div>
-          <div className="name">Name</div>
-          <div className="point">Points</div>
-        </div>
-        {items.map((item) => (
-          <ListItem {...item} />
-        ))}
-      </div>
 
-      
-    </div>
-  );
+
+		</div>
+	);
 }

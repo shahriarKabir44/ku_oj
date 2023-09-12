@@ -202,4 +202,8 @@ export default class ContestService {
     static async getParticipatedContestList(userId, pageNumber) {
         return Global._fetch(`/contests/getParticipatedContestList/${userId}/${pageNumber}`)
     }
+
+    static async getProblems(pageNumber) {
+        return Global._fetch('/contests/getProblems/' + pageNumber)
+    }
 }

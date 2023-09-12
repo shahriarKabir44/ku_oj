@@ -8,7 +8,7 @@ function ContestSubmissions({ contest, currentUser }) {
     function getContestSubmissions() {
         SubmissionService.getContestSubmissions(contest.id, pageNumber)
             .then(submissionList => {
-                setSubmissionList([...submissions, ...submissionList])
+                setSubmissionList([...submissionList])
             })
     }
     React.useEffect(() => {
@@ -16,8 +16,8 @@ function ContestSubmissions({ contest, currentUser }) {
     }, [])
     return (
         <div className='tableContainer'>
-            <ContestSubmissionTable contest={contest} shouldLoadMore={true} submissions={submissions} loadMore={() => {
-                setPageNumber(pageNumber + 10)
+            <ContestSubmissionTable contest={contest} shouldLoadMore={true} submissions={submissions} loadMore={(flag) => {
+                setPageNumber(Math.max(0, pageNumber + 10 * flag))
                 setTimeout(() => {
                     getContestSubmissions()
                 }, 500)

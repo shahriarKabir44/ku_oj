@@ -77,16 +77,13 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
     }, [user])
     return <div style={{
         display: `${isShowing ? 'block' : 'none'}`,
-        overflowY: 'auto'
-    }} className="hostedContestsListContainer">
-        <table style={{
-            width: '100%'
-        }} className="hostedContestTable">
+    }} className="contestSubmissionContainer ">
+        <table className="">
             <thead style={{
                 position: 'sticky',
                 top: 0
             }}>
-                <tr className="hostedContestTable">
+                <tr className="">
                     <th>Title</th>
                     <th>Start</th>
                     <th>End</th>
@@ -97,7 +94,7 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
             </thead>
             <tbody>
                 {hostedContests.map((contest, index) => {
-                    return <tr key={index} className="hostedContestTable">
+                    return <tr key={index} className="">
                         <td>
                             <Link to={`${Global.CLIENT_URL}/contest/${contest.id}`} > {contest.title} </Link>
                         </td>

@@ -30,15 +30,23 @@ export default function ProblemDetails({ currentUser }) {
                 setContestInfo(contest)
             })
         try {
-            if (currentUser) {
-                ContestService.hasSolvedProblem(currentUser.id, problemId)
-                    .then(({ finalVerdict, finalVerdictOfficial }) => {
-                        if (contest.endTime > (new Date()) * 1) {
-                            setSolvedFlag(finalVerdictOfficial)
+            if (currentUser !== null) {
+                ContestService.hasSolvedProblem_(currentUser.id, problemId)
+                    .then((data) => {
+                        const { official, unofficial } = data
+                        if (!official && !unofficial) {
+                            setSolvedFlag(0)
+                            return
                         }
-                        else {
-                            setSolvedFlag(finalVerdict)
+                        if (official && unofficial) {
+                            setSolvedFlag(Math.max(official, unofficial))
+                            return
                         }
+                        if (official && !unofficial) {
+                            setSolvedFlag((official))
+                            return
+                        }
+                        setSolvedFlag(unofficial)
                     })
 
             }
@@ -64,7 +72,7 @@ export default function ProblemDetails({ currentUser }) {
 
 
 
-    }, [problemId])
+    }, [problemId, currentUser])
 
     return (
         <div className="container_problemDetails">
@@ -78,6 +86,7 @@ export default function ProblemDetails({ currentUser }) {
                     <div className="pointsContainer">
                         <WorkspacePremiumIcon />
                         <h4>{problemInfo.points} pts</h4>
+                        {hasSolved === 1 ? '✅' : hasSolved === -1 ? '❌' : ''}
                     </div>
 
                 </div>

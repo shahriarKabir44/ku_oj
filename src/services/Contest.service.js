@@ -196,8 +196,10 @@ export default class ContestService {
         return Global._fetch('/contests/updateContestInfo', contestInfo)
     }
 
-    static async hasSolvedProblem(userId, problemId) {
-        return Global._fetch(`/contests/hasSolvedProblem/${userId}/${problemId}`)
+    static async hasSolvedProblem_(userId, problemId) {
+        return Global._fetch(`/contests/hasSolvedProblem_/${userId}/${problemId}`)
     }
-
+    static async getParticipatedContestList(userId, pageNumber) {
+        return Global._fetch(`/contests/getParticipatedContestList/${userId}/${pageNumber}`)
+    }
 }

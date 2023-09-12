@@ -4,7 +4,24 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import { Link } from 'react-router-dom';
 import Global from '../../../services/Global';
 export default function ContestProblemSet({ problems, contestResult, isContestRunning }) {
+    function getAcceptanceStatus(official, unofficial) {
+        if (!official && !unofficial) {
 
+            return ""
+        }
+        if (official && unofficial) {
+            return getEmoji(Math.max(official, unofficial))
+
+        }
+        if (official && !unofficial) {
+            return getEmoji((official))
+
+        }
+        return getEmoji(unofficial)
+    }
+    function getEmoji(flag) {
+        return flag === 1 ? '✅' : flag === -1 ? '❌' : ''
+    }
     return (
         <div className="problemListContainer">
             {problems.map((problem, index) => {
@@ -21,23 +38,7 @@ export default function ContestProblemSet({ problems, contestResult, isContestRu
                                 <p>{problem.points} pts </p>
                             </div>
                             <div className="submissionCounter problemDesc_contest  ">
-                                {(() => {
-                                    if (contestResult) {
-                                        if (isContestRunning) {
-                                            return <p>{contestResult.officialVerdicts[problem.id] === 1 ? '✅' :
-                                                contestResult.officialVerdicts[problem.id] === -1 ? '❌' : ''
-                                            }</p>
-                                        }
-                                        else {
-                                            return <p>{contestResult.verdicts[problem.id] === 1 ? '✅' :
-                                                contestResult.verdicts[problem.id] === -1 ? '❌' : ''
-                                            }</p>
-                                        }
-                                    }
-                                    else {
-                                        return <></>
-                                    }
-                                })()}
+                                {getAcceptanceStatus(contestResult.officialVerdicts[problem.id], contestResult.verdicts[problem.id])}
 
                             </div>
                         </div>

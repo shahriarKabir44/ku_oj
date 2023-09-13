@@ -17,7 +17,13 @@ export default class Global {
             }
         }
         if (body) payload.body = JSON.stringify(body)
-        return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
+        try {
+            return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
+
+        } catch (error) {
+            console.log(url, body)
+            return null
+        }
     }
     static async _postReq(url, data) {
         return fetch(this.SERVER_URL + url, {

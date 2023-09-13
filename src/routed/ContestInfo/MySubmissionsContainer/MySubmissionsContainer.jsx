@@ -8,14 +8,12 @@ export default function MySubmissionsContainer({ contest, user }) {
     function getUsersContestSubmissions() {
         UserService.getUsersContestSubmissions(user.id, contest.id, pageNumber)
             .then(submissions => {
-                console.log(submissions)
                 setMySubmissions([...submissions])
             })
     }
     React.useEffect(() => {
 
-        if (user) {
-            setMySubmissions([])
+        if (user !== null) {
             getUsersContestSubmissions()
         }
 

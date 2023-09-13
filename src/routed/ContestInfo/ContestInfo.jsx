@@ -21,7 +21,10 @@ function ContestInfo({ currentUser }) {
             })
     }
     function repeatedlyFetchMessages() {
-        setInterval(getContestMessages(), 2 * 60 * 1000)
+        setTimeout(() => {
+            getContestMessages()
+            repeatedlyFetchMessages()
+        }, 120 * 1000)
     }
     const [contest, setContestInfo] = React.useState({
         title: "",
@@ -75,9 +78,7 @@ function ContestInfo({ currentUser }) {
                 setContestInfo(contestInfo)
             })
 
-        return () => {
-            clearInterval(repeatedlyFetchMessages)
-        }
+
 
     }, [currentUser])
     return (

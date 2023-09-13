@@ -58,7 +58,7 @@
     box-sizing: border-box;
 }
 
-button[type="submit"] {
+.authForm>button {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -69,11 +69,11 @@ button[type="submit"] {
     width: 100%;
 }
 
-button[type="submit"]:hover {
+.authForm>button:hover {
     background-color: #45a049;
 }
 
 
-.btn{
+.btn {
     text-decoration: none;
 }

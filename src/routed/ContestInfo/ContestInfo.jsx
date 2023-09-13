@@ -8,10 +8,21 @@ import ContestProblemSet from './ContestProblemSet/ContestProblemSet';
 import ContestRankings from './ContestRankings/ContestRankings';
 import ContestSubmissions from './ContestSubmissions/ContestSubmissions';
 import CountDown from '../shared/CountDown/CountDown';
+import ContestChats from './ContestChats/ContestChats';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
+    const [contestMessages, setContestMessageList] = React.useState([])
     const navigate = useNavigate()
     const { id } = useParams()
+    function getContestMessages() {
+        ContestService.getContestMessages(id)
+            .then(messages => {
+                setContestMessageList(messages)
+            })
+    }
+    function repeatedlyFetchMessages() {
+        setInterval(getContestMessages(), 2 * 60 * 1000)
+    }
     const [contest, setContestInfo] = React.useState({
         title: "",
         startTime: (new Date()).toLocaleString(),
@@ -28,12 +39,14 @@ function ContestInfo({ currentUser }) {
                 if (!contestInfo) {
                     navigate('/')
                 }
+                getContestMessages()
                 if (contestInfo.startTime <= (new Date()) * 1) {
                     ContestService.getContestProblems(id)
                         .then(({ contestProblems }) => {
                             setProblemList(contestProblems)
                         })
                     if (contestInfo.endTime >= (new Date()) * 1) {
+                        repeatedlyFetchMessages()
                         setRunningStatus(true)
                     }
 
@@ -62,6 +75,9 @@ function ContestInfo({ currentUser }) {
                 setContestInfo(contestInfo)
             })
 
+        return () => {
+            clearInterval(repeatedlyFetchMessages)
+        }
 
     }, [currentUser])
     return (
@@ -98,10 +114,15 @@ function ContestInfo({ currentUser }) {
                             <div onClick={() => {
                                 setSelectedTab(3)
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
+                            <div onClick={() => {
+                                setSelectedTab(4)
+                            }} className={`tabSelectorBtn btn ${selectedTab === 4 ? 'selectedTab' : ''}`}>Messages ({contestMessages.length}) </div>
+
                         </div>
                         {selectedTab === 1 && <ContestProblemSet isContestRunning={isContestRunning} contestResult={contestResult} problems={problems} />}
                         {selectedTab === 2 && <ContestSubmissions contest={contest} currentUser={currentUser} />}
                         {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
+                        {selectedTab === 4 && <ContestChats contestMessages={contestMessages} setContestMessageList={setContestMessageList} currentUser={currentUser} contest={contest} />}
 
                     </div>
                 </div>

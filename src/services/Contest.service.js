@@ -145,6 +145,12 @@ export default class ContestService {
 
 
     }
+    static async saveMessageToContestThread(body) {
+        return Global._fetch('/contests/saveMessageToContestThread', body)
+    }
+    static async getContestMessages(contestId) {
+        return Global._fetch(`/contests/getContestMessages/${contestId}`)
+    }
 
     static async getContestResult({ userId, contestId }) {
         return Global._fetch(`/contests/getContestResult/${userId}/${contestId}`)

@@ -110,7 +110,7 @@ function LoginModal({ open, handleClose, onAuthenticated }) {
                         fontFamily: "serif",
                         fontWeight: 100
                     }}>Log in</h1>
-                    <form onSubmit={submitLoginForm} ref={formRef} >
+                    <form className='authForm' onSubmit={submitLoginForm} ref={formRef} >
                         <label htmlFor="username">Username</label>
                         <input className='auth_input' autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
 
@@ -177,7 +177,7 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
                         fontFamily: "serif",
                         fontWeight: 100
                     }}>Sign up</h1>
-                    <form onSubmit={submitRegistrationForm} ref={formRef} >
+                    <form className='authForm' onSubmit={submitRegistrationForm} ref={formRef} >
                         <label htmlFor="username">Username</label>
                         <input className='auth_input' autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
 

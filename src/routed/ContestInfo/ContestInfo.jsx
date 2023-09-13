@@ -31,7 +31,6 @@ function ContestInfo({ currentUser }) {
                 if (contestInfo.startTime <= (new Date()) * 1) {
                     ContestService.getContestProblems(id)
                         .then(({ contestProblems }) => {
-
                             setProblemList(contestProblems)
                         })
                     if (contestInfo.endTime >= (new Date()) * 1) {

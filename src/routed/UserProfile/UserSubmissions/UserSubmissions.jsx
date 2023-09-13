@@ -46,12 +46,12 @@ function UserSubmissions({ userId, isShowing }) {
                                     fontSize: '12px'
                                 }} to={`${Global.CLIENT_URL}/problem/${submission.problemId}`}>{submission.problemName} </Link>
                             </td>
-                            {submission.author && <td>
+                            <td>
                                 <Link style={{
                                     fontSize: '12px'
-                                }} to={`${Global.CLIENT_URL}/user/${submission.submittedBy}`}>{submission.author} </Link>
+                                }} to={`${Global.CLIENT_URL}/contest/${submission.contestId}`}>{submission.contestTitle}  </Link>
 
-                            </td>}
+                            </td>
                             <td>
                                 {submission.language}
                             </td>

@@ -3,7 +3,6 @@ body {
     --container-bg-color: #E3F6F5;
     --containerHeight: calc(100vh - 60px);
     --primary_color: #337ab7
-
 }
 
 .mainContainer {
@@ -51,4 +50,9 @@ tr>th {
 
 tr:hover {
     background-color: #f5f5f5;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
 }

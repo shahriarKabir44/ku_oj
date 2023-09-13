@@ -22,9 +22,11 @@ export default function Home({ currentUser }) {
             <div className="contestsContainer ">
                 <p className="contestsCardHeading">Upcoming contests</p>
                 <div className="contestList">
-                    {contestList.map((contest, index) => {
+                    {contestList.length > 0 && contestList.map((contest, index) => {
                         return <ContestCard key={index} contest={contest} currentUser={currentUser} />
                     })}
+
+                    {contestList.length === 0 && <h3>No upcoming contests</h3>}
 
                 </div>
 

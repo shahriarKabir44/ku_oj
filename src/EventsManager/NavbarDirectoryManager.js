@@ -23,6 +23,12 @@ export default class NavbarDirectoryManager {
                 path: '/contests'
             })
         }
+        if (label === 'problemset') {
+            dirs.push({
+                label: 'Problems',
+                path: '/problemset'
+            })
+        }
         if (label === 'createContest') {
             document.title = 'Create Contest'
 

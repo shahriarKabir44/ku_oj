@@ -3,6 +3,7 @@ import "./ProblemSet.css";
 import { Link } from "react-router-dom";
 import Global from "../../services/Global";
 import ContestService from "../../services/Contest.service";
+import NavbarDirectoryManager from "../../EventsManager/NavbarDirectoryManager";
 
 
 export default function ProblemSet() {
@@ -15,18 +16,23 @@ export default function ProblemSet() {
 			})
 	}
 	React.useEffect(() => {
+		setTimeout(() => { NavbarDirectoryManager.setDitectory('problemset', {}) }, 100)
+
 		getProblems()
 	}, [])
 
 	return (
-		<div className="Container">
-			<div className="title">Problem Set</div>
-			<table>
+		<div className="Container problemset">
+			<p className="contestsCardHeading">Problems</p>
+			<table className="problemset" style={{
+				background: 'white'
+			}}>
 				<thead>
 					<tr>
 						<th>Problem</th>
 						<th>Contest</th>
 						<th>Points</th>
+						<th>Solved by:</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -41,13 +47,16 @@ export default function ProblemSet() {
 							<td>
 								{problem.points}
 							</td>
+							<td>{problem.numSolutions}</td>
 						</tr>
 					})}
+
 					<tr>
-						<td colSpan={3}>
+						<td colSpan={4}>
 							<div style={{
 								display: 'flex',
-								justifyContent: 'space-between'
+								justifyContent: 'center',
+								gap: "10px"
 							}} >
 								<button onClick={() => {
 									setPageNumber(Math.max(0, pageNumber - 10))

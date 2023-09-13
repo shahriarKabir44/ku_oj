@@ -18,7 +18,7 @@ function NavBar({ currentUser, setCurrentUser }) {
         <div className='navBarContainer'>
             <div className="logoContainer">
                 <button className="logobtn">KU_OJ</button>
-                <button className="btn menuBtn">Contests</button>
+                <Link to='/contests' className="btn menuBtn">Contests</Link>
                 <Link to='/problemset' className="btn menuBtn">Problems</Link>
 
             </div>

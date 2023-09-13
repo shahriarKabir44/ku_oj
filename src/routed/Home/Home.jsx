@@ -8,7 +8,7 @@ export default function Home({ currentUser }) {
 
     React.useEffect(() => {
         setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
-        ContestService.getContests()
+        ContestService.getUpcomingContests()
             .then((contests) => {
                 setContestList(contests)
             })

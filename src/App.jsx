@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-
+import Contests from './routed/Contests/Contests';
 import { Route, Routes } from 'react-router-dom';
 import CreateContest from './routed/UserProfile/ContestCreation/CreateContest';
 import ContestInfo from './routed/ContestInfo/ContestInfo';
@@ -39,6 +39,7 @@ function App() {
 							{currentUser && <Route path='editContest/:contestId' element={<EditContest currentUser={currentUser} />} />}
 
 						</Route>
+						<Route path='/contests' element={<Contests currentUser={currentUser} />} />
 						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
 						<Route path='/problemset' element={<ProblemSet currentUser={currentUser} />} />
 					</Routes>

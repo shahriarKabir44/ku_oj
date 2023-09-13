@@ -17,6 +17,12 @@ export default class NavbarDirectoryManager {
             label: 'Home',
             path: '/'
         }]
+        if (label === 'Contests') {
+            dirs.push({
+                label,
+                path: '/contests'
+            })
+        }
         if (label === 'createContest') {
             document.title = 'Create Contest'
 

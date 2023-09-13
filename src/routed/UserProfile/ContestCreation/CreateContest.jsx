@@ -28,6 +28,10 @@ function CreateContest({ currentUser }) {
             endTime: contestInfo.endTime * 1
         })
             .then((contestId) => {
+                if (contestId === null) {
+                    alert('Contest name already exists!')
+                    return
+                }
                 ContestCreationEventManager.sendMessage({
                     ...contestInfo,
                     startTime: contestInfo.startTime * 1,

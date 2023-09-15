@@ -8,6 +8,8 @@ function ContestMessenger({ contest, currentUser }) {
     const [messengerViewStatus, toggleMessengerViewStatus] = React.useState(0)
     const [hasNewMessageArrived, setNewMessageArrivalStatus] = React.useState(0)
     const [contestMessages, setContestMessageList] = React.useState([])
+    const [socket, setSocket] = React.useState(null);
+    const messengerContainerRef = React.useRef(null)
     const handleSendClick = () => {
         if (messageInputRef.current.value.trim() === '') return;
         if (currentUser === null) {
@@ -22,26 +24,37 @@ function ContestMessenger({ contest, currentUser }) {
             time: (new Date()) * 1
         }
         ContestService.saveMessageToContestThread(newMessage)
+            .then(() => {
+                socket.send(JSON.stringify(newMessage))
+
+            })
         messageInputRef.current.value = ''
     };
     function getContestMessages() {
         ContestService.getContestMessages(contest.id)
             .then(messages => {
-                console.log(messages)
                 setContestMessageList(messages)
+
             })
     }
-    function reFetchMessages() {
-        setTimeout(() => {
+    function initSocket() {
+        let ws = new WebSocket('ws://localhost:8080');
+        ws.addEventListener('message', (event) => {
+            setNewMessageArrivalStatus(1)
             getContestMessages()
-            reFetchMessages()
-        }, 60 * 1000)
+        });
+        setSocket(ws)
+
     }
     React.useEffect(() => {
         getContestMessages()
+
+
         if (contest.startTime >= (new Date()) * 1 && contest.endTime <= (new Date()) * 1) {
-            reFetchMessages()
+            initSocket()
+
         }
+
 
     }, [contest, currentUser])
     return (
@@ -52,6 +65,8 @@ function ContestMessenger({ contest, currentUser }) {
                 color: !hasNewMessageArrived ? 'black' : 'white',
             }} onClick={() => {
                 if (!messengerViewStatus) {
+                    messengerContainerRef.scrollTop = messengerContainerRef.scrollHeight;
+
                     setNewMessageArrivalStatus(0)
                     toggleMessengerViewStatus(1)
                 }
@@ -64,7 +79,7 @@ function ContestMessenger({ contest, currentUser }) {
             <div className="messenger-container" style={{
                 display: messengerViewStatus ? 'flex' : 'none'
             }}>
-                <div className="message-container">
+                <div className="message-container" ref={messengerContainerRef}>
                     {contestMessages.map((content, index) => (
                         <div className={`  messageContainer`} style={{
                             justifyContent: `${contest.hostId === content.senderId ? 'flex-start' : 'flex-end'}`

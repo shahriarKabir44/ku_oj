@@ -40,6 +40,19 @@
     border: 1px solid red !important;
 }
 
+button.logobtn {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    gap: 10px;
+}
+
+button.logobtn>i {
+    font-family: "Times New Roman", Times, serif;
+}
+
 .btn.danger {
     background: rgb(0, 0, 0, 0);
     color: white !important;

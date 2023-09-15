@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import UserService from '../../services/User.service';
 import { Link, useNavigate } from 'react-router-dom';
+import Global from '../../services/Global';
 function NavBar({ currentUser, setCurrentUser }) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
@@ -17,7 +18,14 @@ function NavBar({ currentUser, setCurrentUser }) {
     return (
         <div className='navBarContainer'>
             <div className="logoContainer">
-                <button className="logobtn">KU_OJ</button>
+                <button onClick={() => {
+                    navigate(`/`)
+                }} className="logobtn">
+                    <img style={{
+                        width: '20px'
+                    }} src="/ku.png" alt="" />
+                    <i>KU_OJ</i>
+                </button>
                 <Link to='/contests' className="btn menuBtn">Contests</Link>
                 <Link to='/problemset' className="btn menuBtn">Problems</Link>
 

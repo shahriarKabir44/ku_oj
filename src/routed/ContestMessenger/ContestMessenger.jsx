@@ -50,12 +50,20 @@ function ContestMessenger({ contest, currentUser }) {
         getContestMessages()
 
 
-        if (contest.startTime >= (new Date()) * 1 && contest.endTime <= (new Date()) * 1) {
-            initSocket()
-
+        let ws = new WebSocket('ws://localhost:8080');
+        ws.addEventListener('message', (event) => {
+            console.log(event)
+            setNewMessageArrivalStatus(1)
+            getContestMessages()
+        });
+        if (contest.startTime >= (new Date()) * 1 || contest.endTime <= (new Date()) * 1) {
+            ws.close()
         }
+        setSocket(ws)
 
-
+        return () => {
+            ws.close()
+        }
     }, [contest, currentUser])
     return (
         <div className="messengerContainer">
@@ -74,6 +82,8 @@ function ContestMessenger({ contest, currentUser }) {
                 <p className="contestMessengerTitle">{contest.title}</p>
                 {messengerViewStatus && <button onClick={() => {
                     toggleMessengerViewStatus(0)
+                    setNewMessageArrivalStatus(0)
+
                 }} className="btn">❌</button>}
             </div>
             <div className="messenger-container" style={{

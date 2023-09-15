@@ -7,6 +7,7 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import Global from '../../services/Global'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import CountDown from '../shared/CountDown/CountDown'
+import ContestMessenger from '../ContestMessenger/ContestMessenger'
 
 export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
@@ -97,6 +98,7 @@ export default function ProblemDetails({ currentUser }) {
                         width={"100%"}></iframe>
                 </div>
             </div>
+            <ContestMessenger currentUser={currentUser} contest={contest} />
         </div>
     );
 

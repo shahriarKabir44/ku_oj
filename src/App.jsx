@@ -4,7 +4,6 @@ import Contests from './routed/Contests/Contests';
 import { Route, Routes } from 'react-router-dom';
 import CreateContest from './routed/UserProfile/ContestCreation/CreateContest';
 import ContestInfo from './routed/ContestInfo/ContestInfo';
-import GlobalContext from './shared/GlobalContext';
 import SubmissionInfo from './routed/SubmissionInfo/SubmissionInfo';
 import NavBar from './shared/NavBar/NavBar';
 import Home from './routed/Home/Home';
@@ -23,30 +22,28 @@ function App() {
 
 	}, [])
 	return (
-		<GlobalContext>
 
-			<div className="App">
-				<NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
-				<div className='mainContainer'>
+		<div className="App">
+			<NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+			<div className='mainContainer'>
 
-					<Routes>
-						<Route path='/' element={<Home currentUser={currentUser} />} />
-						<Route path='/contest/:id' element={< ContestInfo currentUser={currentUser} />} />
-						<Route path='/viewSubmission/:contestId/:submissionId/' element={<SubmissionInfo currentUser={currentUser} />} />
-						<Route path='/user/:id'>
-							<Route path='' element={<UserProfileRoot currentUser={currentUser} />} />
-							{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />}
-							{currentUser && <Route path='editContest/:contestId' element={<EditContest currentUser={currentUser} />} />}
+				<Routes>
+					<Route path='/' element={<Home currentUser={currentUser} />} />
+					<Route path='/contest/:id' element={< ContestInfo currentUser={currentUser} />} />
+					<Route path='/viewSubmission/:contestId/:submissionId/' element={<SubmissionInfo currentUser={currentUser} />} />
+					<Route path='/user/:id'>
+						<Route path='' element={<UserProfileRoot currentUser={currentUser} />} />
+						{currentUser && <Route path='createContest' element={<CreateContest currentUser={currentUser} />} />}
+						{currentUser && <Route path='editContest/:contestId' element={<EditContest currentUser={currentUser} />} />}
 
-						</Route>
-						<Route path='/contests' element={<Contests currentUser={currentUser} />} />
-						<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
-						<Route path='/problemset' element={<ProblemSet currentUser={currentUser} />} />
-					</Routes>
-				</div>
-
+					</Route>
+					<Route path='/contests' element={<Contests currentUser={currentUser} />} />
+					<Route path='/problem/:problemId' element={<ProblemDetails currentUser={currentUser} />} />
+					<Route path='/problemset' element={<ProblemSet currentUser={currentUser} />} />
+				</Routes>
 			</div>
-		</GlobalContext>
+
+		</div>
 
 	);
 }

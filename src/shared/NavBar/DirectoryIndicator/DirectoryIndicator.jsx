@@ -8,6 +8,8 @@ function DirectoryIndicator(props) {
         NavbarDirectorymanager.subscribe({
             label: 'navbar',
             handler: (message) => {
+                //console.log(message)
+                message = !message ? [] : message
                 setDitectory(message)
             }
         })

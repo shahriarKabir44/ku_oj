@@ -6,11 +6,9 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import UserService from '../../services/User.service';
 import { Link, useNavigate } from 'react-router-dom';
-import Global from '../../services/Global';
 function NavBar({ currentUser, setCurrentUser }) {
     const [loginModalVisibility, setLoginModalVisibility] = React.useState(false)
     const [registrationModalVisibility, setRegistrationModalVisibility] = React.useState(false)
-
     const navigate = useNavigate()
     React.useEffect(() => {
 

@@ -37,20 +37,12 @@ function ContestMessenger({ contest, currentUser }) {
 
             })
     }
-    function initSocket() {
-        let ws = new WebSocket('ws://localhost:8080');
-        ws.addEventListener('message', (event) => {
-            setNewMessageArrivalStatus(1)
-            getContestMessages()
-        });
-        setSocket(ws)
 
-    }
     React.useEffect(() => {
         getContestMessages()
 
 
-        let ws = new WebSocket('ws://localhost:8080');
+        let ws = new WebSocket(Global.WS_URL);
         ws.addEventListener('message', (event) => {
             console.log(event)
             setNewMessageArrivalStatus(1)

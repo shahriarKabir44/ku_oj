@@ -190,7 +190,7 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
                         <label htmlFor="password">Password</label>
                         <input className='auth_input' type="password" id="password" name="password" placeholder="Enter your password" />
 
-                        <button type="submit">Login</button>
+                        <button type="submit">Sign up</button>
                     </form>
 
 

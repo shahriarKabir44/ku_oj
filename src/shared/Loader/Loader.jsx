@@ -11,8 +11,10 @@ function Loader(props) {
         })
     }, [])
     return (
-        <div className="loader-container">
-            <div className="loader"></div>
+        <div>
+            {visibility === 1 && <div className="loader-container">
+                <div className="loader"></div>
+            </div>}
         </div>
     );
 }

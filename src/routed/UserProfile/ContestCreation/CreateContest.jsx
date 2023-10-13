@@ -8,6 +8,7 @@ import './CreateContest.css'
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
 import { useNavigate } from 'react-router-dom';
 import Global from '../../../services/Global';
+import LoaderManager from '../../../EventsManager/LoaderManager';
 function CreateContest({ currentUser }) {
     const [selectedProblemForPreview, setSelectedProblemForPreview] = React.useState(0)
     const navigate = useNavigate()
@@ -21,7 +22,7 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
-
+        LoaderManager.toggle()
         ContestService.createContest({
             ...contestInfo,
             startTime: contestInfo.startTime * 1,
@@ -43,6 +44,8 @@ function CreateContest({ currentUser }) {
                             alert(errorMessage)
                             return
                         }
+                        LoaderManager.toggle()
+
                         window.location.href = `${Global.CLIENT_URL}/contest/${contestId}`
                     })
             })

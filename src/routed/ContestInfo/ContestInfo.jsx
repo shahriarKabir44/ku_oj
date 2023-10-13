@@ -9,6 +9,7 @@ import ContestRankings from './ContestRankings/ContestRankings';
 import ContestSubmissions from './ContestSubmissions/ContestSubmissions';
 import CountDown from '../shared/CountDown/CountDown';
 import ContestMessenger from '../ContestMessenger/ContestMessenger';
+import LoaderManager from '../../EventsManager/LoaderManager';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const [contestMessages, setContestMessageList] = React.useState([])
@@ -27,6 +28,8 @@ function ContestInfo({ currentUser }) {
     const [problems, setProblemList] = React.useState([])
     const [contestResult, setContestResult] = React.useState(null)
     React.useEffect(() => {
+        LoaderManager.toggle()
+
         ContestService.findContestById(id)
             .then(({ contestInfo }) => {
                 if (!contestInfo) {
@@ -35,7 +38,10 @@ function ContestInfo({ currentUser }) {
                 if (contestInfo.startTime <= (new Date()) * 1) {
                     ContestService.getContestProblems(id)
                         .then(({ contestProblems }) => {
+                            LoaderManager.toggle()
+
                             setProblemList(contestProblems)
+
                         })
                     if (contestInfo.endTime >= (new Date()) * 1) {
                         setRunningStatus(true)

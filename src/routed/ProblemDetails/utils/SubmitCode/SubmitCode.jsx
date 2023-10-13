@@ -27,7 +27,7 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
     }
     async function submitSolution() {
         if (!currentUser) {
-            alert('Please log in or sign up!')
+            alert('Please log in or signup!')
             return
         }
         if (getExtName() === -1) {

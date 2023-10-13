@@ -12,6 +12,7 @@ import UserService from './services/User.service';
 import ProblemDetails from './routed/ProblemDetails/ProblemDetails';
 import EditContest from './routed/UserProfile/EditContest/EditContest';
 import ProblemSet from './routed/ProblemSet/ProblemSet';
+import Loader from './shared/Loader/Loader';
 function App() {
 	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
@@ -25,6 +26,7 @@ function App() {
 
 		<div className="App">
 			<NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+			<Loader />
 			<div className='mainContainer'>
 
 				<Routes>

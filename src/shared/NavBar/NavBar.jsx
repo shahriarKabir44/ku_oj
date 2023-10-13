@@ -36,7 +36,7 @@ function NavBar({ currentUser, setCurrentUser }) {
                 }} className="menuBtn btn">Login</button>
                 <button onClick={() => {
                     setRegistrationModalVisibility(true)
-                }} className="menuBtn btn">Sign up</button>
+                }} className="menuBtn btn">Signup</button>
 
             </div>}
             {currentUser !== null && <div className="menuContainer">
@@ -182,7 +182,7 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
                     <h1 style={{
                         fontFamily: "serif",
                         fontWeight: 100
-                    }}>Sign up</h1>
+                    }}>Signup</h1>
                     <form className='authForm' onSubmit={submitRegistrationForm} ref={formRef} >
                         <label htmlFor="username">Username</label>
                         <input className='auth_input' autoComplete='off' type="text" id="userName" name="userName" placeholder="Enter your username" />
@@ -190,7 +190,7 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
                         <label htmlFor="password">Password</label>
                         <input className='auth_input' type="password" id="password" name="password" placeholder="Enter your password" />
 
-                        <button type="submit">Sign up</button>
+                        <button type="submit">Signup</button>
                     </form>
 
 

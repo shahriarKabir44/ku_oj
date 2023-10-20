@@ -3,13 +3,18 @@ import ContestService from '../../services/Contest.service';
 import './Home.css'
 import ContestCard from '../shared/ContestCard/ContestCard';
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
+import LoaderManager from '../../EventsManager/LoaderManager';
 export default function Home({ currentUser }) {
     const [contestList, setContestList] = React.useState([])
 
     React.useEffect(() => {
+        LoaderManager.toggle()
         setTimeout(() => { NavbarDirectoryManager.setDitectory('home', {}) }, 100)
         ContestService.getUpcomingContests()
             .then((contests) => {
+
+                LoaderManager.toggle()
+
                 setContestList(contests)
             })
 

@@ -5,8 +5,8 @@ function Loader(props) {
     const [visibility, toggleVisibility] = React.useState(0)
     React.useEffect(() => {
         LoaderManager.subscribe({
-            toggle: function () {
-                toggleVisibility(visibility ^ 1)
+            toggle: function (flag) {
+                toggleVisibility(flag)
             }
         })
     }, [])

@@ -12,7 +12,6 @@ import ContestMessenger from '../ContestMessenger/ContestMessenger';
 import LoaderManager from '../../EventsManager/LoaderManager';
 function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
-    const [contestMessages, setContestMessageList] = React.useState([])
     const navigate = useNavigate()
     const { id } = useParams()
 
@@ -91,7 +90,7 @@ function ContestInfo({ currentUser }) {
 
 
                         </>}
-                        {contest.startTime > (new Date()) * 1 && <CountDown content={"Before Start"} endTime={contest.startTime} />}
+                        {contest.startTime * 1 > (new Date()) * 1 && <CountDown content={"Before Start"} endTime={contest.startTime} />}
                     </div>
                     <div className="card mySubmissionsContainer">
                         <MySubmissionsContainer contest={contest} user={currentUser} />

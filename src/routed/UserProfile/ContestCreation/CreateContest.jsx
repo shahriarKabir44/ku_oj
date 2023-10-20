@@ -22,6 +22,11 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
+
+        if (contestInfo.startTime * 1 > contestInfo.endTime * 1) {
+            alert("Invalid input")
+            return
+        }
         LoaderManager.toggle()
         ContestService.createContest({
             ...contestInfo,
@@ -31,6 +36,7 @@ function CreateContest({ currentUser }) {
             .then((contestId) => {
                 if (contestId === null) {
                     alert('Contest name already exists!')
+                    LoaderManager.toggle()
                     return
                 }
                 ContestCreationEventManager.sendMessage({

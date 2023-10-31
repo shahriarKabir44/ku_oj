@@ -80,7 +80,7 @@ function SubmissionInfo({ currentUser }) {
                             </td>
                         </tr>
                         {submissionInfo.message !== null && <tr>
-                            <td colSpan={6} style={{
+                            <td className='errorMessage' colSpan={6} style={{
                                 fontSize: "12px"
                             }}>
                                 <pre>{submissionInfo.errorMessage}</pre>

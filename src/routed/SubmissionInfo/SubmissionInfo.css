@@ -1,3 +1,7 @@
 .codeContainer {
     text-align: left;
 }
+
+.errorMessage {
+    text-align: left !important;
+}

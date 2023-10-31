@@ -4,7 +4,7 @@ export default class Global {
 
     static SERVER_URL = "http://localhost:8080"//  "https://kuoj.onrender.com"
 
-    static WS_URL = "ws://localhost:8080"
+    static WS_URL = "ws://localhost:8081"
     static CLIENT_URL = 'http://localhost:3000'
     // static SERVER_IP = 
     static async _fetch(url, body = null) {

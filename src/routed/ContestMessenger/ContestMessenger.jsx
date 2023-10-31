@@ -23,6 +23,14 @@ function ContestMessenger({ contest, currentUser }) {
             senderName: currentUser.userName,
             time: (new Date()) * 1
         }
+        console.log(messengerContainerRef.current.scrollHeight)
+
+        setTimeout(() => {
+            messengerContainerRef.current.scrollTop = messengerContainerRef.current.scrollHeight;
+
+        }, 100);
+        setNewMessageArrivalStatus(0)
+        toggleMessengerViewStatus(1)
         ContestService.saveMessageToContestThread(newMessage)
             .then(() => {
                 socket.send(JSON.stringify(newMessage))
@@ -44,7 +52,6 @@ function ContestMessenger({ contest, currentUser }) {
 
         let ws = new WebSocket(Global.WS_URL);
         ws.addEventListener('message', (event) => {
-            console.log(event)
             setNewMessageArrivalStatus(1)
             getContestMessages()
         });
@@ -65,10 +72,14 @@ function ContestMessenger({ contest, currentUser }) {
                 color: !hasNewMessageArrived ? 'black' : 'white',
             }} onClick={() => {
                 if (!messengerViewStatus) {
-                    messengerContainerRef.scrollTop = messengerContainerRef.scrollHeight;
+
 
                     setNewMessageArrivalStatus(0)
                     toggleMessengerViewStatus(1)
+                    setTimeout(() => {
+                        messengerContainerRef.current.scrollTop = messengerContainerRef.current.scrollHeight;
+
+                    }, 100);
                 }
             }}>
                 <p className="contestMessengerTitle">{contest.title}</p>

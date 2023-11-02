@@ -92,7 +92,7 @@ export default function ProblemDetails({ currentUser }) {
 
                 </div>
                 <div className="problemStatementContainer">
-                    <iframe src={Global.SERVER_URL + problemInfo.statementFileURL}
+                    <iframe src={Global.SERVER_URL + "/" + problemId + ".pdf"}
                         title="Problem"
                         height={"10%%"}
                         width={"100%"}></iframe>

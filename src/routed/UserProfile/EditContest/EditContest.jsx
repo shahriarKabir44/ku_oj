@@ -79,7 +79,7 @@ export default function EditContest({ currentUser }) {
                     problem.isExisting = true
                     problem.isDeleted = false
                     problem.isEdited = false
-                    problem.statementFileURL = Global.SERVER_URL + problem.statementFileURL
+                    problem.statementFileURL = Global.SERVER_URL + "/" + problem.id + ".pdf"
                     problem.testcaseFileURL = Global.SERVER_URL + problem.testcaseFileURL
                     problem.outputFileURL = Global.SERVER_URL + problem.outputFileURL
 

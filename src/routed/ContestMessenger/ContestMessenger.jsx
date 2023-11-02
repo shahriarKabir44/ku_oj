@@ -23,7 +23,6 @@ function ContestMessenger({ contest, currentUser }) {
             senderName: currentUser.userName,
             time: (new Date()) * 1
         }
-        console.log(messengerContainerRef.current.scrollHeight)
 
         setTimeout(() => {
             messengerContainerRef.current.scrollTop = messengerContainerRef.current.scrollHeight;

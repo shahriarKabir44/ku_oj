@@ -90,7 +90,9 @@ export default function EditContest({ currentUser }) {
 
     }, [currentUser, contestId])
     return (
-        <div className="editContest_container">
+        <div className="editContest_container" style={{
+            height: "inherit"
+        }}>
             <div className="dashboardContainer">
                 <div className="lestPanel">
 

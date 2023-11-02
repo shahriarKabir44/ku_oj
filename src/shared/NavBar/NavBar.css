@@ -1,5 +1,5 @@
 .navBarContainer {
-    display: grid;
+    display: flex;
     grid-template-columns: auto 70% auto;
     background: #272643;
     padding: 10px;
@@ -32,7 +32,8 @@
 
 .menuContainer {
     display: flex;
-    gap: 5px
+    gap: 5px;
+    align-items: center;
 }
 
 .btn.danger:hover {

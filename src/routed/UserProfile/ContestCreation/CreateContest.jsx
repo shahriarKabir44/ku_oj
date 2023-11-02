@@ -22,8 +22,7 @@ function CreateContest({ currentUser }) {
         code: ""
     })
     function createContest() {
-
-        if (contestInfo.startTime * 1 > contestInfo.endTime * 1) {
+        if (contestInfo.startTime * 1 > contestInfo.endTime * 1 || contestInfo.title.length === 0 || contestInfo.code.length === 0) {
             alert("Invalid input")
             return
         }

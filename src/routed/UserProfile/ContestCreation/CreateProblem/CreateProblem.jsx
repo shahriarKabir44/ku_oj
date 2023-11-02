@@ -3,11 +3,11 @@ import ContestCreationEventManager from '../../../../EventsManager/ContestCreati
 import ContestService from '../../../../services/Contest.service';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './CreateProblem.css'
+import UploadManager from '../../../../services/UploadManager';
 function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
     const problemStatementUploadRef = React.useRef(null)
-    const testcaseUploadRef = React.useRef(null)
-    const outputUploadRef = React.useRef(null)
-
+    const testcaseInputRef = React.useRef(null)
+    const outputInputRef = React.useRef(null)
     const problemCreationFormRef = React.useRef(null)
 
     const [fileForPreview, setFileForPreview] = React.useState({
@@ -27,9 +27,18 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
     React.useEffect(() => {
         ContestCreationEventManager.subscribe({
             id: problemNum,
-            submitData: (contestInfo) => {
+            submitData: async (contestInfo) => {
 
-                return ContestService.createProblem({ ...problemInfo, contestId: contestInfo.id, createdOn: contestInfo.startTime })
+                return ContestService.addNewProblem({
+                    statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+                    testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+                    outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
+                    contestId: contestInfo.id,
+                    createdOn: contestInfo.startTime,
+                    code: problemInfo.code,
+                    title: problemInfo.title,
+                    points: problemInfo.points,
+                })
             },
             onErrorCheking: async (contestId) => {
                 return {
@@ -58,6 +67,33 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
             return;
         }
         return (URL.createObjectURL(fileObj))
+    }
+
+    function showPreview() {
+
+
+
+
+
+
+        return <>
+            <textarea style={{
+                height: "50vh",
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'output' ? 'block' : 'none'}`
+            }} name="" id="" ref={outputInputRef} cols="30" rows="10"   ></textarea>
+            <textarea style={{
+                height: "50vh",
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'testcase' ? 'block' : 'none'}`
+            }} name="" id="" ref={testcaseInputRef} cols="30" rows="10" ></textarea>
+            <iframe style={{
+                height: "50vh",
+                width: "100%",
+                display: `${fileForPreview.label.toLowerCase() === 'statement' ? 'block' : 'none'}`
+
+            }} src={fileForPreview.file} title='Problem statement' frameBorder="1" ></iframe >
+        </>
     }
     return (
         <div style={{
@@ -107,17 +143,7 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                         <button onClick={() => {
                             setFileForPreview({ file: problemInfo.testcaseFileURL, label: "Testcase" })
                         }} className={`previewBtn ${fileForPreview.label === 'Testcase' ? "previewing" : ""} `}>Test Inputs</button>
-                        <div onClick={() => {
-                            testcaseUploadRef.current.click()
-                        }} className="uploadbtn"><CloudUploadIcon /></div>
-                        <input style={{ display: "none" }}
-                            onChange={e => {
-                                let fileURL = onfileChange(e, "Testcase.txt")
-                                setFileForPreview({ file: fileURL, label: "Testcase" })
 
-                                setProblemInfo({ ...problemInfo, testcaseFileURL: fileURL })
-                            }}
-                            type="file" name="" ref={testcaseUploadRef} />
 
 
                     </div>
@@ -125,29 +151,12 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
                         <button onClick={() => {
                             setFileForPreview({ file: problemInfo.outputFileURL, label: "Output" })
                         }} className={`previewBtn ${fileForPreview.label === 'Output' ? "previewing" : ""} `}>Test Outputs</button>
-                        <div onClick={() => {
-                            outputUploadRef.current.click()
-                        }} className="uploadbtn"><CloudUploadIcon /></div>
-                        <input style={{ display: "none" }}
-                            onChange={e => {
-                                let fileURL = onfileChange(e, "Testcase.txt")
-                                setFileForPreview({ file: fileURL, label: "Output" })
 
-                                setProblemInfo({ ...problemInfo, outputFileURL: fileURL })
-                            }}
-                            type="file" name="" ref={outputUploadRef} />
                     </div>
                 </div>
                 <div className="previewContainer">
                     <h3>Preview</h3>
-                    <div className="preview">
-                        {fileForPreview.file !== null &&
-                            <iframe style={{
-                                height: "50vh",
-                                width: "100%"
-                            }} src={fileForPreview.file} title='Problem statement' frameBorder="1"></iframe>
-                        }
-                    </div>
+                    {showPreview()}
                 </div>
 
 

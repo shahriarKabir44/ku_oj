@@ -46,7 +46,7 @@ function NavBar({ currentUser, setCurrentUser }) {
                 <button className="danger btn  " onClick={() => {
                     localStorage.clear()
                     setCurrentUser(null)
-                }}>Log out</button>
+                }}>Logout</button>
 
             </div>}
             <LoginModal open={loginModalVisibility} onAuthenticated={(user) => {

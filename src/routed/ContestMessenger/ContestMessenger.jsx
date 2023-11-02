@@ -48,8 +48,6 @@ function ContestMessenger({ contest, currentUser }) {
 
     React.useEffect(() => {
         getContestMessages()
-
-
         let ws = new WebSocket(Global.WS_URL);
         ws.addEventListener('message', (event) => {
             setNewMessageArrivalStatus(1)
@@ -82,8 +80,8 @@ function ContestMessenger({ contest, currentUser }) {
                     }, 100);
                 }
             }}>
-                <p className="contestMessengerTitle">{contest.title}</p>
-                {messengerViewStatus && <button onClick={() => {
+                <p className="contestMessengerTitle">{contest.code}</p>
+                {messengerViewStatus === 1 && <button onClick={() => {
                     toggleMessengerViewStatus(0)
                     setNewMessageArrivalStatus(0)
 

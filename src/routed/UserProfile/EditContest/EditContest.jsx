@@ -11,6 +11,7 @@ import Global from '../../../services/Global';
 
 import UpdateContestEventManager from '../../../EventsManager/UpdateContestEventManager';
 import SubmissionService from '../../../services/Submission.service';
+import LoaderManager from '../../../EventsManager/LoaderManager';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
@@ -42,16 +43,21 @@ export default function EditContest({ currentUser }) {
     }
 
     function updateContest() {
+        LoaderManager.toggle()
         ContestService.updateContestInfo(contestInfo)
 
         UpdateContestEventManager.sendMessage(contestInfo)
             .then(({ status, errorMessage }) => {
                 if (!status) {
+                    LoaderManager.toggle()
+
                     alert(errorMessage)
                     return
                 }
                 SubmissionService.rejudgeContestSubmissions(contestId)
                     .then(() => {
+                        LoaderManager.toggle()
+
                         window.location.href = (`${Global.CLIENT_URL}/contest/${contestId}`)
 
                     })

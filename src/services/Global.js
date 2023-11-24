@@ -2,10 +2,10 @@ export default class Global {
     // static SERVER_IP = "http://192.168.0.105"
     //"https://4ffa-103-25-251-250.ngrok-free.app" //// 
 
-    static SERVER_URL = "http://localhost:8080"//  "https://kuoj.onrender.com"
+    static SERVER_URL = "https://kuoj.onrender.com"//  "https://kuoj.onrender.com"
 
-    static WS_URL = "ws://localhost:8081"
-    static CLIENT_URL = 'http://localhost:3000'
+    static WS_URL = "ws://ku-oj-ws.onrender.com/"
+    static CLIENT_URL = 'https://ku-oj.onrender.com'
     // static SERVER_IP = 
     static async _fetch(url, body = null) {
         let payload = {

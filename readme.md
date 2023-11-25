@@ -21,5 +21,9 @@ npm install
 
 ```
 
+
 ## Backend:
 The backend part of this project is linked <a href="https://github.com/shahriarKabir44/ku_oj_API">here</a>.
+
+## Preview:
+Check out the walkthrough video on youtube https://youtu.be/29oM96NiW58

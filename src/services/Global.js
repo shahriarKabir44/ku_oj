@@ -4,7 +4,7 @@ export default class Global {
 
     static SERVER_URL = "https://kuoj.onrender.com"//  "https://kuoj.onrender.com"
 
-    static WS_URL = "ws://ku-oj-ws.onrender.com/"
+    static WS_URL = "wss://ku-oj-ws.onrender.com/"
     static CLIENT_URL = 'https://ku-oj.vercel.app'
     // static SERVER_IP = 
     static async _fetch(url, body = null) {

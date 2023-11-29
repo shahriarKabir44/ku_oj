@@ -33,7 +33,7 @@ function ContestMessenger({ contest, currentUser }) {
         ContestService.saveMessageToContestThread(newMessage)
             .then(() => {
                 socket.send(JSON.stringify(newMessage))
-
+                getContestMessages()
             })
         messageInputRef.current.value = ''
     };

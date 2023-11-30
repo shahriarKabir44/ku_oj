@@ -2,6 +2,8 @@
 
 KU_OJ is an online judge platform for Khulna University students and faculty, where they can create and participate in programming contests and submit code using C/C++, Java and Python. KU_OJ is inspired by Codeforces, a popular online judge for competitive programming.
 
+<a href="ku-oj.vercel.app">Live Link</a>
+
 ## Features
 
 - **Contest creation and management**: Users can create contests with custom problems, time limits, scoring systems, and access levels. Users can also edit, delete, or clone existing contests.

@@ -1,0 +1,75 @@
+version: '3.4'
+
+services:
+  ku_oj_db:
+    image: mysql:latest
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "--silent"
+        ]
+      interval: 10s
+      timeout: 200s
+      retries: 1000
+    environment:
+      - MYSQL_ROOT_PASSWORD=Abcd1234.
+      - MYSQL_DATABASE=ku_oj
+      - MYSQL_PASSWORD=Abcd1234.
+    ports:
+      - "3300:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+  ku_oj_redis:
+    image: redis:latest
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 300s
+      retries: 500
+      start_period: 30s
+
+    volumes:
+      - cache:/data
+  ku_oj_api:
+    image: shahriarkabir/ku_oj_api:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - jwtSecret=erhgrehgirehgregir
+      - dbPort=3306
+      - dbName=my_zone
+      - dbUser=root
+      - dbPassword=Abcd1234.
+      - dbHost=ku_oj_db
+      - ssl=null
+      - redisHost=ku_oj_redis
+      - redisPort=6379
+    depends_on:
+      - ku_oj_db
+      - ku_oj_redis
+
+  ku_oj_ws:
+    image: shahriarkabir/ku_oj_ws:latest
+    ports:
+      - "8081:8081"
+
+  ku_oj:
+    image: shahriarkabir/ku_oj:latest
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      - ku_oj_db
+      - ku_oj_api
+      - ku_oj_ws
+
+volumes:
+  mysql-data:
+  cache:
+    driver: local

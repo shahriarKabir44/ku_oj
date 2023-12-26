@@ -25,54 +25,7 @@ npm install
 
 ## How to run it locally using docker
 
-- Clone this repository.
-- Run the MySQL docker image
-
-```bash
-sudo docker run -p  3300:3306 --name ku_oj_mysql -e MYSQL_ROOT_PASSWORD=<password> -d mysql:latest
-```
-
-- Create the database schema.
-- - Install Migratify globally and locally  (if not installed)
-
-```bash
-npm install -g migratify
-```
-
-```bash
-npm install  migratify
-```
-
-- - Run
-
-```bash
-migratify clear
-```
-
-- - Run the following command to create the database.
-
-```
-migratify create-db
-```
-
-- - Run the following command to create the schema.
-
-```bash
-migratfy migrate
-```
-
-- Now stop the MySQL image.
-
-```bash
-sudo docker stop myzone_mysql
-```
-
-- Open the docker-compose.yml file and put your database password
-- Run the project
-
-```bash
-sudo docker-compose up
-```
+The instructions are given in the Readme of the backend part of this project that can be found <a href="https://github.com/shahriarKabir44/ku_oj_API">here</a>.
 
 ## Backend
 

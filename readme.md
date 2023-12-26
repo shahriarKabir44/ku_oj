@@ -30,6 +30,7 @@ The instructions are given in the Readme of the backend part of this project tha
 ## Backend
 
 The backend part of this project is linked <a href="https://github.com/shahriarKabir44/ku_oj_API">here</a>.
+The WebSocket part of this project is linked <a href="https://github.com/shahriarKabir44/ku_oj_ws">here</a>.
 
 ## Preview
 

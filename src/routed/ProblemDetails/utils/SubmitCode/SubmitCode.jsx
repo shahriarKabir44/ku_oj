@@ -169,7 +169,7 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
                                 <option value="">Please Select</option>
                                 <option value="python">python</option>
                                 <option value="c++">c++</option>
-                                <option value="java">Java (The name of the main class must be 'Solution')</option>
+                                {/* <option value="java">Java (The name of the main class must be 'Solution')</option> */}
                             </select>
                         </td>
 

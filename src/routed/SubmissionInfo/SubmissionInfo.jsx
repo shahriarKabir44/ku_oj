@@ -35,6 +35,7 @@ function SubmissionInfo({ currentUser }) {
                             <th>Language</th>
                             <th>Time</th>
                             <th>Verdict</th>
+                            <th>Execution Time (ms)</th>
                             <th>Author</th>
                         </tr>
                     </thead>
@@ -56,15 +57,18 @@ function SubmissionInfo({ currentUser }) {
                                 {submissionInfo.verdict}
                             </td>
                             <td>
+                                {submissionInfo.execTime}
+                            </td>
+                            <td>
                                 <Link to={`${Global.CLIENT_URL}/user/${submissionInfo.submittedBy}`}>{submissionInfo.authorName}</Link>
 
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={6}>Code</td>
+                            <td colSpan={7}>Code</td>
                         </tr>
                         <tr>
-                            <td colSpan={6}>
+                            <td colSpan={7}>
                                 <div className="codeContainer">
                                     <ol>
                                         {submittedCode.map((line, lineNum) => {

@@ -1,3 +1,5 @@
+const { protocol, hostname, port } = window?.location
+
 export default class Global {
     // static SERVER_IP = "http://192.168.0.105"
     //"https://4ffa-103-25-251-250.ngrok-free.app" //// 
@@ -5,7 +7,7 @@ export default class Global {
     static SERVER_URL = "http://localhost:8080"//  "https://kuoj.onrender.com"
 
     static WS_URL = "ws://localhost:8081/"
-    static CLIENT_URL = 'http://localhost:3000'
+    static CLIENT_URL = protocol + '//' + hostname + `${port ? ":" + port : ''}`
     // static SERVER_IP = 
     static async _fetch(url, body = null) {
         let payload = {

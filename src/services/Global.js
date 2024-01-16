@@ -4,9 +4,9 @@ export default class Global {
     // static SERVER_IP = "http://192.168.0.105"
     //"https://4ffa-103-25-251-250.ngrok-free.app" //// 
 
-    static SERVER_URL = "https://kuoj.onrender.com"
+    static SERVER_URL = process.env.REACT_APP_SERVER_URL
 
-    static WS_URL = "wss://ku-oj-ws.onrender.com"
+    static WS_URL = process.env.REACT_APP_WS_URL
     static CLIENT_URL = protocol + '//' + hostname + `${port ? ":" + port : ''}`
     // static SERVER_IP = 
     static async _fetch(url, body = null) {

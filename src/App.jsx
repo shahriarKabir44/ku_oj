@@ -16,6 +16,7 @@ import Loader from './shared/Loader/Loader';
 function App() {
 	const [currentUser, setCurrentUser] = React.useState(null)
 	React.useEffect(() => {
+		console.log(process.env)
 		UserService.isAuthorized()
 			.then(({ user }) => {
 				setCurrentUser(user)

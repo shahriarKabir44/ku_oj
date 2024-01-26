@@ -57,6 +57,10 @@
     display: grid;
     justify-items: center;
     align-items: center;
+    max-height: calc(100% - 50px);
+    border: 1px solid;
+    overflow-y: auto;
+    border-radius: 5px;
 
 }
 

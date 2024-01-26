@@ -14,7 +14,7 @@ function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const navigate = useNavigate()
     const { id } = useParams()
-
+    const [scoreboardVisibility, setScoreboardVisibility] = React.useState(false)
 
     const [contest, setContestInfo] = React.useState({
         title: "",
@@ -106,13 +106,16 @@ function ContestInfo({ currentUser }) {
                                 setSelectedTab(2)
                             }} className={`tabSelectorBtn btn ${selectedTab === 2 ? 'selectedTab' : ''}`}>Global Submissions</div>
                             <div onClick={() => {
-                                setSelectedTab(3)
+                                setScoreboardVisibility(true)
+
                             }} className={`tabSelectorBtn btn ${selectedTab === 3 ? 'selectedTab' : ''}`}>Rankings</div>
 
                         </div>
                         {selectedTab === 1 && <ContestProblemSet isContestRunning={isContestRunning} contestResult={contestResult} problems={problems} />}
                         {selectedTab === 2 && <ContestSubmissions contest={contest} currentUser={currentUser} />}
-                        {selectedTab === 3 && <ContestRankings currentUser={currentUser} problems={problems} contestId={id} />}
+                        <ContestRankings currentUser={currentUser} problems={problems} contestId={id} open={scoreboardVisibility} handleClose={() => {
+                            setScoreboardVisibility(false)
+                        }} />
 
                     </div>
                 </div>

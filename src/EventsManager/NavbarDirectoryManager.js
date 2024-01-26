@@ -11,7 +11,7 @@ export default class NavbarDirectoryManager {
     }
     static setDitectory(label, { userId, userName, contest, problem, submission }) {
         if (label === 'home') {
-            document.title = 'Home'
+            document.title = 'KU_OJ - The online judge of Khulna University!'
         }
         let dirs = [{
             label: 'Home',

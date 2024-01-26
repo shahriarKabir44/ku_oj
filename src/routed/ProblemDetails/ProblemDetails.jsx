@@ -8,6 +8,7 @@ import Global from '../../services/Global'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import CountDown from '../shared/CountDown/CountDown'
 import ContestMessenger from '../ContestMessenger/ContestMessenger'
+import LoaderManager from '../../EventsManager/LoaderManager'
 
 export default function ProblemDetails({ currentUser }) {
     const nav = useNavigate()
@@ -18,9 +19,12 @@ export default function ProblemDetails({ currentUser }) {
     const [problemInfo, setProblemInfo] = React.useState({})
 
     React.useEffect(() => {
+        LoaderManager.toggle()
         ContestService.searchContestByProblem(problemId)
             .then(contest => {
                 if (!contest) {
+                    LoaderManager.toggle()
+
                     nav('/')
                 }
 
@@ -64,6 +68,8 @@ export default function ProblemDetails({ currentUser }) {
                             ...problemInfo
                         }
                     })
+                    LoaderManager.toggle()
+
                     setProblemInfo(problemInfo)
                 })
 

@@ -22,7 +22,7 @@ export default function ProblemSet() {
 	}, [])
 
 	return (
-		<div className="Container problemset">
+		<div className="problemset_container">
 			<p className="contestsCardHeading">Problems</p>
 			<table className="problemset" style={{
 				background: 'white'
@@ -50,6 +50,8 @@ export default function ProblemSet() {
 							<td>{problem.numSolutions}</td>
 						</tr>
 					})}
+
+
 
 					<tr>
 						<td colSpan={4}>

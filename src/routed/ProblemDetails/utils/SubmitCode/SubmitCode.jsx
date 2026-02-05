@@ -68,10 +68,15 @@ function SubmitCode({ open, handleClose, setPreviousSubmissionList, setSubmissio
         setPreviousSubmissionList(newSubmission)
         const newCodeFileBlob = UploadManager.convertTextToBlob(codeText.current.value)
 
-        SubmissionService.submit(data, newCodeFileBlob)
+        SubmissionService.submit(data, codeText.current.value)
 
             .then((resp) => {
+                if (resp.error) {
+                    alert(resp.error);
+                    return;
+                }
                 let { verdict, execTime, id } = resp
+                
                 setNewSubmissionId(id)
                 setSubmissionInfo({
                     ...submissionInfo,

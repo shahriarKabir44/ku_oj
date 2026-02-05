@@ -21,7 +21,7 @@ function NavBar({ currentUser, setCurrentUser }) {
                 }} className="logobtn">
                     <img style={{
                         width: '20px'
-                    }} src="/ku.png" alt="" />
+                    }} src="/logo150.png" alt="" />
                     <i>KU_OJ</i>
                 </button>
                 <Link to='/contests' className="btn menuBtn">Contests</Link>

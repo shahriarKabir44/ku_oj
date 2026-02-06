@@ -20,7 +20,6 @@ function NavBar({ currentUser, setCurrentUser }) {
                     navigate(`/`)
                 }} className="logobtn" title="Go to home">
                     <img style={{
-                        // width: '80%',
                         height: '39px'
                     }} src="/logo-branding.svg" alt="Logo" />
                     

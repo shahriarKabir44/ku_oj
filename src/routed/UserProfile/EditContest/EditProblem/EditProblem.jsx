@@ -4,7 +4,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './EditProblem.css'
 import UpdateContestEventManager from '../../../../EventsManager/UpdateContestEventManager';
 import UploadManager from '../../../../services/UploadManager';
-function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
+import SubmissionService from '../../../../services/Submission.service';
+import Global from '../../../../services/Global';
+function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo , contestId}) {
     const problemStatementUploadRef = React.useRef(null)
     const problemCreationFormRef = React.useRef(null)
     const testcaseInputRef = React.useRef(null)
@@ -26,6 +28,9 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
         label: "statement"
     })
     const [problem, setProblemInfo] = React.useState((problemInfo))
+
+
+
     React.useEffect(() => {
         setMainFileContent({ ...mainFileContent, statement: problem.statementFileURL })
         setTempFileContent({ ...temFileContent, statement: problem.statementFileURL })
@@ -39,49 +44,55 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
         UpdateContestEventManager.subscribe({
             id: "editProblem" + problemNum,
             onErrorCheking: async function () {
-
+                //todo: error checking
                 return { code: 1 }
             },
-            submitData: async function (contestInfo) {
-                if (problem.isNew) {
-                    await ContestService.addNewProblem({
-                        statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
-                        testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
-                        outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
-                        createdOn: (new Date()) * 1,
-                        ...problem
-                    })
-                    return 1
-                }
-                else {
-                    if (!problemStatementUploadRef.current.files[0]) {
-                        await ContestService.updateProblem({
-                            testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
-                            outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
-                            ...problem
-                        })
-                    }
-                    else {
-                        await ContestService.updateProblem({
-                            statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
-                            testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
-                            outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
-                            ...problem
-                        })
-                    }
-                    return 1
-                }
-            }
+            
         })
 
         return () => {
             UpdateContestEventManager.unsubscribe("editProblem" + problemNum,)
         }
-    }, [problemNum, problem])
+	}, [problemNum, problem])
+	
+	const submitData = async function ( ) {
+		if (problem.isNew) {
+			await ContestService.addNewProblem({
+				statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+				testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+				outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
+				createdOn: (new Date()) * 1,
+				...problem
+			})
+			 
+		}
+		else {
+			if (!problemStatementUploadRef.current.files[0]) {
+				await ContestService.updateProblem({
+					testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+					outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
+					...problem
+				})
+			}
+			else {
+				await ContestService.updateProblem({
+					statementFile: await UploadManager.convertBlobToBase64(problemStatementUploadRef.current?.files[0]),
+					testcaseFileContent: await UploadManager.convertTextToBase64(testcaseInputRef.current?.value),
+					outputFileContent: await UploadManager.convertTextToBase64(outputInputRef.current?.value),
+					...problem
+				})
+			}
+			 
+		}
+	};
 
 
-
-
+    function rejudgeSubmissionsOfThisProblem() {
+		SubmissionService.rejudgeContestSubmissions(contestId, problem.id)
+			.then(() => {
+				alert("Rejudged Successfully!")
+			});
+    }
 
 
     /**
@@ -205,6 +216,20 @@ function EditProblem({ problemNum, isFocused, setProblemTitle, problemInfo }) {
                         }} className={`previewBtn`}>Reset</button>
 
                     </div>
+                    <div className="uploadBtnContainer">
+                        <button onClick={() => {
+                            submitData()
+                        }} className={`previewBtn`}>Save</button>
+
+					</div>
+					{!problem.isNew && 	<div className="uploadBtnContainer">
+                        <button onClick={() => {
+                            rejudgeSubmissionsOfThisProblem()
+                        }} className={`previewBtn`}>Rejudge Submissions</button>
+
+                    </div>}
+				
+
                 </div>
                 <div className="previewContainer">
                     <h3>Preview</h3>

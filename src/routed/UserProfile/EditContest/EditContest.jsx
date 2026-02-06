@@ -43,25 +43,25 @@ export default function EditContest({ currentUser }) {
     }
 
     function updateContest() {
-        LoaderManager.toggle()
+       // LoaderManager.toggle()
         ContestService.updateContestInfo(contestInfo)
 
-        UpdateContestEventManager.sendMessage(contestInfo)
-            .then(({ status, errorMessage }) => {
-                if (!status) {
-                    LoaderManager.toggle()
+        // UpdateContestEventManager.sendMessage(contestInfo)
+        //     .then(({ status, errorMessage }) => {
+        //         if (!status) {
+        //           //  LoaderManager.toggle()
 
-                    alert(errorMessage)
-                    return
-                }
-                SubmissionService.rejudgeContestSubmissions(contestId)
-                    .then(() => {
-                        LoaderManager.toggle()
+        //             alert(errorMessage)
+        //             return
+        //         }
+        //         // SubmissionService.rejudgeContestSubmissions(contestId)
+        //         //     .then(() => {
+        //         //         LoaderManager.toggle()
 
-                        window.location.href = (`${Global.CLIENT_URL}/contest/${contestId}`)
+        //         //         window.location.href = (`${Global.CLIENT_URL}/contest/${contestId}`)
 
-                    })
-            })
+        //         //     })
+        //     })
 
     }
 
@@ -187,7 +187,7 @@ export default function EditContest({ currentUser }) {
                                 let problems = [...problemCount]
                                 problems[index].title = title
                                 setProblemCount(problems)
-                            }} key={index} problemNum={index} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
+                            }} key={index} problemNum={index} contestId={contestId} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
 
                         })}
                     </div>

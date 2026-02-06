@@ -1,3 +1,5 @@
+import LoaderManager from "../EventsManager/LoaderManager"
+
 const { protocol, hostname, port } = window?.location
 
 export default class Global {
@@ -21,13 +23,19 @@ export default class Global {
         if (additionalData) {
             payload.headers = { ...payload.headers, ...additionalData }
         }
-        if (body) payload.body = JSON.stringify(body)
+        if (body) payload.body = JSON.stringify(body);
+        //  LoaderManager.toggle()
         try {
             return await fetch(this.SERVER_URL + url, payload).then(res => res.json())
 
         } catch (error) {
-            console.log(url, body)
-            return null
+            console.log(url, body);
+            alert("Error Occured!")
+            throw error;
+        }
+        finally {
+            //LoaderManager.toggle()
+
         }
     }
     static async _postReq(url, data) {

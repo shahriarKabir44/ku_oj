@@ -29,8 +29,8 @@ export default class SubmissionService {
     static async getSubmissionInfo(data) {
         return Global._fetch('/submission/getSubmissionInfo', data)
     }
-    static async rejudgeContestSubmissions(contestId) {
-        return Global._fetch('/submission/rejudgeContestSubmissions/' + contestId)
+    static async rejudgeContestSubmissions(contestId, problemId = 0) {
+        return Global._fetch(`/submission/rejudgeContestSubmissions?contestId=${contestId}&problemId=${problemId}`);
     }
     static async getContestSubmissions(contestId, pageNumber = 0) {
         return Global._fetch(`/submission/getContestSubmissions/${contestId}/${pageNumber}`)

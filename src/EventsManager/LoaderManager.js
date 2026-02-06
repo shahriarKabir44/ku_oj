@@ -4,6 +4,9 @@ export default class LoaderManager {
     static subscribe({ toggle }) {
         this.client = { toggle }
     }
+    static toggleWithFlag(flag) {
+        this.client.toggle(flag)
+    }
     static toggle() {
         this.flag ^= 1
         this.client.toggle(this.flag)

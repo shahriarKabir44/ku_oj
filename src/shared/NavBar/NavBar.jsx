@@ -18,11 +18,11 @@ function NavBar({ currentUser, setCurrentUser }) {
             <div className="logoContainer">
                 <button onClick={() => {
                     navigate(`/`)
-                }} className="logobtn">
+                }} className="logobtn" title="Go to home">
                     <img style={{
-                        width: '20px'
-                    }} src="/logo150.png" alt="" />
-                    <i>KU_OJ</i>
+                        height: '39px'
+                    }} src="/logo-branding.svg" alt="Logo" />
+                    
                 </button>
                 <Link to='/contests' className="btn menuBtn">Contests</Link>
                 <Link to='/problemset' className="btn menuBtn">Problems</Link>

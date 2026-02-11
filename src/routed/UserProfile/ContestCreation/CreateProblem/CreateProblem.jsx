@@ -1,6 +1,7 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React from "react";
 import ContestCreationEventManager from "../../../../EventsManager/ContestCreationEventManager";
+import ToastManager from "../../../../EventsManager/ToastManager";
 import ContestService from "../../../../services/Contest.service";
 import UploadManager from "../../../../services/UploadManager";
 import "./CreateProblem.css";
@@ -83,14 +84,14 @@ function CreateProblem({ problemNum, isFocused, setProblemTitle }) {
 
     const MAX_BYTES = 50 * 1024 * 1024;
     if (fileObj.size > MAX_BYTES) {
-      alert("File too large (max 10MB)");
+      ToastManager.showError("File too large (max 10MB)");
       event.target.value = "";
       return;
     }
 
     // Validate file type
     if (!isValidFileType(fileObj)) {
-      alert(
+      ToastManager.showError(
         "Only PDF and image files (JPEG, PNG, GIF, SVG, WebP) are allowed.",
       );
       event.target.value = ""; // Clear the input

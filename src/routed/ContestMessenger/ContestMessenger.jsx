@@ -3,6 +3,7 @@ import './ContestMessenger.css'
 import { Link } from 'react-router-dom';
 import Global from '../../services/Global';
 import ContestService from '../../services/Contest.service';
+import ModalManager from '../../EventsManager/ModalManager';
 function ContestMessenger({ contest, currentUser }) {
     const messageInputRef = React.useRef(null)
     const [messengerViewStatus, toggleMessengerViewStatus] = React.useState(0)
@@ -13,7 +14,7 @@ function ContestMessenger({ contest, currentUser }) {
     const handleSendClick = () => {
         if (messageInputRef.current.value.trim() === '') return;
         if (currentUser === null) {
-            alert('you must log in first')
+            ModalManager.showAlert('you must log in first', 'Authentication Required')
             return
         }
         const newMessage = {

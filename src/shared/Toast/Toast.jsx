@@ -13,7 +13,7 @@ function Toast() {
   React.useEffect(() => {
     ToastManager.subscribe({
       showToast: (message, severity = "info") => {
-        setToast({
+         setToast({
           open: true,
           message,
           severity,
@@ -33,6 +33,7 @@ function Toast() {
     <Snackbar
       open={toast.open}
       autoHideDuration={6000}
+      
       onClose={handleClose}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >

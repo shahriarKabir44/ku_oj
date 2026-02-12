@@ -66,7 +66,7 @@ export default function EditContest({ currentUser }) {
     }
 
     React.useEffect(() => {
-        ContestService.getFullContestDetails(contestId)
+        ContestService.getFullContestDetailsForEdit(contestId)
             .then((fullContestDetails) => {
                 NavbarDirectoryManager.setDitectory('editContest', {
                     userId: currentUser.id,

@@ -11,102 +11,106 @@ import ContestMessenger from '../ContestMessenger/ContestMessenger'
 import LoaderManager from '../../EventsManager/LoaderManager'
 
 export default function ProblemDetails({ currentUser }) {
-    const nav = useNavigate()
-    const [contest, setContestInfo] = React.useState({})
+	const nav = useNavigate()
+	const [contest, setContestInfo] = React.useState(null)
 
-    const { problemId } = useParams()
-    const [hasSolved, setSolvedFlag] = React.useState(2)
-    const [problemInfo, setProblemInfo] = React.useState({})
+	const { problemId } = useParams()
+	const [hasSolved, setSolvedFlag] = React.useState(2)
+	const [problemInfo, setProblemInfo] = React.useState(null)
 
-    React.useEffect(() => {
-        LoaderManager.toggle()
-        ContestService.searchContestByProblem(problemId)
-            .then(contest => {
-                if (!contest) {
-                    LoaderManager.toggle()
+	React.useEffect(() => {
+		LoaderManager.toggle()
+		ContestService.searchContestByProblem(problemId)
+			.then(contest => {
+				if (!contest) {
+					LoaderManager.toggle()
 
-                    nav('/')
-                }
+					nav('/')
+				}
 
-                if (contest.endTime >= (new Date()) * 1) {
-                    contest.isRunning = true
+				if (contest.endTime >= (new Date()) * 1) {
+					contest.isRunning = true
 
-                }
-                setContestInfo(contest)
-            })
-        try {
-            if (currentUser !== null) {
-                ContestService.hasSolvedProblem_(currentUser.id, problemId)
-                    .then((data) => {
-                        const { official, unofficial } = data
-                        if (!official && !unofficial) {
-                            setSolvedFlag(0)
-                            return
-                        }
-                        if (official && unofficial) {
-                            setSolvedFlag(Math.max(official, unofficial))
-                            return
-                        }
-                        if (official && !unofficial) {
-                            setSolvedFlag((official))
-                            return
-                        }
-                        setSolvedFlag(unofficial)
-                    })
+				}
+				setContestInfo(contest)
+			})
+		try {
+			if (currentUser !== null) {
+				ContestService.hasSolvedProblem_(currentUser.id, problemId)
+					.then((data) => {
+						const { official, unofficial } = data
+						if (!official && !unofficial) {
+							setSolvedFlag(0)
+							return
+						}
+						if (official && unofficial) {
+							setSolvedFlag(Math.max(official, unofficial))
+							return
+						}
+						if (official && !unofficial) {
+							setSolvedFlag((official))
+							return
+						}
+						setSolvedFlag(unofficial)
+					})
 
-            }
-            ContestService.getProblemInfo(problemId)
-                .then(({ problemInfo }) => {
-                    if (!problemInfo) {
-                        nav('/')
-                    }
-                    NavbarDirectoryManager.setDitectory('problemDescription', {
-                        contest: {
-                            title: problemInfo.contestCode,
-                            id: problemInfo.contestId
-                        }, problem: {
-                            ...problemInfo
-                        }
-                    })
-                    LoaderManager.toggle()
+			}
+			ContestService.getProblemInfo(problemId)
+				.then(({ problemInfo }) => {
+					if (!problemInfo) {
+						nav('/')
+					}
+					NavbarDirectoryManager.setDitectory('problemDescription', {
+						contest: {
+							title: problemInfo.contestCode,
+							id: problemInfo.contestId
+						}, problem: {
+							...problemInfo
+						}
+					})
+					LoaderManager.toggle()
 
-                    setProblemInfo(problemInfo)
-                })
+					setProblemInfo(problemInfo)
+				})
 
-        } catch (error) {
-            console.error('oh no')
-        }
+		} catch (error) {
+			console.error('oh no')
+		}
 
 
 
-    }, [problemId, currentUser])
+	}, [problemId, currentUser])
 
-    return (
-        <div className="container_problemDetails">
-            <div className="leftPanelsContainer">
-                <ContestInfoContainer contest={contest} currentUser={currentUser} />
-                <SubmissionsContainer problem={problemInfo} contest={contest} currentUser={currentUser} />
-            </div>
-            <div className="problemBodyContainer card">
-                <div className="problemExtraInfoContainer">
-                    <h2 className='problemTitle'>{problemInfo.title}</h2>
-                    <div className="pointsContainer">
-                        <WorkspacePremiumIcon />
-                        <h4>{problemInfo.points} pts</h4>
-                        {hasSolved === 1 ? '✅' : hasSolved === -1 ? '❌' : ''}
-                    </div>
+	return (
+		<>{problemInfo && <div className="container_problemDetails">
+			<div className="leftPanelsContainer">
+				{contest &&	<ContestInfoContainer contest={contest} currentUser={currentUser} />}
+			{problemInfo && contest &&		<SubmissionsContainer problem={problemInfo} contest={contest} currentUser={currentUser} />}
+			
+			</div>
+			<div className="problemBodyContainer card">
+				<div className="problemExtraInfoContainer">
+					<h2 className='problemTitle'>{problemInfo.title}</h2>
+					<div className="pointsContainer">
+						<WorkspacePremiumIcon />
+						<h4>{problemInfo.points} pts</h4>
+						{hasSolved === 1 ? '✅' : hasSolved === -1 ? '❌' : ''}
+					</div>
 
-                </div>
-                <div className="problemStatementContainer">
-                    <iframe src={Global.SERVER_URL + "/" + problemId + ".pdf"}
-                        title="Problem"
-                        height={"10%%"}
-                        width={"100%"}></iframe>
-                </div>
-            </div>
-            <ContestMessenger currentUser={currentUser} contest={contest} />
-        </div>
-    );
+				</div>
+				<div className="problemStatementContainer">
+					<iframe src={Global.SERVER_URL + "/" + problemId + ".pdf"}
+						title="Problem"
+						height={"10%%"}
+						width={"100%"}></iframe>
+				</div>
+			</div>
+			{contest && <ContestMessenger currentUser={currentUser} contest={contest} />}
+ 		</div>}
+		</>
+		
+		
+	);
 
 }
 
@@ -116,18 +120,18 @@ export default function ProblemDetails({ currentUser }) {
 
 function ContestInfoContainer({ contest }) {
 
-    return <div className="contestInfoContainer card">
-        <h2>{contest.title}</h2>
-        <p style={{
-            fontSize: "12px"
-        }}>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
-        {contest.endTime < (new Date()) * 1 && <b>Contest has ended</b>}
-        {contest.endTime >= (new Date()) * 1 && <CountDown content={"Remaining Time"} endTime={contest.endTime} />}
+	return <div className="contestInfoContainer card">
+		<h2>{contest.title}</h2>
+		<p style={{
+			fontSize: "12px"
+		}}>Start Time: {(new Date(contest.startTime)).toLocaleString()}</p>
+		{contest.endTime < (new Date()) * 1 && <b>Contest has ended</b>}
+		{contest.endTime >= (new Date()) * 1 && <CountDown content={"Remaining Time"} endTime={contest.endTime} />}
 
 
 
 
-    </div>
+	</div>
 
 }
 

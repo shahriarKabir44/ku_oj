@@ -36,7 +36,7 @@ export default function ProblemSet() {
 					</tr>
 				</thead>
 				<tbody>
-					{problems.map((problem, index) => {
+					{ problems && problems.map((problem, index) => {
 						return <tr key={index}>
 							<td>
 								<Link to={`${Global.CLIENT_URL}/problem/${problem.id}`}>{problem.title}</Link>

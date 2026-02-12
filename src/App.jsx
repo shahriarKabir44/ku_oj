@@ -18,60 +18,60 @@ import Toast from "./shared/Toast/Toast";
 function App() {
   const [currentUser, setCurrentUser] = React.useState(null);
   React.useEffect(() => {
-    UserService.isAuthorized().then(({ user }) => {
-      setCurrentUser(user);
-    });
+	UserService.isAuthorized().then(({ user }) => {
+	  setCurrentUser(user);
+	});
   }, []);
   return (
-    <div className="App">
-      <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
-      <Loader />
-      <Toast />
-      <ConfirmationModal />
-      <div className="mainContainer">
-        <Routes>
-          <Route path="/" element={<Home currentUser={currentUser} />} />
-          <Route
-            path="/contest/:id"
-            element={<ContestInfo currentUser={currentUser} />}
-          />
-          <Route
-            path="/viewSubmission/:contestId/:submissionId/"
-            element={<SubmissionInfo currentUser={currentUser} />}
-          />
-          <Route path="/user/:id">
-            <Route
-              path=""
-              element={<UserProfileRoot currentUser={currentUser} />}
-            />
-            {currentUser && (
-              <Route
-                path="createContest"
-                element={<CreateContest currentUser={currentUser} />}
-              />
-            )}
-            {currentUser && (
-              <Route
-                path="editContest/:contestId"
-                element={<EditContest currentUser={currentUser} />}
-              />
-            )}
-          </Route>
-          <Route
-            path="/contests"
-            element={<Contests currentUser={currentUser} />}
-          />
-          <Route
-            path="/problem/:problemId"
-            element={<ProblemDetails currentUser={currentUser} />}
-          />
-          <Route
-            path="/problemset"
-            element={<ProblemSet currentUser={currentUser} />}
-          />
-        </Routes>
-      </div>
-    </div>
+	<div className="App">
+	  <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+	  <Loader />
+	  <Toast />
+	  <ConfirmationModal />
+	  <div className="mainContainer">
+		<Routes>
+		  <Route path="/" element={<Home currentUser={currentUser} />} />
+		  <Route
+			path="/contest/:id"
+			element={<ContestInfo currentUser={currentUser} />}
+		  />
+		  <Route
+			path="/viewSubmission/:contestId/:submissionId/"
+			element={<SubmissionInfo currentUser={currentUser} />}
+		  />
+		  <Route path="/user/:id">
+			<Route
+			  path=""
+			  element={<UserProfileRoot currentUser={currentUser} />}
+			/>
+			{currentUser && (
+			  <Route
+				path="createContest"
+				element={<CreateContest currentUser={currentUser} />}
+			  />
+			)}
+			{currentUser && (
+			  <Route
+				path="editContest/:contestId"
+				element={<EditContest currentUser={currentUser} />}
+			  />
+			)}
+		  </Route>
+		  <Route
+			path="/contests"
+			element={<Contests currentUser={currentUser} />}
+		  />
+		  <Route
+			path="/problem/:problemId"
+			element={<ProblemDetails currentUser={currentUser} />}
+		  />
+		  <Route
+			path="/problemset"
+			element={<ProblemSet currentUser={currentUser} />}
+		  />
+		</Routes>
+	  </div>
+	</div>
   );
 }
 

@@ -1,3 +1,4 @@
+import ModalManager from "../EventsManager/ModalManager";
 import Global from "./Global";
 import UploadManager from "./UploadManager";
 export default class ContestService {
@@ -142,7 +143,9 @@ export default class ContestService {
       );
     });
 
-    return await Promise.all(promises);
+    return await Promise.all(promises).catch((err) => {
+      ModalManager.showAlert("Error Occurred", "Failed to upload files. Please try again.");
+    });
   }
   static async saveMessageToContestThread(body) {
     return Global._fetch("/contests/saveMessageToContestThread", body);
@@ -191,8 +194,8 @@ export default class ContestService {
     });
   }
 
-  static async getFullContestDetails(contestId) {
-    return Global._fetch("/contests/getFullContestDetails/" + contestId);
+  static async getFullContestDetailsForEdit(contestId) {
+    return Global._fetch("/contests/getFullContestDetailsForEdit/" + contestId);
   }
   static async getProblemFiles(problemId) {
     return Global._fetch(`/contests/getProblemFiles/${problemId}`);

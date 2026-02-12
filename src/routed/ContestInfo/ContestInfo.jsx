@@ -75,7 +75,8 @@ function ContestInfo({ currentUser }) {
 
     }, [currentUser])
     return (
-        <div className='contestinfo_container'>
+        <>
+        {contest.id &&  <div className='contestinfo_container'>
 
             <div className="gridContainer">
                 <div className="leftPanel_contest">
@@ -120,8 +121,11 @@ function ContestInfo({ currentUser }) {
                     </div>
                 </div>
             </div>
+
             <ContestMessenger currentUser={currentUser} contest={contest} />
-        </div>
+        </div>}
+        </>
+       
     );
 }
 

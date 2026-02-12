@@ -16,8 +16,7 @@ export default function UserProfileRoot({ currentUser }) {
 
 
     React.useEffect(() => {
-
-        UserService.findUser(id)
+         UserService.findUser(id)
             .then(user => {
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('profile', {
@@ -54,9 +53,12 @@ export default function UserProfileRoot({ currentUser }) {
                         setSelectedContentPanel(3)
                     }} className={`tabSelectorBtn btn ${selectedContentPanel === 3 ? 'selectedTab' : ''}`}>Contests Hosted</div>
                 </div>
-                <UserSubmissions userId={id} isShowing={selectedContentPanel === 1} />
+                {user.id && <>
+                 <UserSubmissions userId={id} isShowing={selectedContentPanel === 1} />
                 <ParticipatedContests userId={id} isShowing={selectedContentPanel === 2} />
                 <HostedContestsContainer user={user} currentUser={currentUser} isShowing={selectedContentPanel === 3} />
+                </>}
+               
             </div>
         </div>
     );
@@ -69,7 +71,7 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
     function hasEnded(endTime) {
         return endTime < (new Date()) * 1
     }
-    React.useEffect(() => {
+     React.useEffect(() => {
         UserService.getHostedContests(user.id)
             .then(contests => {
                 setHostedContestsList(contests)

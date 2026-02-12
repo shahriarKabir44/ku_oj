@@ -78,7 +78,9 @@ function EditProblem({
         ),
         createdOn: new Date() * 1,
         ...problem,
-      });
+      }).then(() => { 
+          ToastManager.showSuccess("Problem updated successfully!");
+        });
     } else {
       if (!problemStatementUploadRef.current.files[0]) {
         await ContestService.updateProblem({
@@ -89,6 +91,8 @@ function EditProblem({
             outputInputRef.current?.value,
           ),
           ...problem,
+        }).then(() => { 
+          ToastManager.showSuccess("Problem updated successfully!");
         });
       } else {
         await ContestService.updateProblem({
@@ -102,6 +106,8 @@ function EditProblem({
             outputInputRef.current?.value,
           ),
           ...problem,
+        }).then(() => { 
+          ToastManager.showSuccess("Problem updated successfully!");
         });
       }
     }

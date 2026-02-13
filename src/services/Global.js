@@ -1,5 +1,4 @@
 import ToastManager from "../EventsManager/ToastManager";
-import ModalManager from "../EventsManager/ModalManager";
 
 const { protocol, hostname, port } = window?.location;
 
@@ -35,7 +34,9 @@ export default class Global {
 				ToastManager.showError(data.errorMsg);
 				return null;
 			}
-			return data.data;
+			
+			// return data.data ;
+			return data.data !== undefined ? data.data : data;
 		} catch (error) {
 			console.log(url, body);
 			ToastManager.showError("Error occurred!");

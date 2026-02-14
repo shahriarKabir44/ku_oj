@@ -1,81 +1,86 @@
-.titleContainer_createProblem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-}
-
-.problemLabel.selectedProblemForPreview {
-    background: #007bff !important;
-    color: white !important;
-}
-
 .container_createContest {
-    overflow-y: hidden;
-    height: inherit;
+  overflow-y: hidden;
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e3f6f5;
+  padding: 20px;
 }
 
-.problemDetailsPanels {
-    height: calc(100% - 40px);
+.container_createContest .dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 10px;
+  width: 600px;
+  max-width: 90%;
+}
+
+.container_createContest .leftPanel {
+  width: 100%;
+}
+
+.container_createContest .contestDetailsPanel {
+  width: 100%;
+}
+
+.container_createContest .card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.titleContainer_createProblem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .createContestPage_title {
-    margin-bottom: 10px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-
-.createContestInput {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.dashboardContainer {
-    grid-template-columns: 40% auto;
-    display: grid;
-    background: #E3F6F5;
-    height: inherit;
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .formContainer {
-    display: grid;
-    justify-items: stretch;
-    justify-content: start;
-    grid-template-columns: 30% 70%;
-    align-items: center;
-    gap: 5px;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 15px;
+  align-items: center;
 }
 
-.problemItem {
-    display: grid;
-    grid-template-columns: 91% auto;
-    justify-content: space-between;
-    margin: 5px;
-    border-radius: 5px;
-    align-items: center;
+.formContainer label {
+  font-weight: 500;
+  color: #333;
 }
 
-.problemsContainer {
-    max-height: 25vh;
-    overflow-y: auto;
-    height: 25vh;
+.createContestInput {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.2s;
 }
 
-.problemLabel {
-    background: #D9D9D9;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    flex: 1;
+.createContestInput:focus {
+  outline: none;
+  border-color: #007bff;
 }
 
-.titleContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.btn.confirmContestCreation {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn.confirmContestCreation:hover {
+  background-color: #0056b3;
 }

@@ -1,16 +1,142 @@
-.titleContainer_updateProblem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.editContest_container {
+  overflow-y: hidden;
+  height: inherit;
+}
 
+.titleContainer_updateProblem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .updateContestInput {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .deleteBtn {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+.dashboardContainer {
+  grid-template-columns: 25% auto;
+  display: grid;
+  background: #e3f6f5;
+  height: inherit;
+  gap: 6px;
+  padding: 2px;
+}
+
+.lestPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contestDetailsPanel {
+  flex: 0 0 auto;
+}
+
+.problemsLabelPanel {
+  flex: 1;
+  overflow: hidden;
+}
+
+.problemDetailsPanels {
+  height: calc(100% - 20px);
+}
+
+.formContainer {
+  display: grid;
+  justify-items: stretch;
+  justify-content: start;
+  grid-template-columns: 30% 70%;
+  align-items: center;
+  gap: 10px;
+}
+
+.createContestPage_title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.problemsContainer {
+  max-height: 30vh;
+  overflow-y: auto;
+  min-height: 150px;
+}
+
+.problemItem {
+  display: grid;
+  grid-template-columns: 91% auto;
+  justify-content: space-between;
+  margin: 5px 0;
+  border-radius: 5px;
+  align-items: center;
+}
+
+.problemLabel {
+  background: #d9d9d9;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1;
+  transition: background 0.2s;
+}
+
+.problemLabel:hover {
+  background: #c0c0c0;
+}
+
+.problemLabel.selectedProblemForPreview {
+  background: #007bff !important;
+  color: white !important;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.addProblemBtn {
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.addProblemBtn:hover {
+  background: #218838;
+}
+
+.btn.confirmContestCreation {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.confirmContestCreation:hover {
+  background: #0056b3;
 }

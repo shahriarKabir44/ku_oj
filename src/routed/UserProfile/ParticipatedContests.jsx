@@ -7,8 +7,8 @@ function ParticipatedContests({ userId, isShowing }) {
     const [participatedContests, setParticipatedContestList] = React.useState([])
     function getParticipatedContestList() {
         ContestService.getParticipatedContestList(userId, pageNumber)
-            .then(data => {
-                setParticipatedContestList(data)
+            .then(({ data }) => {
+                 setParticipatedContestList(data)
             })
     }
     React.useEffect(() => {

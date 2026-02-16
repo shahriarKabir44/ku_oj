@@ -30,10 +30,10 @@ export default function UserProfileRoot({ currentUser }) {
     return (
         <div className='container_userProfile'>
             <div className="leftPanel">
-                <div className="userInfoCard card">
+                <div className="userInfoCard card" style={{"height":"auto"}}>
                     Name:  {user.userName}
                 </div>
-                {currentUser?.id === user?.id && <div className="operationsContainer card">
+                {currentUser?.id === user?.id && <div className="operationsContainer card"  style={{"height":"auto"}}>
                     <div onClick={() => {
                         navigate('createContest')
                     }} className="operationTab">
@@ -73,8 +73,9 @@ function HostedContestsContainer({ user, currentUser, isShowing }) {
     }
      React.useEffect(() => {
         UserService.getHostedContests(user.id)
-            .then(contests => {
-                setHostedContestsList(contests)
+            .then(({ data }) => {
+                
+                setHostedContestsList(data)
             })
     }, [user])
     return <div style={{

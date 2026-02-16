@@ -1,3 +1,4 @@
+import LoaderManager from "../EventsManager/LoaderManager";
 import ToastManager from "../EventsManager/ToastManager";
 
 const { protocol, hostname, port } = window?.location;
@@ -25,18 +26,17 @@ export default class Global {
 			payload.headers = { ...payload.headers, ...additionalData };
 		}
 		if (body) payload.body = JSON.stringify(body);
-		//  LoaderManager.toggle()
+		LoaderManager.toggleWithFlag(1);
 		try {
 			var data = await fetch(this.SERVER_URL + url, payload).then((res) =>
 				res.json()
 			);
-			if (data.errorMsg) {
+			if (data.errorMsg != null) {
 				ToastManager.showError(data.errorMsg);
 				return null;
 			}
-			
 			// return data.data ;
-			return data.data !== undefined ? data.data : data;
+			return data;
 		} catch (error) {
 			console.log(url, body);
 			ToastManager.showError("Error occurred!");
@@ -46,7 +46,8 @@ export default class Global {
 			//                );
 			//throw error;
 		} finally {
-			//LoaderManager.toggle()
+			LoaderManager.toggleWithFlag(0);
+
 		}
 	}
 	static async _postReq(url, data) {

@@ -41,7 +41,7 @@
 }
 
 .content_subcontainer {
-    height: inherit;
+    height: 100%;
     max-height: inherit;
     overflow-y: auto;
     display: grid;

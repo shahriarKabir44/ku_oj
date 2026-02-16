@@ -21,7 +21,7 @@
 }
 
 .dashboardContainer {
-  grid-template-columns: 25% auto;
+  grid-template-columns: 30% auto;
   display: grid;
   background: #e3f6f5;
   height: inherit;
@@ -68,7 +68,7 @@
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
+  height: auto !important;
 }
 
 .problemsContainer {

@@ -6,9 +6,12 @@ import { useParams } from 'react-router-dom';
 import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager';
 import ContestService from '../../../services/Contest.service';
 import Global from '../../../services/Global';
-import CreateProblem from '../ContestCreation/CreateProblem/CreateProblem';
+ 
+import "../ContestCreation/CreateProblem/CreateProblem.css";
+
 import './EditContest.css';
 import EditProblem from './EditProblem/EditProblem';
+import ToastManager from '../../../EventsManager/ToastManager';
 
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
@@ -40,32 +43,42 @@ export default function EditContest({ currentUser }) {
         setProblemCount(problems)
     }
 
-    function updateContest() {
+    function updateContest(force = false) {
+        if (force) {
+            if (!window.confirm("Force updating the contest will update the time and delete all the submissions. Are you sure you want to continue?")) {
+                return
+            }
+        }
+        let contestInfoCopy = structuredClone(contestInfo);
+        contestInfoCopy.startTime = new Date(contestInfoCopy.startTime) .toLocaleString();
+         contestInfoCopy.endTime = new Date(contestInfoCopy.endTime).toLocaleString();
        // LoaderManager.toggle()
-        ContestService.updateContestInfo(contestInfo)
+        ContestService.updateContestInfo(contestInfoCopy, force)
+            .then((response) => {
+                if (response==null ) {
+                    return;
+                }
+                ToastManager.showSuccess("Contest updated successfully");
+                loadContestInfo(contestId);
+            })
 
-        // UpdateContestEventManager.sendMessage(contestInfo)
-        //     .then(({ status, errorMessage }) => {
-        //         if (!status) {
-        //           //  LoaderManager.toggle()
-
-        //             alert(errorMessage)
-        //             return
-        //         }
-        //         // SubmissionService.rejudgeContestSubmissions(contestId)
-        //         //     .then(() => {
-        //         //         LoaderManager.toggle()
-
-        //         //         window.location.href = (`${Global.CLIENT_URL}/contest/${contestId}`)
-
-        //         //     })
-        //     })
+   
 
     }
+    function toLocalInputValue(utcString) {
+        const date = new Date(utcString);
+        const offset = date.getTimezoneOffset();
+        const localDate = new Date(date.getTime() - offset * 60000);
+        return localDate.toISOString().slice(0, 16);
+    }
 
-    React.useEffect(() => {
+    function loadContestInfo(contestId) {
         ContestService.getFullContestDetailsForEdit(contestId)
-            .then((fullContestDetails) => {
+            .then((data) => {
+                if (data == null) { 
+                    return;
+                }
+                let fullContestDetails = data.data
                 NavbarDirectoryManager.setDitectory('editContest', {
                     userId: currentUser.id,
                     userName: currentUser.userName,
@@ -74,9 +87,11 @@ export default function EditContest({ currentUser }) {
                         title: fullContestDetails.title
                     }
 
-                })
-
-                //add validation
+                });
+                 fullContestDetails.startTime =toLocalInputValue(new Date(fullContestDetails.startTime).toISOString()) 
+                fullContestDetails.endTime=toLocalInputValue(new Date(fullContestDetails.endTime).toISOString()) 
+                // fullContestDetails.endTime = new Date(fullContestDetails.endTime)
+                 //add validation
                 let { problems } = fullContestDetails
                 delete fullContestDetails.problems
                 problems.forEach((problem) => {
@@ -91,13 +106,17 @@ export default function EditContest({ currentUser }) {
                 setProblemCount(problems)
                 setContestInfo(fullContestDetails)
             })
+    };
+
+    React.useEffect(() => {
+        loadContestInfo(contestId)
 
     }, [currentUser, contestId])
     return (
         <div className="editContest_container" style={{
             height: "inherit"
         }}>
-            <div className="dashboardContainer">
+            <div className="dashboardContainer" style={{}}>
                 <div className="lestPanel">
 
                     <div className="contestDetailsPanel">
@@ -105,7 +124,10 @@ export default function EditContest({ currentUser }) {
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_updateProblem">
                                 <h2 className="createContestPage_title">Update contest </h2>
-                                <button onClick={updateContest} className="btn confirmContestCreation"  >Update</button>
+                                <button onClick={() => {
+                                    updateContest(true)   }} className="btn confirmContestCreation" style={{backgroundColor:"red"}} >Force Update</button>
+
+                                <button onClick={()=>{updateContest(false)}} className="btn confirmContestCreation"  >Update</button>
                             </div>
                             <div className='formContainer'>
                                 <label htmlFor="title">Contest title:</label>
@@ -120,15 +142,15 @@ export default function EditContest({ currentUser }) {
 
                                 <label htmlFor="start">Start Time:</label>
                                 <input className='updateContestInput' onChange={e => {
-                                    if ((new Date()) * 1 < contestInfo.startTime)
-                                        setContestInfo({ ...contestInfo, startTime: (new Date(e.target.value)) * 1 })
-                                }} type="datetime-local" name="start" value={new Date(contestInfo.startTime).toISOString().slice(0, 16)} />
+                                   // if ((new Date()) * 1 < contestInfo.startTime)
+                                    setContestInfo({ ...contestInfo, startTime: e.target.value });
+                                 }} type="datetime-local" name="start" value={contestInfo.startTime} />
 
 
                                 <label htmlFor="end">End Time:</label>
                                 <input className='updateContestInput' onChange={e => {
-                                    setContestInfo({ ...contestInfo, endTime: (new Date(e.target.value)) * 1 })
-                                }} type="datetime-local" name="ebd" value={new Date(contestInfo.endTime).toISOString().slice(0, 16)} />
+                                    setContestInfo({ ...contestInfo, endTime:e.target.value    })
+                                }} type="datetime-local" name="end" value={contestInfo.endTime} />
 
                             </div>
                         </div>
@@ -181,24 +203,13 @@ export default function EditContest({ currentUser }) {
                 <div className="problemDetailsPanels">
                     <div className="card" style={{ height: "inherit" }}>
                         {problemCount.map((problem, index) => {
-                            if (problem.isExisting && !problem.isDeleted) {
+                            if (  !problem.isDeleted) {
                                 return <EditProblem setProblemTitle={(title) => {
                                     let problems = [...problemCount]
                                     problems[index].title = title
                                     setProblemCount(problems)
                                 }} key={index} problemNum={index} contestId={contestId} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
-                            } else if (problem.isNew && !problem.isDeleted) {
-                                return <CreateProblem
-                                    setProblemTitle={(title) => {
-                                        let problems = [...problemCount];
-                                        problems[index].title = title;
-                                        setProblemCount(problems);
-                                    }}
-                                    key={index}
-                                    problemNum={index}
-                                    isFocused={index === selectedProblemForPreview}
-                                />
-                            }
+                            }  
                             return null;
                         })}
                     </div>

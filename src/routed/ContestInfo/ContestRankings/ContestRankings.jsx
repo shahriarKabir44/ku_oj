@@ -3,8 +3,7 @@ import ContestService from "../../../services/Contest.service";
 import "./ContestRankings.css";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import LoaderManager from "../../../EventsManager/LoaderManager";
-
+ 
 
 const modalStyle = {
 	position: 'absolute',
@@ -25,9 +24,8 @@ export default function ContestRankings({ contestId, currentUser, problems, open
 	const [rankings, setRankingList] = React.useState([]);
 	const [isOfficial, toggleOfficialValue] = React.useState(true);
 	function gerContestStandings() {
-		LoaderManager.toggle()
-		ContestService.getContestStandings(contestId, isOfficial).then(
-			(standings) => {
+ 		ContestService.getContestStandings(contestId, isOfficial).then(
+			({data:standings}) => {
 				standings.forEach((ranking) => {
 					ranking.description = JSON.parse(ranking.description);
 					ranking.verdicts = JSON.parse(ranking.verdicts)
@@ -53,8 +51,7 @@ export default function ContestRankings({ contestId, currentUser, problems, open
 
 					filteredStandingInfo.push(ranking);
 				});
-				LoaderManager.toggle()
-
+ 
 				setRankingList(filteredStandingInfo);
 			}
 		);

@@ -40,8 +40,8 @@ function ContestMessenger({ contest, currentUser }) {
     };
     function getContestMessages() {
         ContestService.getContestMessages(contest.id)
-            .then(messages => {
-                setContestMessageList(messages)
+            .then(({ data: messages }) => {
+                 setContestMessageList(messages)
 
             })
     }

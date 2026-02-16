@@ -20,7 +20,8 @@ export default function SubmissionsContainer({
       SubmissionService.getPreviousSubmissionsOfProblem(
         problem?.id,
         currentUser?.id,
-      ).then(({ previousSubmissions }) => {
+      ).then(({ data: previousSubmissions }) => {
+         
         setPreviousSubmissionList(previousSubmissions);
       });
   }, [currentUser, problem]);

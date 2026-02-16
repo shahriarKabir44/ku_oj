@@ -201,8 +201,9 @@ export default class ContestService {
     return Global._fetch(`/contests/getProblemFiles/${problemId}`);
   }
 
-  static async updateContestInfo(contestInfo) {
-    return Global._fetch("/contests/updateContestInfo", contestInfo);
+  static async updateContestInfo(contestInfo, forceUpdate = false) {
+    console.log(contestInfo)
+    return Global._fetch(`/contests/updateContestInfo?isForceUpdate=${forceUpdate}`, contestInfo);
   }
 
   static async hasSolvedProblem_(userId, problemId) {

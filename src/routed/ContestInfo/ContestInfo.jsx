@@ -9,8 +9,7 @@ import ContestRankings from './ContestRankings/ContestRankings';
 import ContestSubmissions from './ContestSubmissions/ContestSubmissions';
 import CountDown from '../shared/CountDown/CountDown';
 import ContestMessenger from '../ContestMessenger/ContestMessenger';
-import LoaderManager from '../../EventsManager/LoaderManager';
-function ContestInfo({ currentUser }) {
+ function ContestInfo({ currentUser }) {
     const [selectedTab, setSelectedTab] = React.useState(1)
     const navigate = useNavigate()
     const { id } = useParams()
@@ -27,17 +26,17 @@ function ContestInfo({ currentUser }) {
     const [problems, setProblemList] = React.useState([])
     const [contestResult, setContestResult] = React.useState(null)
     React.useEffect(() => {
-        LoaderManager.toggle()
-
+        
         ContestService.findContestById(id)
-            .then(({ contestInfo }) => {
+            .then(({ data:contestInfo }) => {
                 if (!contestInfo) {
                     navigate('/')
                 }
-                if (contestInfo.startTime <= (new Date()) * 1) {
+                console.log(new Date(contestInfo.startTime) <= (new Date())  )
+                if (new Date(contestInfo.startTime) <= (new Date())) {
                     ContestService.getContestProblems(id)
-                        .then(({ contestProblems }) => {
-                            LoaderManager.toggle()
+                        .then(({ data:contestProblems }) => {
+                            
 
                             setProblemList(contestProblems)
 
@@ -52,7 +51,7 @@ function ContestInfo({ currentUser }) {
                     ContestService.getContestResult({
                         userId: currentUser.id,
                         contestId: id
-                    }).then(_contestResult => {
+                    }).then(({data:_contestResult}) => {
                         setContestResult(_contestResult)
                     })
                 }

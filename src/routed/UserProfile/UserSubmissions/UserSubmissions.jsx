@@ -7,8 +7,9 @@ function UserSubmissions({ userId, isShowing }) {
     const [pageNumber, setPageNumber] = React.useState(0)
     function getSubmissions() {
         SubmissionService.getUserSubmissions(userId, pageNumber)
-            .then(submissionList => {
-                setSubmissionList([...submissionList])
+            .then(({ data }) => {
+                
+                setSubmissionList([...data])
             })
     }
     React.useEffect(() => {

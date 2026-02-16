@@ -83,7 +83,8 @@ function SubmitCode({
 
     SubmissionService.submit(data, codeText.current.value)
 
-      .then((resp) => {
+      .then(({ data: resp }) => {
+        console.log(resp);
         if (resp.error) {
           ToastManager.showError(resp.error);
           return;
@@ -100,7 +101,7 @@ function SubmitCode({
         SubmissionService.getPreviousSubmissionsOfProblem(
           problem?.id,
           currentUser?.id,
-        ).then(({ previousSubmissions }) => {
+        ).then(({data: previousSubmissions }) => {
           setSubmissionList(previousSubmissions);
           setSubmissionStatus(JUDGED);
           //handleClose()

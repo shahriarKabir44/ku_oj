@@ -7,7 +7,7 @@ export default function MySubmissionsContainer({ contest, user }) {
     const [pageNumber, setPageNumber] = React.useState(0)
     function getUsersContestSubmissions() {
         UserService.getUsersContestSubmissions(user.id, contest.id, pageNumber)
-            .then(submissions => {
+            .then(({data:submissions}) => {
                 setMySubmissions([...submissions])
             })
     }

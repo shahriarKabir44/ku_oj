@@ -2,25 +2,22 @@ import React from 'react';
 import ContestService from '../../services/Contest.service';
 import ContestCard from '../shared/ContestCard/ContestCard';
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager';
-import LoaderManager from '../../EventsManager/LoaderManager';
-function Contests({ currentUser }) {
+ function Contests({ currentUser }) {
     const [contestList, setContestList] = React.useState([])
     const [previousContests, setPreviousContesList] = React.useState([])
     React.useEffect(() => {
         setTimeout(() => { NavbarDirectoryManager.setDitectory('Contests', {}) }, 100)
-        LoaderManager.toggle()
-        Promise.all([
+         Promise.all([
             ContestService.getUpcomingContests()
-                .then((contests) => {
+                .then(({data:contests}) => {
                     setContestList(contests)
                 }),
             ContestService.getContests()
-                .then(previousContestList => {
+                .then(({data:previousContestList}) => {
                     setPreviousContesList(previousContestList)
                 })
         ]).then(() => {
-            LoaderManager.toggle()
-
+ 
         })
 
     }, [])

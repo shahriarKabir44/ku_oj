@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ContestCreationEventManager from "../../../EventsManager/ContestCreationEventManager";
-import LoaderManager from "../../../EventsManager/LoaderManager";
-import NavbarDirectoryManager from "../../../EventsManager/NavbarDirectoryManager";
+ import NavbarDirectoryManager from "../../../EventsManager/NavbarDirectoryManager";
 import ToastManager from "../../../EventsManager/ToastManager";
 import ContestService from "../../../services/Contest.service";
 import "./CreateContest.css";
@@ -26,16 +25,14 @@ function CreateContest({ currentUser }) {
       ToastManager.showError("Invalid input");
       return;
     }
-    LoaderManager.toggle();
-    ContestService.createContest({
+     ContestService.createContest({
       ...contestInfo,
       startTime: contestInfo.startTime.getTime(),
       endTime: contestInfo.endTime.getTime(),
     }).then((contestId) => {
       if (contestId === null) {
         ToastManager.showError("Contest name already exists!");
-        LoaderManager.toggle();
-        return;
+         return;
       }
       ContestCreationEventManager.sendMessage({
         ...contestInfo,
@@ -47,8 +44,7 @@ function CreateContest({ currentUser }) {
           ToastManager.showError(errorMessage);
           return;
         }
-        LoaderManager.toggle();
-
+ 
         navigate(`/user/${currentUser.id}/editContest/${contestId}`);
       });
     });

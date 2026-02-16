@@ -45,7 +45,11 @@ function EditProblem({
     });
     if (problem.id)
       ContestService.getProblemFiles(problemInfo.id).then(
-        ({ testcase, output }) => {
+        (data) => {
+          if (data == null) {
+            return;
+          }
+          let { testcase, output } = data.data;
           setTempFileContent({ ...temFileContent, testcase, output });
           setMainFileContent({ ...mainFileContent, testcase, output });
         },
@@ -281,8 +285,8 @@ function EditProblem({
               }}
               className={`previewBtn ${fileForPreview.label === "Testcase" ? "previewing" : ""} `}
             >
-              Test Inputs
-            </button>
+              Test Inputs 
+            </button> 
           </div>
           <div className="uploadBtnContainer">
             <button

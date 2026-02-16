@@ -7,7 +7,7 @@ function ContestSubmissions({ contest, currentUser }) {
     const [pageNumber, setPageNumber] = React.useState(0)
     function getContestSubmissions() {
         SubmissionService.getContestSubmissions(contest.id, pageNumber)
-            .then(submissionList => {
+            .then(({data:submissionList}) => {
                 setSubmissionList([...submissionList])
             })
     }

@@ -10,16 +10,16 @@ function SubmissionInfo({ currentUser }) {
     const [submittedCode, setSubmittedCode] = React.useState([])
     React.useEffect(() => {
         SubmissionService.getSubmissionInfo({ ...params, viewer: currentUser?.id })
-            .then((submissionInfo) => {
-                if (submissionInfo.success) {
-                    let { submission } = submissionInfo
+            .then(({data}) => {
+                if (data.success) {
+                    let { submission } = data
                     NavbarDirectoryManager.setDitectory('submissionDetails', {
                         contest: { id: submission.contest?.id, title: submission.contest?.code },
                         problem: { id: submission.problemId, title: submission.problemCode },
                         submission: { id: submission.id }
                     })
                     setSubmissionInfo(submission)
-                    setSubmittedCode(submissionInfo.code.split('\n'))
+                    setSubmittedCode(data.code.split('\n'))
                 }
             })
 

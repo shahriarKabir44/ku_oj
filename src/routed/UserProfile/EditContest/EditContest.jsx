@@ -1,17 +1,15 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import ContestService from '../../../services/Contest.service'
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import './EditContest.css'
+import DeleteIcon from '@mui/icons-material/Delete';
 import ReplayIcon from '@mui/icons-material/Replay';
-import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager'
-import EditProblem from './EditProblem/EditProblem';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import NavbarDirectoryManager from '../../../EventsManager/NavbarDirectoryManager';
+import ContestService from '../../../services/Contest.service';
 import Global from '../../../services/Global';
+import CreateProblem from '../ContestCreation/CreateProblem/CreateProblem';
+import './EditContest.css';
+import EditProblem from './EditProblem/EditProblem';
 
-import UpdateContestEventManager from '../../../EventsManager/UpdateContestEventManager';
-import SubmissionService from '../../../services/Submission.service';
-import LoaderManager from '../../../EventsManager/LoaderManager';
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
     const [problemCount, setProblemCount] = React.useState([])
@@ -183,12 +181,25 @@ export default function EditContest({ currentUser }) {
                 <div className="problemDetailsPanels">
                     <div className="card" style={{ height: "inherit" }}>
                         {problemCount.map((problem, index) => {
-                            return <EditProblem setProblemTitle={(title) => {
-                                let problems = [...problemCount]
-                                problems[index].title = title
-                                setProblemCount(problems)
-                            }} key={index} problemNum={index} contestId={contestId} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
-
+                            if (problem.isExisting && !problem.isDeleted) {
+                                return <EditProblem setProblemTitle={(title) => {
+                                    let problems = [...problemCount]
+                                    problems[index].title = title
+                                    setProblemCount(problems)
+                                }} key={index} problemNum={index} contestId={contestId} problemInfo={problem} isFocused={index === selectedProblemForPreview} />
+                            } else if (problem.isNew && !problem.isDeleted) {
+                                return <CreateProblem
+                                    setProblemTitle={(title) => {
+                                        let problems = [...problemCount];
+                                        problems[index].title = title;
+                                        setProblemCount(problems);
+                                    }}
+                                    key={index}
+                                    problemNum={index}
+                                    isFocused={index === selectedProblemForPreview}
+                                />
+                            }
+                            return null;
                         })}
                     </div>
                 </div>

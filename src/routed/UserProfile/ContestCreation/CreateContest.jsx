@@ -1,5 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ContestCreationEventManager from "../../../EventsManager/ContestCreationEventManager";
@@ -7,14 +5,10 @@ import LoaderManager from "../../../EventsManager/LoaderManager";
 import NavbarDirectoryManager from "../../../EventsManager/NavbarDirectoryManager";
 import ToastManager from "../../../EventsManager/ToastManager";
 import ContestService from "../../../services/Contest.service";
-import Global from "../../../services/Global";
 import "./CreateContest.css";
-import CreateProblem from "./CreateProblem/CreateProblem";
+
 function CreateContest({ currentUser }) {
-  const [selectedProblemForPreview, setSelectedProblemForPreview] =
-    React.useState(0);
   const navigate = useNavigate();
-  const [problemCount, setProblemCount] = React.useState([]);
 
   const [contestInfo, setContestInfo] = React.useState({
     title: "",
@@ -25,7 +19,7 @@ function CreateContest({ currentUser }) {
   });
   function createContest() {
     if (
-      contestInfo.startTime * 1 > contestInfo.endTime * 1 ||
+      contestInfo.startTime >= contestInfo.endTime ||
       contestInfo.title.length === 0 ||
       contestInfo.code.length === 0
     ) {
@@ -35,8 +29,8 @@ function CreateContest({ currentUser }) {
     LoaderManager.toggle();
     ContestService.createContest({
       ...contestInfo,
-      startTime: contestInfo.startTime * 1,
-      endTime: contestInfo.endTime * 1,
+      startTime: contestInfo.startTime.getTime(),
+      endTime: contestInfo.endTime.getTime(),
     }).then((contestId) => {
       if (contestId === null) {
         ToastManager.showError("Contest name already exists!");
@@ -45,8 +39,8 @@ function CreateContest({ currentUser }) {
       }
       ContestCreationEventManager.sendMessage({
         ...contestInfo,
-        startTime: contestInfo.startTime * 1,
-        endTime: contestInfo.endTime * 1,
+        startTime: contestInfo.startTime.getTime(),
+        endTime: contestInfo.endTime.getTime(),
         id: contestId,
       }).then(({ status, errorMessage }) => {
         if (!status) {
@@ -55,7 +49,7 @@ function CreateContest({ currentUser }) {
         }
         LoaderManager.toggle();
 
-        window.location.href = `${Global.CLIENT_URL}/contest/${contestId}`;
+        navigate(`/user/${currentUser.id}/editContest/${contestId}`);
       });
     });
   }
@@ -76,7 +70,7 @@ function CreateContest({ currentUser }) {
       <div className="dashboardContainer">
         <div className="leftPanel">
           <div className="contestDetailsPanel">
-            <div className="card" style={{ height: "35vh" }}>
+            <div className="card" style={{ minHeight: "50vh" }}>
               <div className="titleContainer_createProblem">
                 <h2 className="createContestPage_title">Create a contest</h2>
                 <button
@@ -95,6 +89,7 @@ function CreateContest({ currentUser }) {
                   }}
                   type="text"
                   name="title"
+                  value={contestInfo.title}
                 />
 
                 <label htmlFor="code">Contest code:</label>
@@ -104,7 +99,8 @@ function CreateContest({ currentUser }) {
                     setContestInfo({ ...contestInfo, code: e.target.value });
                   }}
                   type="text"
-                  name="trip-start"
+                  name="code"
+                  value={contestInfo.code}
                 />
 
                 <label htmlFor="start">Start Time:</label>
@@ -113,11 +109,16 @@ function CreateContest({ currentUser }) {
                   onChange={(e) => {
                     setContestInfo({
                       ...contestInfo,
-                      startTime: new Date(e.target.value) * 1,
+                      startTime: new Date(e.target.value),
                     });
                   }}
                   type="datetime-local"
                   name="start"
+                  value={
+                    contestInfo.startTime instanceof Date
+                      ? contestInfo.startTime.toISOString().slice(0, 16)
+                      : ""
+                  }
                 />
 
                 <label htmlFor="end">End Time:</label>
@@ -126,83 +127,19 @@ function CreateContest({ currentUser }) {
                   onChange={(e) => {
                     setContestInfo({
                       ...contestInfo,
-                      endTime: new Date(e.target.value) * 1,
+                      endTime: new Date(e.target.value),
                     });
                   }}
                   type="datetime-local"
-                  name="trip-end"
+                  name="end"
+                  value={
+                    contestInfo.endTime instanceof Date
+                      ? contestInfo.endTime.toISOString().slice(0, 16)
+                      : ""
+                  }
                 />
               </div>
             </div>
-          </div>
-          <div className="problemsLabelPanel">
-            <div className="card">
-              <div className="titleContainer">
-                <h3 className="createContestPage_title">Problems</h3>
-                <button
-                  onClick={() => {
-                    setProblemCount([
-                      ...problemCount,
-                      {
-                        index: problemCount.length,
-                        title: `Problem ${problemCount.length + 1}`,
-                      },
-                    ]);
-                    setSelectedProblemForPreview(problemCount.length);
-                  }}
-                  className="addProblemBtn"
-                >
-                  <AddIcon />
-                </button>
-              </div>
-              <div className="problemsContainer">
-                {problemCount.map((problem, index) => {
-                  return (
-                    <div key={index} className="problemItem">
-                      <div
-                        onClick={() => {
-                          setSelectedProblemForPreview(problem.index);
-                        }}
-                        className={`problemLabel ${problem.index === selectedProblemForPreview ? "selectedProblemForPreview" : ""}`}
-                      >
-                        {problem.title}
-                      </div>
-                      <div
-                        onClick={() => {
-                          setProblemCount(
-                            problemCount.filter(
-                              (p) => p.index !== problem.index,
-                            ),
-                          );
-                        }}
-                        className="deleteBtn"
-                      >
-                        {" "}
-                        <DeleteIcon />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="problemDetailsPanels">
-          <div className="card" style={{ height: "inherit" }}>
-            {problemCount.map((problem, index) => {
-              return (
-                <CreateProblem
-                  setProblemTitle={(title) => {
-                    let problems = [...problemCount];
-                    problems[index].title = title;
-                    setProblemCount(problems);
-                  }}
-                  key={index}
-                  problemNum={index}
-                  isFocused={problem.index === selectedProblemForPreview}
-                />
-              );
-            })}
           </div>
         </div>
       </div>

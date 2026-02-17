@@ -211,7 +211,7 @@ function RegistrationModal({ open, handleClose, onAuthenticated }) {
 
     UserService.register(data).then((user) => {
       if (!user) {
-        ToastManager.showError("Invalid credentials");
+        //ToastManager.showError("Invalid credentials");
         return;
       }
       onAuthenticated(user);

@@ -21,32 +21,34 @@ function CreateContest({ currentUser }) {
       contestInfo.startTime >= contestInfo.endTime ||
       contestInfo.title.length === 0 ||
       contestInfo.code.length === 0
-    ) {
+    ) {        contestInfo.startTime = new Date(contestInfo.startTime) .toLocaleString();
+         contestInfo.endTime = new Date(contestInfo.endTime).toLocaleString();
+
       ToastManager.showError("Invalid input");
       return;
     }
      ContestService.createContest({
       ...contestInfo,
-      startTime: contestInfo.startTime.getTime(),
-      endTime: contestInfo.endTime.getTime(),
-    }).then((contestId) => {
+      
+    }).then(({data:contestId}) => {
       if (contestId === null) {
         ToastManager.showError("Contest name already exists!");
          return;
       }
-      ContestCreationEventManager.sendMessage({
-        ...contestInfo,
-        startTime: contestInfo.startTime.getTime(),
-        endTime: contestInfo.endTime.getTime(),
-        id: contestId,
-      }).then(({ status, errorMessage }) => {
-        if (!status) {
-          ToastManager.showError(errorMessage);
-          return;
-        }
- 
         navigate(`/user/${currentUser.id}/editContest/${contestId}`);
-      });
+
+
+      // ContestCreationEventManager.sendMessage({
+      //   ...contestInfo,
+       
+      //   id: contestId,
+      // }).then(({ status, errorMessage }) => {
+      //   if (!status) {
+      //     ToastManager.showError(errorMessage);
+      //     return;
+      //   }
+ 
+      // });
     });
   }
   React.useEffect(() => {
@@ -100,40 +102,17 @@ function CreateContest({ currentUser }) {
                 />
 
                 <label htmlFor="start">Start Time:</label>
-                <input
-                  className="createContestInput"
-                  onChange={(e) => {
-                    setContestInfo({
-                      ...contestInfo,
-                      startTime: new Date(e.target.value),
-                    });
-                  }}
-                  type="datetime-local"
-                  name="start"
-                  value={
-                    contestInfo.startTime instanceof Date
-                      ? contestInfo.startTime.toISOString().slice(0, 16)
-                      : ""
-                  }
-                />
+                                <input className='updateContestInput' onChange={e => {
+                                   // if ((new Date()) * 1 < contestInfo.startTime)
+                                    setContestInfo({ ...contestInfo, startTime: e.target.value });
+                                 }} type="datetime-local" name="start" value={contestInfo.startTime} />
 
-                <label htmlFor="end">End Time:</label>
-                <input
-                  className="createContestInput"
-                  onChange={(e) => {
-                    setContestInfo({
-                      ...contestInfo,
-                      endTime: new Date(e.target.value),
-                    });
-                  }}
-                  type="datetime-local"
-                  name="end"
-                  value={
-                    contestInfo.endTime instanceof Date
-                      ? contestInfo.endTime.toISOString().slice(0, 16)
-                      : ""
-                  }
-                />
+
+                                <label htmlFor="end">End Time:</label>
+                                <input className='updateContestInput' onChange={e => {
+                                    setContestInfo({ ...contestInfo, endTime:e.target.value    })
+                }} type="datetime-local" name="end" value={contestInfo.endTime} />
+                
               </div>
             </div>
           </div>

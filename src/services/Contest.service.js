@@ -71,7 +71,7 @@ export default class ContestService {
     code,
     createdOn,
   }) {
-    let { problemId } = await Global._fetch("/contests/createProblem", {
+    let { data: problemId } = await Global._fetch("/contests/createProblem", {
       title,
       points,
       contestId,
@@ -158,11 +158,10 @@ export default class ContestService {
     return Global._fetch(`/contests/getContestResult/${userId}/${contestId}`);
   }
   static async createContest(contestInfo) {
-    let { contestId } = await Global._fetch(
+    return await Global._fetch(
       "/contests/createContest",
       contestInfo,
     );
-    return contestId;
   }
   static async getContests() {
     return Global._fetch("/contests/getContests");

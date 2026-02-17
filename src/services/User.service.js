@@ -4,12 +4,16 @@ export default class UserService {
         return Global._fetch('/user/isAuthorized')
     }
     static async authenticate(data) {
-        let { user, token } = await Global._fetch('/user/authenticate', data)
+        let { data: auth } = await Global._fetch('/user/authenticate', data);
+        if (auth == null) return;
+        //console.log(auth)
+        let { user, token } = auth;
         localStorage.setItem('token', token)
         return user
     }
-    static async register(data) {
-        let { user, token } = await Global._fetch('/user/register', data)
+    static async register(credential) {
+        let { data: auth } = await Global._fetch('/user/register', credential)
+        let { user, token } = auth;
         localStorage.setItem('token', token)
         return user
     }

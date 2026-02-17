@@ -11,7 +11,7 @@ export default function ProblemSet() {
 	const [pageNumber, setPageNumber] = React.useState(0)
 	function getProblems() {
 		ContestService.getProblems(pageNumber)
-			.then(problemList => {
+			.then(({data:problemList}) => {
 				setProblemList(problemList)
 			})
 	}

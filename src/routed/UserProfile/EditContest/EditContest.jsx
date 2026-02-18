@@ -12,6 +12,7 @@ import "../ContestCreation/CreateProblem/CreateProblem.css";
 import './EditContest.css';
 import EditProblem from './EditProblem/EditProblem';
 import ToastManager from '../../../EventsManager/ToastManager';
+import SubmissionService from '../../../services/Submission.service';
 
 export default function EditContest({ currentUser }) {
     const { contestId } = useParams()
@@ -72,6 +73,19 @@ export default function EditContest({ currentUser }) {
         return localDate.toISOString().slice(0, 16);
     }
 
+    function trashUntrashProblemById(problem) {
+        if (!window.confirm(`Are you sure you want to ${problem.isAvailable ? 'Trash' : 'Untrash'} this problem?`)) {
+            return 
+        }
+        ContestService.trashUntrashProblemId(problem.id, !problem.isAvailable)
+            .then(resp=>{
+                if (!resp.errorMsg) {
+                    ToastManager.showSuccess("Problem set updated!");
+                    loadContestInfo(contestId);
+                }
+            })
+    }
+
     function loadContestInfo(contestId) {
         ContestService.getFullContestDetailsForEdit(contestId)
             .then((data) => {
@@ -107,7 +121,13 @@ export default function EditContest({ currentUser }) {
                 setContestInfo(fullContestDetails)
             })
     };
-
+    function rejudgeAllProblems() {
+        if (!window.confirm("Are you sure? This is a heavy process!")) return;
+        SubmissionService.rejudgeContestSubmissions(contestId ).then((resp) => {
+                if (resp.errorMsg) return;
+                ToastManager.showSuccess("Rejudged Successfully!");
+            });
+    };
     React.useEffect(() => {
         loadContestInfo(contestId)
 
@@ -124,10 +144,22 @@ export default function EditContest({ currentUser }) {
                         <div className="card" style={{ height: "35vh" }}>
                             <div className="titleContainer_updateProblem">
                                 <h2 className="createContestPage_title">Update contest </h2>
-                                <button onClick={() => {
-                                    updateContest(true)   }} className="btn confirmContestCreation" style={{backgroundColor:"red"}} >Force Update</button>
+                                <div>
+                                    <button onClick={()=>{updateContest(false)}} className="btn confirmContestCreation"  >Update</button>
 
-                                <button onClick={()=>{updateContest(false)}} className="btn confirmContestCreation"  >Update</button>
+                                    <div class="dropdown btn">
+                                        <button class="dropbtn">Options</button>
+                                        <div class="dropdown-content">
+                                            <a href="#" onClick={() => {
+                                            updateContest(true)   }}>Force Update</a>
+                                            <a href="#" onClick={() => {
+                                            rejudgeAllProblems()   }}>Rejudge All Submissions</a>
+                                            <a href="#">View Contest</a>
+                                            <a href="#">{contestInfo.isPublished?"Draft":"Publish"} Contest</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                             <div className='formContainer'>
                                 <label htmlFor="title">Contest title:</label>
@@ -170,28 +202,13 @@ export default function EditContest({ currentUser }) {
                                             if (problem.isDeleted) return
                                             setSelectedProblemForPreview(index)
                                         }} className={`problemLabel ${selectedProblemForPreview === index ? "selectedProblemForPreview" : ""}`}>{problem.title}</div>
-                                        {!problem.isDeleted && <div onClick={() => {
-                                            let problems = structuredClone(problemCount)
-
-                                            if (problem.isExisting) {
-                                                problems[index].isDeleted = true
-
-                                            }
-                                            else {
-                                                problems = problems.filter((_, ind) => {
-                                                    return ind !== index;
-                                                })
-                                            }
-                                            setProblemCount(problems)
-                                        }} className="deleteBtn"> <DeleteIcon /></div>}
-                                        {problem.isDeleted && <div onClick={() => {
-                                            let problems = structuredClone(problemCount)
-
-                                            if (problem.isExisting) {
-                                                problems[index].isDeleted = false
-                                                setProblemCount(problems)
-                                            }
-                                        }} className="deleteBtn"> <ReplayIcon /></div>}
+                                          <div onClick={() => {
+                                            trashUntrashProblemById(problem)
+                                             
+                                        }} className="deleteBtn"> {problem.isAvailable==1 && <DeleteIcon />}
+                                        {problem.isAvailable==0 && <ReplayIcon />}
+                                        </div>
+                                       
 
                                     </div>
                                 })}

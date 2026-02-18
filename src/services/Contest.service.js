@@ -193,6 +193,10 @@ export default class ContestService {
     });
   }
 
+  static async trashUntrashProblemId(problemId, isAvailable) {
+    return Global._fetch(`/contests/trashUntrashProblemId/?problemId=${problemId}&isAvailable=${isAvailable * 1}`);
+  }
+
   static async getFullContestDetailsForEdit(contestId) {
     return Global._fetch("/contests/getFullContestDetailsForEdit/" + contestId);
   }

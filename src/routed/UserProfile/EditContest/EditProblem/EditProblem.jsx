@@ -18,111 +18,120 @@ function EditProblem({
   const testcaseInputRef = React.useRef(null);
   const outputInputRef = React.useRef(null);
   const [mainFileContent, setMainFileContent] = React.useState({
-    testcase: "",
-    output: "",
-    statement: "",
+	testcase: "",
+	output: "",
+	statement: "",
   });
   const [temFileContent, setTempFileContent] = React.useState({
-    testcase: "",
-    output: "",
-    statement: "",
+	testcase: "",
+	output: "",
+	statement: "",
   });
 
   const [fileForPreview, setFileForPreview] = React.useState({
-    file: null,
-    label: "statement",
+	file: null,
+	label: "statement",
   });
   const [problem, setProblemInfo] = React.useState(problemInfo);
 
   React.useEffect(() => {
-    setMainFileContent({
-      ...mainFileContent,
-      statement: problem.statementFileURL,
-    });
-    setTempFileContent({
-      ...temFileContent,
-      statement: problem.statementFileURL,
-    });
-    if (problem.id)
-      ContestService.getProblemFiles(problemInfo.id).then(
-        (data) => {
-          if (data == null) {
-            return;
-          }
-          let { testcase, output } = data.data;
-          setTempFileContent({ ...temFileContent, testcase, output });
-          setMainFileContent({ ...mainFileContent, testcase, output });
-        },
-      );
+	setMainFileContent({
+	  ...mainFileContent,
+	  statement: problem.statementFileURL,
+	});
+	setTempFileContent({
+	  ...temFileContent,
+	  statement: problem.statementFileURL,
+	});
+	if (problem.id)
+	  ContestService.getProblemFiles(problemInfo.id).then(
+		(data) => {
+		  if (data == null) {
+			return;
+		  }
+		  let { testcase, output } = data.data;
+		  setTempFileContent({ ...temFileContent, testcase, output });
+		  setMainFileContent({ ...mainFileContent, testcase, output });
+		},
+	  );
 
-    UpdateContestEventManager.subscribe({
-      id: "editProblem" + problemNum,
-      onErrorCheking: async function () {
-        //todo: error checking
-        return { code: 1 };
-      },
-    });
+	
 
-    return () => {
-      UpdateContestEventManager.unsubscribe("editProblem" + problemNum);
-    };
+	return () => {
+	 // UpdateContestEventManager.unsubscribe("editProblem" + problemNum);
+	};
   }, [problemNum, problem]);
 
-  const submitData = async function () {
-    if (problem.isNew) {
-      await ContestService.addNewProblem({
-        statementFile: await UploadManager.convertBlobToBase64(
-          problemStatementUploadRef.current?.files[0],
-        ),
-        testcaseFileContent: await UploadManager.convertTextToBase64(
-          testcaseInputRef.current?.value,
-        ),
-        outputFileContent: await UploadManager.convertTextToBase64(
-          outputInputRef.current?.value,
-        ),
-        createdOn: new Date() * 1,
-        ...problem,
-      }).then(() => { 
-          ToastManager.showSuccess("Problem updated successfully!");
-        });
-    } else {
-      if (!problemStatementUploadRef.current.files[0]) {
-        await ContestService.updateProblem({
-          testcaseFileContent: await UploadManager.convertTextToBase64(
-            testcaseInputRef.current?.value,
-          ),
-          outputFileContent: await UploadManager.convertTextToBase64(
-            outputInputRef.current?.value,
-          ),
-          ...problem,
-        }).then(() => { 
-          ToastManager.showSuccess("Problem updated successfully!");
-        });
-      } else {
-        await ContestService.updateProblem({
-          statementFile: await UploadManager.convertBlobToBase64(
-            problemStatementUploadRef.current?.files[0],
-          ),
-          testcaseFileContent: await UploadManager.convertTextToBase64(
-            testcaseInputRef.current?.value,
-          ),
-          outputFileContent: await UploadManager.convertTextToBase64(
-            outputInputRef.current?.value,
-          ),
-          ...problem,
-        }).then(() => { 
-          ToastManager.showSuccess("Problem updated successfully!");
-        });
-      }
-    }
-  };
+	const submitData = async function () {
+		try {
+			let testcaseFileContent = await UploadManager.convertTextToBase64(
+				testcaseInputRef.current?.value,
+			);
+			if (!testcaseFileContent) {
+				ToastManager.showError("Testcase Input Is Invalid!");
+				return;
+			}
+			let outputFileContent = await UploadManager.convertTextToBase64(
+				outputInputRef.current?.value,
+			)
+			if (!outputFileContent) {
+				ToastManager.showError("Testcase Input Is Invalid!");
+				return;
+			}
+
+			let statementFile = await UploadManager.convertBlobToBase64(
+				problemStatementUploadRef.current?.files[0],
+			);
+
+			if (problem.isNew) {
+				if (statementFile == null) {
+					ToastManager.showError("Statement File Is Invalid!");
+					return;
+				}
+				await ContestService.addNewProblem({
+					statementFile,
+					testcaseFileContent,
+					outputFileContent,
+					createdOn: new Date() * 1,
+					...problem,
+				}).then(() => {
+					ToastManager.showSuccess("Problem updated successfully!");
+				});
+			} else {
+				if (!problemStatementUploadRef.current.files[0]) {
+					await ContestService.updateProblem({
+						testcaseFileContent,
+						outputFileContent,
+						...problem,
+					}).then(() => {
+						ToastManager.showSuccess("Problem updated successfully!");
+					});
+				} else {
+					if (statementFile == null) {
+					ToastManager.showError("Statement File Is Invalid!");
+					return;
+				}
+					await ContestService.updateProblem({
+						statementFile,
+						testcaseFileContent,
+						outputFileContent,
+						...problem,
+					}).then(() => {
+						ToastManager.showSuccess("Problem updated successfully!");
+					});
+				}
+			}
+		} catch (error) {
+			
+		}
+	};
 
   function rejudgeSubmissionsOfThisProblem() {
-    SubmissionService.rejudgeContestSubmissions(contestId, problem.id).then(
-      () => {
-        ToastManager.showSuccess("Rejudged Successfully!");
-      },
-    );
+	SubmissionService.rejudgeContestSubmissions(contestId, problem.id).then(
+	  () => {
+		ToastManager.showSuccess("Rejudged Successfully!");
+	  },
+	);
   }
 
   /**
@@ -131,214 +140,214 @@ function EditProblem({
    * @returns
    */
   function onfileChange(event, fileName) {
-    const fileObj = event.target.files && event.target.files[0];
-    if (!fileObj) {
-      return;
-    }
-    return URL.createObjectURL(fileObj);
+	const fileObj = event.target.files && event.target.files[0];
+	if (!fileObj) {
+	  return;
+	}
+	return URL.createObjectURL(fileObj);
   }
 
   function showPreview() {
-    let file = problem.statementFileURL;
+	let file = problem.statementFileURL;
 
-    if (fileForPreview.label.toLowerCase() === "statement") {
-      if (problemStatementUploadRef.current?.files[0]) {
-        file = URL.createObjectURL(problemStatementUploadRef.current?.files[0]);
-      } else if (!problem.isNew) file = problem.statementFileURL;
-    }
+	if (fileForPreview.label.toLowerCase() === "statement") {
+	  if (problemStatementUploadRef.current?.files[0]) {
+		file = URL.createObjectURL(problemStatementUploadRef.current?.files[0]);
+	  } else if (!problem.isNew) file = problem.statementFileURL;
+	}
 
-    return (
-      <>
-        <textarea
-          style={{
-            height: "50vh",
-            width: "100%",
-            display: `${fileForPreview.label.toLowerCase() === "output" ? "block" : "none"}`,
-          }}
-          name=""
-          id=""
-          ref={outputInputRef}
-          cols="30"
-          rows="10"
-          onChange={(e) => {
-            setTempFileContent({ ...temFileContent, output: e.target.value });
-          }}
-          value={temFileContent.output}
-        ></textarea>
-        <textarea
-          style={{
-            height: "50vh",
-            width: "100%",
-            display: `${fileForPreview.label.toLowerCase() === "testcase" ? "block" : "none"}`,
-          }}
-          name=""
-          id=""
-          ref={testcaseInputRef}
-          cols="30"
-          rows="10"
-          onChange={(e) => {
-            setTempFileContent({ ...temFileContent, testcase: e.target.value });
-          }}
-          value={temFileContent.testcase}
-        ></textarea>
-        <iframe
-          style={{
-            height: "50vh",
-            width: "100%",
-            display: `${fileForPreview.label.toLowerCase() === "statement" ? "block" : "none"}`,
-          }}
-          src={file}
-          title="Problem statement"
-          frameBorder="1"
-        ></iframe>
-      </>
-    );
+	return (
+	  <>
+		<textarea
+		  style={{
+			height: "50vh",
+			width: "100%",
+			display: `${fileForPreview.label.toLowerCase() === "output" ? "block" : "none"}`,
+		  }}
+		  name=""
+		  id=""
+		  ref={outputInputRef}
+		  cols="30"
+		  rows="10"
+		  onChange={(e) => {
+			setTempFileContent({ ...temFileContent, output: e.target.value });
+		  }}
+		  value={temFileContent.output}
+		></textarea>
+		<textarea
+		  style={{
+			height: "50vh",
+			width: "100%",
+			display: `${fileForPreview.label.toLowerCase() === "testcase" ? "block" : "none"}`,
+		  }}
+		  name=""
+		  id=""
+		  ref={testcaseInputRef}
+		  cols="30"
+		  rows="10"
+		  onChange={(e) => {
+			setTempFileContent({ ...temFileContent, testcase: e.target.value });
+		  }}
+		  value={temFileContent.testcase}
+		></textarea>
+		<iframe
+		  style={{
+			height: "50vh",
+			width: "100%",
+			display: `${fileForPreview.label.toLowerCase() === "statement" ? "block" : "none"}`,
+		  }}
+		  src={file}
+		  title="Problem statement"
+		  frameBorder="1"
+		></iframe>
+	  </>
+	);
   }
 
   return (
-    <div
-      style={{
-        display: `${isFocused ? "block" : "none"}`,
-      }}
-    >
-      <div ref={problemCreationFormRef} className="createProblem">
-        <div className="createProblemlableContainer">
-          <div className="textInputContainer">
-            <label htmlFor="contestTitle">Title </label>
-            <input
-              className="createContestInput"
-              autoComplete="off"
-              value={problem.title}
-              onChange={(e) => {
-                setProblemInfo({ ...problem, title: e.target.value });
-                setProblemTitle(e.target.value);
-              }}
-              type="text"
-              name="contestTitle"
-            />
-          </div>
-          <div className="textInputContainer">
-            <label htmlFor="contestTitle">Points </label>
-            <input
-              placeholder="x100"
-              className="createContestInput"
-              autoComplete="off"
-              value={problem.points}
-              onChange={(e) => {
-                setProblemInfo({ ...problem, points: e.target.value });
-              }}
-              type="text"
-              name="contestTitle"
-            />
-          </div>
-          <div className="textInputContainer">
-            <label htmlFor="contestTitle">Code </label>
-            <input
-              placeholder="Code"
-              className="createContestInput"
-              autoComplete="off"
-              value={problem.code}
-              onChange={(e) => {
-                setProblemInfo({ ...problem, code: e.target.value });
-              }}
-              type="text"
-              name="contestTitle"
-            />
-          </div>
-        </div>
-        <div className="uplodsContainer">
-          <div className="uploadBtnContainer">
-            <button
-              className={`previewBtn ${fileForPreview.label === "statement" ? "previewing" : ""} `}
-              onClick={(e) => {
-                setFileForPreview({ label: "statement" });
-              }}
-            >
-              Problem statement
-            </button>
-            <div
-              onClick={() => {
-                problemStatementUploadRef.current.value = null;
+	<div
+	  style={{
+		display: `${isFocused ? "block" : "none"}`,
+	  }}
+	>
+	  <div ref={problemCreationFormRef} className="createProblem">
+		<div className="createProblemlableContainer">
+		  <div className="textInputContainer">
+			<label htmlFor="contestTitle">Title </label>
+			<input
+			  className="createContestInput"
+			  autoComplete="off"
+			  value={problem.title}
+			  onChange={(e) => {
+				setProblemInfo({ ...problem, title: e.target.value });
+				setProblemTitle(e.target.value);
+			  }}
+			  type="text"
+			  name="contestTitle"
+			/>
+		  </div>
+		  <div className="textInputContainer">
+			<label htmlFor="contestTitle">Points </label>
+			<input
+			  placeholder="x100"
+			  className="createContestInput"
+			  autoComplete="off"
+			  value={problem.points}
+			  onChange={(e) => {
+				setProblemInfo({ ...problem, points: e.target.value });
+			  }}
+			  type="text"
+			  name="contestTitle"
+			/>
+		  </div>
+		  <div className="textInputContainer">
+			<label htmlFor="contestTitle">Code </label>
+			<input
+			  placeholder="Code"
+			  className="createContestInput"
+			  autoComplete="off"
+			  value={problem.code}
+			  onChange={(e) => {
+				setProblemInfo({ ...problem, code: e.target.value });
+			  }}
+			  type="text"
+			  name="contestTitle"
+			/>
+		  </div>
+		</div>
+		<div className="uplodsContainer">
+		  <div className="uploadBtnContainer">
+			<button
+			  className={`previewBtn ${fileForPreview.label === "statement" ? "previewing" : ""} `}
+			  onClick={(e) => {
+				setFileForPreview({ label: "statement" });
+			  }}
+			>
+			  Problem statement
+			</button>
+			<div
+			  onClick={() => {
+				problemStatementUploadRef.current.value = null;
 
-                problemStatementUploadRef.current.click();
-              }}
-              className="uploadbtn"
-            >
-              <CloudUploadIcon />
-            </div>
-            <input
-              style={{ display: "none" }}
-              onChange={(e) => {
-                let fileURL = onfileChange(e, "Statement.pdf");
+				problemStatementUploadRef.current.click();
+			  }}
+			  className="uploadbtn"
+			>
+			  <CloudUploadIcon />
+			</div>
+			<input
+			  style={{ display: "none" }}
+			  onChange={(e) => {
+				let fileURL = onfileChange(e, "Statement.pdf");
 
-                setFileForPreview({ label: "statement", file: fileURL });
-              }}
-              type="file"
-              name=""
-              ref={problemStatementUploadRef}
-            />
-          </div>
-          <div className="uploadBtnContainer">
-            <button
-              onClick={() => {
-                setFileForPreview({ label: "Testcase" });
-              }}
-              className={`previewBtn ${fileForPreview.label === "Testcase" ? "previewing" : ""} `}
-            >
-              Test Inputs 
-            </button> 
-          </div>
-          <div className="uploadBtnContainer">
-            <button
-              onClick={() => {
-                setFileForPreview({ label: "Output" });
-              }}
-              className={`previewBtn ${fileForPreview.label === "Output" ? "previewing" : ""} `}
-            >
-              Test Outputs
-            </button>
-          </div>
-          <div className="uploadBtnContainer">
-            <button
-              onClick={() => {
-                problemStatementUploadRef.current.value = null;
+				setFileForPreview({ label: "statement", file: fileURL });
+			  }}
+			  type="file"
+			  name=""
+			  ref={problemStatementUploadRef}
+			/>
+		  </div>
+		  <div className="uploadBtnContainer">
+			<button
+			  onClick={() => {
+				setFileForPreview({ label: "Testcase" });
+			  }}
+			  className={`previewBtn ${fileForPreview.label === "Testcase" ? "previewing" : ""} `}
+			>
+			  Test Inputs 
+			</button> 
+		  </div>
+		  <div className="uploadBtnContainer">
+			<button
+			  onClick={() => {
+				setFileForPreview({ label: "Output" });
+			  }}
+			  className={`previewBtn ${fileForPreview.label === "Output" ? "previewing" : ""} `}
+			>
+			  Test Outputs
+			</button>
+		  </div>
+		  <div className="uploadBtnContainer">
+			<button
+			  onClick={() => {
+				problemStatementUploadRef.current.value = null;
 
-                setTempFileContent({ ...mainFileContent });
-              }}
-              className={`previewBtn`}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="uploadBtnContainer">
-            <button
-              onClick={() => {
-                submitData();
-              }}
-              className={`previewBtn`}
-            >
-              Save
-            </button>
-          </div>
-          {!problem.isNew && (
-            <div className="uploadBtnContainer">
-              <button
-                onClick={() => {
-                  rejudgeSubmissionsOfThisProblem();
-                }}
-                className={`previewBtn`}
-              >
-                Rejudge Submissions
-              </button>
-            </div>
-          )}
-        </div>
-        <div className="previewContainer">
-          <h3>Preview</h3>
-          <div className="preview">{showPreview()}</div>
-        </div>
-      </div>
-    </div>
+				setTempFileContent({ ...mainFileContent });
+			  }}
+			  className={`previewBtn`}
+			>
+			  Reset
+			</button>
+		  </div>
+		  <div className="uploadBtnContainer">
+			<button
+			  onClick={() => {
+				submitData();
+			  }}
+			  className={`previewBtn`}
+			>
+			  Save
+			</button>
+		  </div>
+		  {!problem.isNew && (
+			<div className="uploadBtnContainer">
+			  <button
+				onClick={() => {
+				  rejudgeSubmissionsOfThisProblem();
+				}}
+				className={`previewBtn`}
+			  >
+				Rejudge Submissions
+			  </button>
+			</div>
+		  )}
+		</div>
+		<div className="previewContainer">
+		  <h3>Preview</h3>
+		  <div className="preview">{showPreview()}</div>
+		</div>
+	  </div>
+	</div>
   );
 }
 

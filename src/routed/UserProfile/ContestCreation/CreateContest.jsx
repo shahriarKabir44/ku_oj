@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import ContestCreationEventManager from "../../../EventsManager/ContestCreationEventManager";
- import NavbarDirectoryManager from "../../../EventsManager/NavbarDirectoryManager";
+import NavbarDirectoryManager from "../../../EventsManager/NavbarDirectoryManager";
 import ToastManager from "../../../EventsManager/ToastManager";
 import ContestService from "../../../services/Contest.service";
 import "./CreateContest.css";
@@ -21,33 +20,29 @@ function CreateContest({ currentUser }) {
       contestInfo.startTime >= contestInfo.endTime ||
       contestInfo.title.length === 0 ||
       contestInfo.code.length === 0
-    ) {        contestInfo.startTime = new Date(contestInfo.startTime) .toLocaleString();
-         contestInfo.endTime = new Date(contestInfo.endTime).toLocaleString();
-
+    ) {
       ToastManager.showError("Invalid input");
       return;
     }
-     ContestService.createContest({
+    ContestService.createContest({
       ...contestInfo,
-      
-    }).then(({data:contestId}) => {
+    }).then(({ data: contestId }) => {
       if (contestId === null) {
         ToastManager.showError("Contest name already exists!");
-         return;
+        return;
       }
-        navigate(`/user/${currentUser.id}/editContest/${contestId}`);
-
+      navigate(`/user/${currentUser.id}/editContest/${contestId}`);
 
       // ContestCreationEventManager.sendMessage({
       //   ...contestInfo,
-       
+
       //   id: contestId,
       // }).then(({ status, errorMessage }) => {
       //   if (!status) {
       //     ToastManager.showError(errorMessage);
       //     return;
       //   }
- 
+
       // });
     });
   }
@@ -102,17 +97,47 @@ function CreateContest({ currentUser }) {
                 />
 
                 <label htmlFor="start">Start Time:</label>
-                                <input className='updateContestInput' onChange={e => {
-                                   // if ((new Date()) * 1 < contestInfo.startTime)
-                                    setContestInfo({ ...contestInfo, startTime: e.target.value });
-                                 }} type="datetime-local" name="start" value={contestInfo.startTime} />
+                <input
+                  className="updateContestInput"
+                  onChange={(e) => {
+                    setContestInfo({
+                      ...contestInfo,
+                      startTime: e.target.value,
+                    });
+                  }}
+                  type="datetime-local"
+                  name="start"
+                  value={
+                    typeof contestInfo.startTime === "string"
+                      ? contestInfo.startTime
+                      : new Date(
+                          contestInfo.startTime.getTime() -
+                            contestInfo.startTime.getTimezoneOffset() * 60000,
+                        )
+                          .toISOString()
+                          .slice(0, 16)
+                  }
+                />
 
-
-                                <label htmlFor="end">End Time:</label>
-                                <input className='updateContestInput' onChange={e => {
-                                    setContestInfo({ ...contestInfo, endTime:e.target.value    })
-                }} type="datetime-local" name="end" value={contestInfo.endTime} />
-                
+                <label htmlFor="end">End Time:</label>
+                <input
+                  className="updateContestInput"
+                  onChange={(e) => {
+                    setContestInfo({ ...contestInfo, endTime: e.target.value });
+                  }}
+                  type="datetime-local"
+                  name="end"
+                  value={
+                    typeof contestInfo.endTime === "string"
+                      ? contestInfo.endTime
+                      : new Date(
+                          contestInfo.endTime.getTime() -
+                            contestInfo.endTime.getTimezoneOffset() * 60000,
+                        )
+                          .toISOString()
+                          .slice(0, 16)
+                  }
+                />
               </div>
             </div>
           </div>

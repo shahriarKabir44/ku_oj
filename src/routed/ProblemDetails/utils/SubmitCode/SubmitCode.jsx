@@ -80,23 +80,30 @@ function SubmitCode({
     const newCodeFileBlob = UploadManager.convertTextToBlob(
       codeText.current.value,
     );
-
+    handleClose();
     SubmissionService.submit(data, codeText.current.value)
 
       .then(({ data: resp }) => {
-        console.log(resp);
+        
         if (resp.error) {
           ToastManager.showError(resp.error);
           return;
         }
-        let { verdict, execTime, id } = resp;
+                let { verdict, execTime, id } = resp;
 
-        setNewSubmissionId(id);
-        setSubmissionInfo({
-          ...submissionInfo,
-          verdict,
-          execTime,
-        });
+        if (verdict == 'AC') {
+          ToastManager.showSuccess(`Congratulations. Soltion Accepted! Execution Time: ${execTime}`)
+        }
+        else {
+                    ToastManager.showError(verdict);
+
+        }
+        // setNewSubmissionId(id);
+        // setSubmissionInfo({
+        //   ...submissionInfo,
+        //   verdict,
+        //   execTime,
+        // });
 
         SubmissionService.getPreviousSubmissionsOfProblem(
           problem?.id,

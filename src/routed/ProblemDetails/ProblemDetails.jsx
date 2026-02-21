@@ -20,7 +20,7 @@ export default function ProblemDetails({ currentUser }) {
 	React.useEffect(() => {
  		ContestService.searchContestByProblem(problemId)
 			.then(({ data }) => {
-				console.log(data)
+				 
 				if (!data) {
  
 					nav('/')

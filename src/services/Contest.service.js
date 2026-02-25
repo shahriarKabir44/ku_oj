@@ -62,8 +62,7 @@ export default class ContestService {
 
   static async addNewProblem({
     statementFile,
-    outputFileContent,
-    testcaseFileContent,
+    testcaseFiles,
     title,
     points,
     contestId,
@@ -80,26 +79,45 @@ export default class ContestService {
       createdOn,
     });
     let promises = [];
-    const tasks = [
-      ["testcaseinput", testcaseFileContent, "txt"],
-      ["testcaseoutput", outputFileContent, "txt"],
-    ];
-    if (statementFile) {
-      tasks.push(["statementfile", statementFile, "pdf"]);
-    }
-    tasks.forEach((task) => {
+    testcaseFiles.forEach((tc, index) => {
       promises.push(
         UploadManager.uploadFile(
-          task[1],
+          tc.input,
           {
-            filetype: task[0],
+            filetype: "testcaseinput",
             problemid: problemId,
-            ext: task[2],
+            testcaseindex: String(index),
+            ext: "txt",
+          },
+          "/uploadFile/upload",
+        ),
+      );
+      promises.push(
+        UploadManager.uploadFile(
+          tc.output,
+          {
+            filetype: "testcaseoutput",
+            problemid: problemId,
+            testcaseindex: String(index),
+            ext: "txt",
           },
           "/uploadFile/upload",
         ),
       );
     });
+    if (statementFile) {
+      promises.push(
+        UploadManager.uploadFile(
+          statementFile,
+          {
+            filetype: "statementfile",
+            problemid: problemId,
+            ext: "pdf",
+          },
+          "/uploadFile/upload",
+        ),
+      );
+    }
 
     await Promise.all(promises);
 
@@ -108,8 +126,7 @@ export default class ContestService {
 
   static async updateProblem({
     statementFile,
-    outputFileContent,
-    testcaseFileContent,
+    testcaseFiles,
     title,
     points,
     id,
@@ -121,30 +138,54 @@ export default class ContestService {
       id,
       code,
     });
+    // Clear old testcase files before uploading new ones
+    await Global._fetch(`/contests/clearTestcaseFiles/${id}`, {});
     let promises = [];
-    const tasks = [
-      ["testcaseinput", testcaseFileContent, "txt"],
-      ["testcaseoutput", outputFileContent, "txt"],
-    ];
-    if (statementFile) {
-      tasks.push(["statementfile", statementFile, "pdf"]);
-    }
-    tasks.forEach((task) => {
+    testcaseFiles.forEach((tc, index) => {
       promises.push(
         UploadManager.uploadFile(
-          task[1],
+          tc.input,
           {
-            filetype: task[0],
+            filetype: "testcaseinput",
             problemid: id,
-            ext: task[2],
+            testcaseindex: String(index),
+            ext: "txt",
+          },
+          "/uploadFile/upload",
+        ),
+      );
+      promises.push(
+        UploadManager.uploadFile(
+          tc.output,
+          {
+            filetype: "testcaseoutput",
+            problemid: id,
+            testcaseindex: String(index),
+            ext: "txt",
           },
           "/uploadFile/upload",
         ),
       );
     });
+    if (statementFile) {
+      promises.push(
+        UploadManager.uploadFile(
+          statementFile,
+          {
+            filetype: "statementfile",
+            problemid: id,
+            ext: "pdf",
+          },
+          "/uploadFile/upload",
+        ),
+      );
+    }
 
     return await Promise.all(promises).catch((err) => {
-      ModalManager.showAlert("Error Occurred", "Failed to upload files. Please try again.");
+      ModalManager.showAlert(
+        "Error Occurred",
+        "Failed to upload files. Please try again.",
+      );
     });
   }
   static async saveMessageToContestThread(body) {
@@ -158,10 +199,7 @@ export default class ContestService {
     return Global._fetch(`/contests/getContestResult/${userId}/${contestId}`);
   }
   static async createContest(contestInfo) {
-    return await Global._fetch(
-      "/contests/createContest",
-      contestInfo,
-    );
+    return await Global._fetch("/contests/createContest", contestInfo);
   }
   static async getContests() {
     return Global._fetch("/contests/getContests");
@@ -194,7 +232,9 @@ export default class ContestService {
   }
 
   static async trashUntrashProblemId(problemId, isAvailable) {
-    return Global._fetch(`/contests/trashUntrashProblemId/?problemId=${problemId}&isAvailable=${isAvailable * 1}`);
+    return Global._fetch(
+      `/contests/trashUntrashProblemId/?problemId=${problemId}&isAvailable=${isAvailable * 1}`,
+    );
   }
 
   static async getFullContestDetailsForEdit(contestId) {
@@ -205,8 +245,11 @@ export default class ContestService {
   }
 
   static async updateContestInfo(contestInfo, forceUpdate = false) {
-    console.log(contestInfo)
-    return Global._fetch(`/contests/updateContestInfo?isForceUpdate=${forceUpdate}`, contestInfo);
+    console.log(contestInfo);
+    return Global._fetch(
+      `/contests/updateContestInfo?isForceUpdate=${forceUpdate}`,
+      contestInfo,
+    );
   }
 
   static async hasSolvedProblem_(userId, problemId) {

@@ -1,0 +1,73 @@
+.testcaseListSidebar {
+  width: 160px;
+  min-width: 160px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  background: #f9f9f9;
+  align-self: flex-start;
+}
+
+.testcaseListHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding: 2px 4px;
+}
+
+.testcaseAddBtn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.testcaseAddBtn:hover {
+  background: #388e3c;
+}
+
+.testcaseListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.testcaseListItem:hover {
+  background: #e3f2fd;
+}
+
+.testcaseListItemSelected {
+  background: #2196f3;
+  color: white;
+}
+
+.testcaseListItemSelected:hover {
+  background: #1976d2;
+}
+
+.testcaseDeleteBtn {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.testcaseDeleteBtn:hover {
+  background: #d32f2f;
+}

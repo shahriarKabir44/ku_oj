@@ -1,7 +1,6 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import React from "react";
 import ToastManager from "../../../../EventsManager/ToastManager";
-import UpdateContestEventManager from "../../../../EventsManager/UpdateContestEventManager";
 import ContestService from "../../../../services/Contest.service";
 import SubmissionService from "../../../../services/Submission.service";
 import UploadManager from "../../../../services/UploadManager";
@@ -15,18 +14,15 @@ function EditProblem({
 }) {
   const problemStatementUploadRef = React.useRef(null);
   const problemCreationFormRef = React.useRef(null);
-  const testcaseInputRef = React.useRef(null);
-  const outputInputRef = React.useRef(null);
   const [mainFileContent, setMainFileContent] = React.useState({
-	testcase: "",
-	output: "",
+	testcases: [{ input: "", output: "" }],
 	statement: "",
   });
   const [temFileContent, setTempFileContent] = React.useState({
-	testcase: "",
-	output: "",
+	testcases: [{ input: "", output: "" }],
 	statement: "",
   });
+  const [selectedTestcaseIndex, setSelectedTestcaseIndex] = React.useState(0);
 
   const [fileForPreview, setFileForPreview] = React.useState({
 	file: null,
@@ -35,23 +31,27 @@ function EditProblem({
   const [problem, setProblemInfo] = React.useState(problemInfo);
 
   React.useEffect(() => {
-	setMainFileContent({
-	  ...mainFileContent,
+	setMainFileContent((prev) => ({
+	  ...prev,
 	  statement: problem.statementFileURL,
-	});
-	setTempFileContent({
-	  ...temFileContent,
+	}));
+	setTempFileContent((prev) => ({
+	  ...prev,
 	  statement: problem.statementFileURL,
-	});
+	}));
 	if (problem.id)
 	  ContestService.getProblemFiles(problemInfo.id).then(
 		(data) => {
 		  if (data == null) {
 			return;
 		  }
-		  let { testcase, output } = data.data;
-		  setTempFileContent({ ...temFileContent, testcase, output });
-		  setMainFileContent({ ...mainFileContent, testcase, output });
+		  let { testcases } = data.data;
+		  if (!testcases || testcases.length === 0) {
+			testcases = [{ input: "", output: "" }];
+		  }
+		  setTempFileContent((prev) => ({ ...prev, testcases }));
+		  setMainFileContent((prev) => ({ ...prev, testcases }));
+		  setSelectedTestcaseIndex(0);
 		},
 	  );
 
@@ -64,19 +64,20 @@ function EditProblem({
 
 	const submitData = async function () {
 		try {
-			let testcaseFileContent = await UploadManager.convertTextToBase64(
-				testcaseInputRef.current?.value,
-			);
-			if (!testcaseFileContent) {
-				ToastManager.showError("Testcase Input Is Invalid!");
-				return;
-			}
-			let outputFileContent = await UploadManager.convertTextToBase64(
-				outputInputRef.current?.value,
-			)
-			if (!outputFileContent) {
-				ToastManager.showError("Testcase Input Is Invalid!");
-				return;
+			let testcaseFiles = [];
+			for (let i = 0; i < temFileContent.testcases.length; i++) {
+				let tc = temFileContent.testcases[i];
+				let input = await UploadManager.convertTextToBase64(tc.input);
+				let output = await UploadManager.convertTextToBase64(tc.output);
+				if (!input) {
+					ToastManager.showError(`Testcase ${i + 1} Input Is Invalid!`);
+					return;
+				}
+				if (!output) {
+					ToastManager.showError(`Testcase ${i + 1} Output Is Invalid!`);
+					return;
+				}
+				testcaseFiles.push({ input, output });
 			}
 
 			let statementFile = await UploadManager.convertBlobToBase64(
@@ -90,8 +91,7 @@ function EditProblem({
 				}
 				await ContestService.addNewProblem({
 					statementFile,
-					testcaseFileContent,
-					outputFileContent,
+					testcaseFiles,
 					createdOn: new Date() * 1,
 					...problem,
 				}).then(() => {
@@ -100,8 +100,7 @@ function EditProblem({
 			} else {
 				if (!problemStatementUploadRef.current.files[0]) {
 					await ContestService.updateProblem({
-						testcaseFileContent,
-						outputFileContent,
+						testcaseFiles,
 						...problem,
 					}).then(() => {
 						ToastManager.showSuccess("Problem updated successfully!");
@@ -113,8 +112,7 @@ function EditProblem({
 				}
 					await ContestService.updateProblem({
 						statementFile,
-						testcaseFileContent,
-						outputFileContent,
+						testcaseFiles,
 						...problem,
 					}).then(() => {
 						ToastManager.showSuccess("Problem updated successfully!");
@@ -166,13 +164,14 @@ function EditProblem({
 		  }}
 		  name=""
 		  id=""
-		  ref={outputInputRef}
 		  cols="30"
 		  rows="10"
 		  onChange={(e) => {
-			setTempFileContent({ ...temFileContent, output: e.target.value });
+			let updated = [...temFileContent.testcases];
+			updated[selectedTestcaseIndex] = { ...updated[selectedTestcaseIndex], output: e.target.value };
+			setTempFileContent({ ...temFileContent, testcases: updated });
 		  }}
-		  value={temFileContent.output}
+		  value={temFileContent.testcases[selectedTestcaseIndex]?.output || ""}
 		></textarea>
 		<textarea
 		  style={{
@@ -182,13 +181,14 @@ function EditProblem({
 		  }}
 		  name=""
 		  id=""
-		  ref={testcaseInputRef}
 		  cols="30"
 		  rows="10"
 		  onChange={(e) => {
-			setTempFileContent({ ...temFileContent, testcase: e.target.value });
+			let updated = [...temFileContent.testcases];
+			updated[selectedTestcaseIndex] = { ...updated[selectedTestcaseIndex], input: e.target.value };
+			setTempFileContent({ ...temFileContent, testcases: updated });
 		  }}
-		  value={temFileContent.testcase}
+		  value={temFileContent.testcases[selectedTestcaseIndex]?.input || ""}
 		></textarea>
 		<iframe
 		  style={{
@@ -307,12 +307,48 @@ function EditProblem({
 			  Test Outputs
 			</button>
 		  </div>
+		  <div className="uploadBtnContainer" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+			<label style={{ fontSize: "12px" }}>TC#</label>
+			<select
+			  value={selectedTestcaseIndex}
+			  onChange={(e) => setSelectedTestcaseIndex(Number(e.target.value))}
+			  style={{ padding: "4px" }}
+			>
+			  {temFileContent.testcases.map((_, i) => (
+				<option key={i} value={i}>{i + 1}</option>
+			  ))}
+			</select>
+			<button
+			  className="previewBtn"
+			  onClick={() => {
+				let updated = [...temFileContent.testcases, { input: "", output: "" }];
+				setTempFileContent({ ...temFileContent, testcases: updated });
+				setSelectedTestcaseIndex(updated.length - 1);
+			  }}
+			  title="Add testcase"
+			>
+			  +
+			</button>
+			<button
+			  className="previewBtn"
+			  onClick={() => {
+				if (temFileContent.testcases.length <= 1) return;
+				let updated = temFileContent.testcases.filter((_, i) => i !== selectedTestcaseIndex);
+				setTempFileContent({ ...temFileContent, testcases: updated });
+				setSelectedTestcaseIndex(Math.min(selectedTestcaseIndex, updated.length - 1));
+			  }}
+			  title="Remove current testcase"
+			>
+			  -
+			</button>
+		  </div>
 		  <div className="uploadBtnContainer">
 			<button
 			  onClick={() => {
 				problemStatementUploadRef.current.value = null;
 
-				setTempFileContent({ ...mainFileContent });
+				setTempFileContent({ ...mainFileContent, testcases: mainFileContent.testcases.map(tc => ({ ...tc })) });
+				setSelectedTestcaseIndex(0);
 			  }}
 			  className={`previewBtn`}
 			>

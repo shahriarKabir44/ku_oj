@@ -14,8 +14,13 @@ function EditProblem({
   problemInfo,
   contestId,
 }) {
-  const problemStatementUploadRef = React.useRef(null);
-  const problemCreationFormRef = React.useRef(null);
+   const problemCreationFormRef = React.useRef(null);
+
+  
+  
+  const [tempstatementText,setTempstatementText]=React.useState('')
+  const [statementText,setstatementText]=React.useState('')
+
   const [mainFileContent, setMainFileContent] = React.useState({
     testcases: [{ input: "", output: "" }],
     statement: "",
@@ -33,20 +38,22 @@ function EditProblem({
   const [problem, setProblemInfo] = React.useState(problemInfo);
 
   React.useEffect(() => {
-    setMainFileContent((prev) => ({
-      ...prev,
-      statement: problem.statementFileURL,
-    }));
-    setTempFileContent((prev) => ({
-      ...prev,
-      statement: problem.statementFileURL,
-    }));
+    // setMainFileContent((prev) => ({
+    //   ...prev,
+    //   statement: problem.statementFileURL,
+    // }));
+    // setTempFileContent((prev) => ({
+    //   ...prev,
+    //   statement: problem.statementFileURL,
+    // }));
     if (problem.id)
-      ContestService.getProblemFiles(problemInfo.id).then((data) => {
+      ContestService.getProblemFiles(problem.id).then((data) => {
         if (data == null) {
           return;
         }
-        let { testcases } = data.data;
+        let { testcases  } = data.data;
+        setTempstatementText( problem. statementText);
+        setstatementText(problem. statementText);
         if (!testcases || testcases.length === 0) {
           testcases = [{ input: "", output: "" }];
         }
@@ -63,7 +70,7 @@ function EditProblem({
   const submitData = async function () {
     try {
       let testcaseFiles = [];
-      for (let i = 0; i < temFileContent.testcases.length; i++) {
+        for (let i = 0; i < temFileContent.testcases.length; i++) {
         let tc = temFileContent.testcases[i];
         let input = await UploadManager.convertTextToBase64(tc.input);
         let output = await UploadManager.convertTextToBase64(tc.output);
@@ -77,19 +84,16 @@ function EditProblem({
         }
         testcaseFiles.push({ input, output });
       }
+      if (tempstatementText.length < 4) {
+          ToastManager.showError(`Problem Statement Is Invalid!`);
+          return;
+      }
 
-      let statementFile = await UploadManager.convertBlobToBase64(
-        problemStatementUploadRef.current?.files[0],
-      );
+      problem.statementText = tempstatementText;
 
       if (problem.isNew) {
-        if (statementFile == null) {
-          ToastManager.showError("Statement File Is Invalid!");
-          return;
-        }
         await ContestService.addNewProblem({
-          statementFile,
-          testcaseFiles,
+           testcaseFiles,
           createdOn: new Date() * 1,
           ...problem,
         }).then((problemId) => {
@@ -97,26 +101,15 @@ function EditProblem({
           ToastManager.showSuccess("Problem updated successfully!");
         });
       } else {
-        if (!problemStatementUploadRef.current.files[0]) {
+          
+           
           await ContestService.updateProblem({
-            testcaseFiles,
+             testcaseFiles,
             ...problem,
           }).then(() => {
             ToastManager.showSuccess("Problem updated successfully!");
           });
-        } else {
-          if (statementFile == null) {
-            ToastManager.showError("Statement File Is Invalid!");
-            return;
-          }
-          await ContestService.updateProblem({
-            statementFile,
-            testcaseFiles,
-            ...problem,
-          }).then(() => {
-            ToastManager.showSuccess("Problem updated successfully!");
-          });
-        }
+        
       }
     } catch (error) {}
   };
@@ -134,25 +127,35 @@ function EditProblem({
    * @param {React.ChangeEvent<HTMLInputElement>} event
    * @returns
    */
-  function onfileChange(event, fileName) {
-    const fileObj = event.target.files && event.target.files[0];
-    if (!fileObj) {
-      return;
-    }
-    return URL.createObjectURL(fileObj);
-  }
+  
 
   function showPreview() {
-    let file = problem.statementFileURL;
+    // let file = problem.statementFileURL;
 
-    if (fileForPreview.label.toLowerCase() === "statement") {
-      if (problemStatementUploadRef.current?.files[0]) {
-        file = URL.createObjectURL(problemStatementUploadRef.current?.files[0]);
-      } else if (!problem.isNew) file = problem.statementFileURL;
-    }
+    // if (fileForPreview.label.toLowerCase() === "statement") {
+    //   if (problemStatementUploadRef.current?.files[0]) {
+    //     file = URL.createObjectURL(problemStatementUploadRef.current?.files[0]);
+    //   } else if (!problem.isNew) file = problem.statementFileURL;
+    // }
 
     return (
       <>
+        
+         <textarea
+          style={{
+            height: "50vh",
+            width: "100%",
+            display: `${fileForPreview.label.toLowerCase() === "statement" ? "block" : "none"}`,
+          }}
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+          onChange={(e) => {
+            setTempstatementText(e.target.value);
+          }}
+          value={tempstatementText}
+        ></textarea>
         <textarea
           style={{
             height: "50vh",
@@ -193,16 +196,7 @@ function EditProblem({
           }}
           value={temFileContent.testcases[selectedTestcaseIndex]?.input || ""}
         ></textarea>
-        <iframe
-          style={{
-            height: "50vh",
-            width: "100%",
-            display: `${fileForPreview.label.toLowerCase() === "statement" ? "block" : "none"}`,
-          }}
-          src={file}
-          title="Problem statement"
-          frameBorder="1"
-        ></iframe>
+         
       </>
     );
   }
@@ -268,7 +262,7 @@ function EditProblem({
             >
               Problem statement
             </button>
-            <div
+            {/* <div
               onClick={() => {
                 problemStatementUploadRef.current.value = null;
 
@@ -277,8 +271,8 @@ function EditProblem({
               className="uploadbtn"
             >
               <CloudUploadIcon />
-            </div>
-            <input
+            </div> */}
+            {/* <input
               style={{ display: "none" }}
               onChange={(e) => {
                 let fileURL = onfileChange(e, "Statement.pdf");
@@ -288,7 +282,7 @@ function EditProblem({
               type="file"
               name=""
               ref={problemStatementUploadRef}
-            />
+            /> */}
           </div>
           <div className="uploadBtnContainer">
             <button
@@ -313,8 +307,7 @@ function EditProblem({
           <div className="uploadBtnContainer">
             <button
               onClick={() => {
-                problemStatementUploadRef.current.value = null;
-
+                 setTempstatementText(statementText);
                 setTempFileContent({
                   ...mainFileContent,
                   testcases: mainFileContent.testcases.map((tc) => ({ ...tc })),

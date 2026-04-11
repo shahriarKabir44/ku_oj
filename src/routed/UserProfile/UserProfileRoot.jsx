@@ -17,7 +17,10 @@ export default function UserProfileRoot({ currentUser }) {
 
     React.useEffect(() => {
          UserService.findUser(id)
-            .then(user => {
+             .then(user => {
+                 if (!user) {
+                    navigate('/')
+                }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('profile', {
                         userId: user.id, userName: user.userName

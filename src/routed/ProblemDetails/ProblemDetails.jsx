@@ -8,7 +8,8 @@ import Global from '../../services/Global'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import CountDown from '../shared/CountDown/CountDown'
 import ContestMessenger from '../ContestMessenger/ContestMessenger'
- 
+ import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 export default function ProblemDetails({ currentUser }) {
 	const nav = useNavigate()
 	const [contest, setContestInfo] = React.useState(null)
@@ -97,11 +98,8 @@ export default function ProblemDetails({ currentUser }) {
 
 				</div>
 				<div className="problemStatementContainer">
-					<iframe src={Global.SERVER_URL + "/" + problemId + ".pdf"}
-						title="Problem"
-						height={"10%%"}
-						width={"100%"}></iframe>
-				</div>
+					<BlockMath math={problemInfo.statementText} />
+ 				</div>
 			</div>
 			{contest && <ContestMessenger currentUser={currentUser} contest={contest} />}
  		</div>}

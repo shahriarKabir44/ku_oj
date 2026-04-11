@@ -64,6 +64,7 @@ export default class ContestService {
     statementFile,
     testcaseFiles,
     title,
+    statementText,
     points,
     contestId,
     authorId,
@@ -76,6 +77,7 @@ export default class ContestService {
       contestId,
       authorId,
       code,
+      statementText,
       createdOn,
     });
     let promises = [];
@@ -112,7 +114,7 @@ export default class ContestService {
           {
             filetype: "statementfile",
             problemid: problemId,
-            ext: "pdf",
+            ext: "txt",
           },
           "/uploadFile/upload",
         ),
@@ -128,14 +130,14 @@ export default class ContestService {
     statementFile,
     testcaseFiles,
     title,
-    points,
+    points, statementText,
     id,
     code,
   }) {
     await Global._fetch("/contests/updateProblemInfo", {
       title,
       points,
-      id,
+      id, statementText,
       code,
     });
     // Clear old testcase files before uploading new ones
@@ -174,7 +176,7 @@ export default class ContestService {
           {
             filetype: "statementfile",
             problemid: id,
-            ext: "pdf",
+            ext: "txt",
           },
           "/uploadFile/upload",
         ),

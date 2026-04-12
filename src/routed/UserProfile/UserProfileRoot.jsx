@@ -19,7 +19,8 @@ export default function UserProfileRoot({ currentUser }) {
          UserService.findUser(id)
              .then(user => {
                  if (!user) {
-                    navigate('/')
+                     localStorage.clear();
+                     navigate('/');
                 }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('profile', {

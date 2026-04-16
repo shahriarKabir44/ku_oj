@@ -1,6 +1,10 @@
 import AddIcon from "@mui/icons-material/Add";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DeleteIcon from "@mui/icons-material/Delete";
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css'; // Essential for styling
+
+  import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import ToastManager from "../../../../EventsManager/ToastManager";
 import ContestService from "../../../../services/Contest.service";
@@ -140,22 +144,33 @@ function EditProblem({
 
     return (
       <>
-        
-         <textarea
-          style={{
+        <div style={{
             height: "50vh",
             width: "100%",
-            display: `${fileForPreview.label.toLowerCase() === "statement" ? "block" : "none"}`,
-          }}
+          display: `${fileForPreview.label.toLowerCase() === "statement" ? "grid" : "none"}`,
+            gridTemplateColumns:"50% 50%",gap:"16px"
+          }}>
+ <textarea
+          style={{width: "80%"}}
           name=""
           id=""
           cols="30"
-          rows="10"
+          
           onChange={(e) => {
             setTempstatementText(e.target.value);
           }}
           value={tempstatementText}
-        ></textarea>
+          ></textarea>
+          <div style={{ border: "1px solid", padding: "8px", overflowY: "scroll" }}>
+                    <ReactMarkdown 
+                remarkPlugins={[remarkMath]} 
+                rehypePlugins={[rehypeKatex]}
+              >
+                {tempstatementText}
+              </ReactMarkdown>
+          </div>
+        </div>
+        
         <textarea
           style={{
             height: "50vh",
@@ -343,7 +358,7 @@ function EditProblem({
           )}
         </div>
         <div style={{ display: "flex", gap: "8px" }}>
-          <div className="testcaseListSidebar">
+        { fileForPreview.label.toLowerCase() !== "statement" && <div className="testcaseListSidebar">
             <div className="testcaseListHeader">
               <span>Test Inputs</span>
               <button
@@ -361,7 +376,7 @@ function EditProblem({
                 <AddIcon fontSize="small" />
               </button>
             </div>
-            {temFileContent.testcases.map((_, i) => (
+            {  temFileContent.testcases.map((_, i) => (
               <div
                 key={i}
                 className={`testcaseListItem ${selectedTestcaseIndex === i ? "testcaseListItemSelected" : ""}`}
@@ -390,7 +405,7 @@ function EditProblem({
                 </button>
               </div>
             ))}
-          </div>
+          </div>}
           <div className="previewContainer" style={{ flex: 1 }}>
             <h3>Preview</h3>
             <div className="preview">{showPreview()}</div>

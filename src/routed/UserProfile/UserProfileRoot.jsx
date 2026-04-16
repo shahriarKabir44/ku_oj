@@ -20,7 +20,7 @@ export default function UserProfileRoot({ currentUser }) {
              .then(user => {
                  if (!user) {
                      localStorage.clear();
-                     navigate('/');
+                     window.location.reload();
                 }
                 setTimeout(() => {
                     NavbarDirectoryManager.setDitectory('profile', {

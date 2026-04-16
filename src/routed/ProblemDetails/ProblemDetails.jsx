@@ -8,8 +8,14 @@ import Global from '../../services/Global'
 import NavbarDirectoryManager from '../../EventsManager/NavbarDirectoryManager'
 import CountDown from '../shared/CountDown/CountDown'
 import ContestMessenger from '../ContestMessenger/ContestMessenger'
- import 'katex/dist/katex.min.css';
-import { InlineMath, BlockMath } from 'react-katex';
+
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css'; // Essential for styling
+
+
+
 export default function ProblemDetails({ currentUser }) {
 	const nav = useNavigate()
 	const [contest, setContestInfo] = React.useState(null)
@@ -97,8 +103,17 @@ export default function ProblemDetails({ currentUser }) {
 					</div>
 
 				</div>
-				<div className="problemStatementContainer">
-					<BlockMath math={problemInfo.statementText} />
+				<div className="problemStatementContainer" style={{
+					maxHeight: '65vh',
+					overflowY: 'auto'
+				}}>
+				 
+					 <ReactMarkdown 
+									remarkPlugins={[remarkMath]} 
+									rehypePlugins={[rehypeKatex]}
+								  >
+									{problemInfo.statementText}
+								  </ReactMarkdown>
  				</div>
 			</div>
 			{contest && <ContestMessenger currentUser={currentUser} contest={contest} />}

@@ -177,7 +177,7 @@ export default function EditContest({ currentUser }) {
                       >
                         Rejudge All Submissions
                       </a>
-                      <a href="#">View Contest</a>
+                      <a href={`/contest/${contestId}`} target="_blank">View Contest</a>
                       <a href="#">
                         {contestInfo.isPublished ? "Draft" : "Publish"} Contest
                       </a>

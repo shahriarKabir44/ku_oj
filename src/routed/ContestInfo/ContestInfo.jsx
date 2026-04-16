@@ -93,7 +93,7 @@ import ContestMessenger from '../ContestMessenger/ContestMessenger';
                         {contest.startTime * 1 > (new Date()) * 1 && <CountDown content={"Before Start"} endTime={contest.startTime} />}
                     </div>
                     <div className="card mySubmissionsContainer">
-                        <MySubmissionsContainer contest={contest} user={currentUser} />
+                         <MySubmissionsContainer contest={contest} user={currentUser} />  
                     </div>
                 </div>
                 <div className="problemSetContainer card">
@@ -112,7 +112,7 @@ import ContestMessenger from '../ContestMessenger/ContestMessenger';
 
                         </div>
                         {selectedTab === 1 && <ContestProblemSet isContestRunning={isContestRunning} contestResult={contestResult} problems={problems} />}
-                        {selectedTab === 2 && <ContestSubmissions contest={contest} currentUser={currentUser} />}
+                        {selectedTab === 2 && currentUser && <ContestSubmissions contest={contest} currentUser={currentUser} />}
                         <ContestRankings currentUser={currentUser} problems={problems} contestId={id} open={scoreboardVisibility} handleClose={() => {
                             setScoreboardVisibility(false)
                         }} />
@@ -121,7 +121,7 @@ import ContestMessenger from '../ContestMessenger/ContestMessenger';
                 </div>
             </div>
 
-            <ContestMessenger currentUser={currentUser} contest={contest} />
+           {currentUser && <ContestMessenger currentUser={currentUser} contest={contest} />}
         </div>}
         </>
        
